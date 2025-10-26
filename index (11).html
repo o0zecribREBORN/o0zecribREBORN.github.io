@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Animated Message</title>
+<style>
+  :root{
+    --msg-color-1: #ffffff;
+    --msg-color-2: #1a1a1a;
+    --accent: #ffffff;
+    --accent-2: #666666;
+    --glow-intensity: 0.8;
+  }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background:transparent;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .message{
+    font-family: "Poppins", sans-serif;
+    font-weight:700;
+    font-size: clamp(22px,5vw,42px);
+    background: linear-gradient(135deg,var(--msg-color-1),var(--msg-color-2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    white-space:nowrap;
+    position:relative;
+  }
+
+  .cursor{
+    width:3px;
+    height:1.1em;
+    margin-left:6px;
+    background:linear-gradient(180deg,var(--accent),var(--accent-2));
+    border-radius:4px;
+    display:inline-block;
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink { 50% { opacity:0.2; } }
+
+  @keyframes popShine {
+    0% { transform:scale(1); filter:brightness(1); }
+    40% { transform:scale(1.18) rotate(1deg); filter:brightness(2.4); }
+    100% { transform:scale(1); filter:brightness(1.2); }
+  }
+
+  @keyframes shineSweep {
+    0% { background-position:-200%; }
+    100% { background-position:200%; }
+  }
+
+  .message.finished-once {
+    animation: popShine .8s cubic-bezier(.25,1.4,.3,1);
+  }
+
+  .message.finished-once::before{
+    content:attr(data-text);
+    position:absolute;
+    inset:0;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-size:300%;
+    animation: shineSweep 1.4s ease-out forwards;
+  }
+
+  @keyframes breatheFloat {
+    0%,100% { transform:translateY(0); }
+    50% { transform:translateY(-6px); }
+  }
+
+  .message.finished {
+    animation:breatheFloat 3s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+
+<span id="message" class="message" data-text=""></span>
+<span id="cursor" class="cursor"></span>
+
+<script>
+const messages = [
+  "Welcome to O0ZE34's Crib REBORN",
+  "contentkeeper sucks ass",
+  "arcadium is ASSS",
+  "fuck unblocked chicken",
+  "watkins is ghetto lol",
+  "Think outside the box - unless it's a circle, then just think inside!",
+  "i love piracy lol",
+  "OOZE BETTERRRRRR",
+  "stay hydrated nigga",
+  ":)"
+];
+
+let msg = messages[Math.floor(Math.random()*messages.length)];
+const el = document.getElementById("message");
+const cursor = document.getElementById("cursor");
+
+el.setAttribute("data-text", msg);
+let i = 0;
+
+function type(){
+  if(i < msg.length){
+    el.textContent += msg[i];
+    i++;
+
+    // ✅ FAST SPEED (clean, smooth)
+    setTimeout(type, 20 + Math.random()*35);
+
+  } else {
+    el.classList.add("finished-once");
+    setTimeout(()=>{
+      el.classList.remove("finished-once");
+      el.classList.add("finished");
+      cursor.style.opacity = "0.8";
+    }, 900);
+  }
+}
+
+setTimeout(type, 150);
+</script>
+
+</body>
+</html>
