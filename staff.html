@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>O0ZE34's Crib REBORN — Staff</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
+
+<style>
+.staff-container {
+  padding: 30px;
+}
+
+.staff-title {
+  font-size: 35px;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.staff-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.staff-card {
+  background: rgba(255,255,255,0.07);
+  border-radius: 15px;
+  padding: 20px;
+  width: 260px;
+  text-align: center;
+  transition: 0.25s;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.staff-card:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 20px #6a00ff;
+  border-color: #9f5bff;
+}
+
+.staff-card img {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  border: 3px solid #b37cff;
+}
+
+/* BADGES */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  animation: float 2s infinite ease-in-out;
+}
+
+/* OWNER BADGE */
+.owner-badge {
+  background: linear-gradient(90deg, #b37cff, #8b3dff, #c799ff);
+  box-shadow: 0 0 12px #b37cff;
+}
+
+/* ADMIN BADGE */
+.admin-badge {
+  background: linear-gradient(90deg, #37a2ff, #0066ff, #66c2ff);
+  box-shadow: 0 0 12px #37a2ff;
+}
+
+/* FLOAT ANIMATION */
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+
+<!-- ⭐ SIDEBAR -->
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+<a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
+</div>
+
+<!-- ⭐ MAIN CONTENT -->
+<div class="main">
+<div class="staff-container">
+  <h1 class="staff-title">Staff Members</h1>
+
+  <div class="staff-grid">
+
+    <!-- OWNER -->
+    <div class="staff-card" onclick="window.open('https://www.youtube.com/@O0ZE34', '_blank')">
+      <img src="https://yt3.googleusercontent.com/jV9aBvWqlsp2rIu6gZD0_p79Rh4f9HfysoY8L9htjPGa8aQQ8wzVKhaeIRSljFRlnnsnIni7=s160-c-k-c0x00ffffff-no-rj">
+      <h2>O0ZE34</h2>
+      <div class="badge owner-badge">
+        <i class="fa-solid fa-crown"></i> OWNER
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <div class="staff-card" onclick="window.open('https://www.youtube.com/@SoulztsbALT', '_blank')">
+      <img src="https://yt3.googleusercontent.com/ZsCqIKcKOTJpe3mRdrOqFd32Llm43BbNGet1HRXJYT2u779s5_Ic9IsIESTJdMRPJCCgONmwfeM=s160-c-k-c0x00ffffff-no-rj">
+      <h2>Soulztsb</h2>
+      <div class="badge admin-badge">
+        <i class="fa-solid fa-shield-halved"></i> ADMIN
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
