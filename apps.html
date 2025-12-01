@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>O0ZE34's Crib REBORN — Apps</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/></head>
+<body>
+<div id="clock"></div>
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+</div>
+<div class="main">
+<h1>Apps</h1>
+<div class="typewriter"></div>
+<input class="search" id="search" onkeyup="filterCards()" placeholder="Search..."/>
+<div class="grid">
+<!-- ADD YOUR BUTTONS HERE
+Format with custom image:
+<a class='btn' href='LINK' target='_blank'>
+  <img class='thumb' src='YOUR_IMAGE_URL_HERE'>
+  <span>NAME HERE</span>
+</a>
+-->
+<a class="btn" onclick="openInBlank('https://blooketmod.global.ssl.fastly.net/')">
+<img class="thumb" src="https://www.google.com/s2/favicons?domain=https://blooketmod.global.ssl.fastly.net/&amp;sz=128"/>
+<span>Blooket Hacks</span>
+</a>
+</div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

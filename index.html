@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>O0ZE34's Crib REBORN — Home</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/></head>
+<body>
+<div class="greeting-card">
+  <div id="greet_box" class="greet-content">
+    <span id="greet_txt"></span>
+  </div>
+</div>
+
+<div id="clock"></div>
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+</div>
+<div class="main">
+<h1>Home</h1>
+<div class="typewriter"></div>
+<div class="home-sections">
+<div class="home-card">
+  <h2>NEXT UPDATE:</h2>
+  <div id="next-update-timer">Calculating...</div>
+</div>
+
+
+<div id="renameModal" class="modal-bg" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span>Rename Profile</span>
+      <button class="close-btn" onclick="closeModal()">×</button>
+    </div>
+    <input id="nameInput" class="modal-input" placeholder="Enter name...">
+    <button class="save-btn" onclick="saveName()">Save</button>
+  </div>
+</div>
+<div class="o_greeting" id="greet_box"><span id="greet_txt" style="cursor:pointer;"></span></div>
+
+<div class="xp_card">
+  <h2>Level <span id="lvl_num">1</span></h2>
+  <div class="xp_bar"><div id="xp_fill"></div></div>
+  <p id="xp_txt">XP: 0 / 100</p>
+</div>
+
+
+
+<div class="daily_card" onclick="claimDaily()">
+  <h2>Daily Reward</h2>
+  <p id="daily_status">Tap to claim</p>
+</div>
+
+<div class="stats_grid">
+ <div class="stat_box"><h3 id="stat_ach">0</h3><p>Achievements</p></div>
+ <div class="stat_box"><h3 id="stat_rolls">200+</h3><p>Games</p></div>
+ <div class="stat_box"><h3 id="stat_trails">15+</h3><p>Proxies</p></div>
+ <div class="stat_box"><h3 id="stat_pages">10+</h3><p>Music</p></div>
+</div>
+
+
+<div class="home-card">
+<h2>Quick Launch</h2>
+<div class="home-grid">
+<a class="quick-btn" href="games.html">Games</a>
+
+<a class="quick-btn" href="music.html">Music</a>
+<a class="quick-btn" href="apps.html">Apps</a>
+
+
+</div>
+</div>
+
+<div class="home-card">
+<h2>Achievements</h2>
+<p>Check your progress and unlock new rewards.</p>
+<a class="quick-btn" href="achievements.html">View Achievements</a>
+</div>
+
+
+
+</div>
+
+</div>
+<script src="script.js"></script>
+
+<script>
+function updateGreeting(){
+  let h=new Date().getHours();
+  let t="Hello";
+  if(h<12) t="Good Morning";
+  else if(h<17) t="Good Afternoon";
+  else if(h<21) t="Good Evening";
+  else t="Good Night";
+  document.getElementById("greet_txt").innerText=t;
+}
+
+function loadXP(){
+  let xp=parseInt(localStorage.getItem("xp")||"0");
+  let lvl=Math.floor(xp/100);
+  let cur=xp%100;
+  document.getElementById("lvl_num").innerText=lvl;
+  document.getElementById("xp_txt").innerText="XP: "+cur+" / 100";
+  document.getElementById("xp_fill").style.width=cur+"%";
+}
+
+function claimDaily(){
+  let last=parseInt(localStorage.getItem("daily")||"0");
+  let now=Math.floor(Date.now()/86400000); 
+  if(now>last){
+    localStorage.setItem("daily", now);
+    let xp=parseInt(localStorage.getItem("xp")||"0");
+    xp += 25;
+    localStorage.setItem("xp", xp);
+    document.getElementById("daily_status").innerText="Claimed!";
+    loadXP();
+  }else{
+    document.getElementById("daily_status").innerText="Already claimed today";
+  }
+}
+
+function loadFeatured(){
+  let items=[
+    "Super Smash Flash",
+    "Minecraft Classic",
+    "Retro Movie",
+    "New Music Drop",
+    "O0ZE Trail Pack"
+  ];
+  document.getElementById("featured_item").innerText=
+      items[Math.floor(Math.random()*items.length)];
+}
+
+function loadStats(){
+  let u=JSON.parse(localStorage.getItem("unlocked")||"{}");
+  document.getElementById("stat_ach").innerText=Object.keys(u).length;
+  document.getElementById("
+  document.getElementById("
+  let p=JSON.parse(localStorage.getItem("pagesVisited")||"[]");
+  document.getElementById("
+}
+
+window.onload=function(){
+ updateGreeting();
+ loadXP();
+ loadFeatured();
+ loadStats();
+}
+</script>
+
+<script>
+window.onload=function(){
+  document.getElementById("stat_ach").innerText = Object.keys(JSON.parse(localStorage.getItem("unlocked")||"{}")).length;
+  document.getElementById("
+  document.getElementById("
+  document.getElementById("
+};
+</script>
+
+<script>
+function updateGreeting(){
+  let h=new Date().getHours();
+  let month=new Date().getMonth()+1;
+  let text="Hello";
+
+  // Seasonal greetings
+  if(month===12) text="Happy Holidays ❄️";
+  else if(month===10) text="Happy Halloween 🎃";
+  else if(month===7) text="Happy 4th of July 🎆";
+  else if(month===2) text="Happy Valentine’s Day ❤️";
+  else if(month>=9 && month<=11) text="Cozy Autumn Days 🍂";
+  else if(month>=3 && month<=5) text="Welcome Spring 🌸";
+  else if(month>=6 && month<=8) text="Summer Vibes ☀️";
+
+  // Time-of-day overrides seasonal
+  if(h<12) text="Good Morning";
+  else if(h<17) text="Good Afternoon";
+  else if(h<21) text="Good Evening";
+  else text="Good Night";
+
+  document.getElementById("greet_txt").innerText=text;
+}
+
+window.onload=function(){
+  updateGreeting();
+};
+</script>
+
+<script>
+function updateGreeting(){
+  let h=new Date().getHours();
+  let text="Hello";
+
+  if(h<12) text="Good Morning";
+  else if(h<17) text="Good Afternoon";
+  else if(h<21) text="Good Evening";
+  else text="Good Night";
+
+  let name = localStorage.getItem("username") || "Guest";
+  document.getElementById("greet_txt").innerText = text + ", " + name + "!";
+}
+
+function renameUser(){
+  let newName = prompt("Enter your new name:");
+  if(newName && newName.trim() !== ""){
+    localStorage.setItem("username", newName.trim());
+    updateGreeting();
+  }
+}
+
+window.onload=function(){
+  updateGreeting();
+  document.getElementById("greet_box").onclick = renameUser;
+};
+</script>
+
+<script>
+function updateGreeting(){
+  let h=new Date().getHours();
+  let text="Hello";
+  if(h<12) text="Good Morning";
+  else if(h<17) text="Good Afternoon";
+  else if(h<21) text="Good Evening";
+  else text="Good Night";
+
+  let name = localStorage.getItem("username") || "Guest";
+  document.getElementById("greet_txt").innerText = text + ", " + name + "!";
+}
+
+function openModal(){
+  document.getElementById("renameModal").style.display="flex";
+}
+
+function closeModal(){
+  document.getElementById("renameModal").style.display="none";
+}
+
+function saveName(){
+  let name = document.getElementById("nameInput").value.trim();
+  if(name.length>0){
+    localStorage.setItem("username", name);
+    updateGreeting();
+  }
+  closeModal();
+}
+
+window.onload=function(){
+  updateGreeting();
+  document.getElementById("greet_box").onclick = openModal;
+};
+</script>
+
+<script>
+window.onload=function(){
+  document.getElementById("stat_ach").innerText = Object.keys(JSON.parse(localStorage.getItem("unlocked")||"{}")).length;
+  document.getElementById("
+  document.getElementById("
+  document.getElementById("
+};
+</script>
+
+<script>
+function getNextSaturday(){
+  const now = new Date();
+  const day = now.getDay(); // 0=Sun ... 6=Sat
+  let diff = (6 - day + 7) % 7;
+  // If it's already Saturday and past midnight, jump to next week
+  if (diff === 0 && (now.getHours() > 0 || now.getMinutes() > 0 || now.getSeconds() > 0)) {
+    diff = 7;
+  }
+  const target = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + diff,
+    0, 0, 0, 0
+  );
+  return target;
+}
+
+function startNextUpdateTimer(){
+  const el = document.getElementById("next-update-timer");
+  if(!el) return;
+  let target = getNextSaturday();
+
+  function tick(){
+    const now = new Date();
+    let diff = target - now;
+    if (diff <= 0){
+      target = getNextSaturday();
+      diff = target - now;
+    }
+    const totalSeconds = Math.floor(diff / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    const pad = (n)=> n.toString().padStart(2, "0");
+    el.textContent = days + "d : " + pad(hours) + "h : " + pad(minutes) + "m : " + pad(seconds) + "s";
+  }
+
+  tick();
+  setInterval(tick, 1000);
+}
+
+document.addEventListener("DOMContentLoaded", startNextUpdateTimer);
+</script>
+
+<div id="renameModal" class="modal-bg" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span>Rename Profile</span>
+      <button class="close-btn" onclick="closeModal()">×</button>
+    </div>
+    <input id="nameInput" class="modal-input" placeholder="Enter name...">
+    <button class="save-btn" onclick="saveName()">Save</button>
+  </div>
+</div>
+
+<script>
+function updateGreeting(){
+  let h=new Date().getHours();
+  let text="Hello";
+  if(h<12) text="Good Morning";
+  else if(h<17) text="Good Afternoon";
+  else if(h<21) text="Good Evening";
+  else text="Good Night";
+
+  let name = localStorage.getItem("username") || "Guest";
+  document.getElementById("greet_txt").innerText = text + ", " + name + "!";
+}
+
+function openModal(){document.getElementById("renameModal").style.display="flex";}
+function closeModal(){document.getElementById("renameModal").style.display="none";}
+
+function saveName(){
+  let name = document.getElementById("nameInput").value.trim();
+  if(name.length>0){
+    localStorage.setItem("username", name);
+    updateGreeting();
+  }
+  closeModal();
+}
+
+window.onload=function(){
+  updateGreeting();
+  document.getElementById("greet_box").onclick=openModal;
+};
+</script>
+
+<script src="achievements.js"></script>
+<script>
+function loadAchStats(){
+  let total=localStorage.getItem("ach_total")||40;
+  let unlocked=localStorage.getItem("ach_count")||0;
+  document.getElementById("ach_total").innerText=total;
+  document.getElementById("ach_unlocked").innerText=unlocked;
+  document.getElementById("ach_progress").innerText=Math.floor((unlocked/total)*100)+"%";
+}
+loadAchStats();
+</script>
+</body>
+</html>
