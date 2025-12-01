@@ -5,6 +5,48 @@
 <link href="style.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <link href="favicon.png" rel="icon" type="image/png"/>
+<style>
+/* --- Bell Schedule Modal --- */
+.modal-bg{
+  position:fixed;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.modal-box{
+  background:#111;
+  padding:25px;
+  border-radius:20px;
+  width:350px;
+  color:white;
+  text-align:center;
+  animation: pop 0.2s ease-out;
+}
+@keyframes pop{
+  from{transform:scale(0.8); opacity:0;}
+  to{transform:scale(1); opacity:1;}
+}
+.grade-btn{
+  background:#1d1d1d;
+  padding:12px;
+  border-radius:12px;
+  margin:8px 0;
+  cursor:pointer;
+}
+.grade-btn:hover{
+  background:#262626;
+}
+.schedule-box{
+  margin-top:15px;
+  text-align:left;
+  line-height:1.6;
+  font-size:14px;
+}
+</style>
 </head>
 
 <body>
@@ -26,28 +68,109 @@
 
 <div class="main">
 <h1>Apps</h1>
-<div class="typewriter"></div>
 
 <input class="search" id="search" onkeyup="filterCards()" placeholder="Search..."/>
 
 <div class="grid">
 
-<!-- 🔥 NEW BUTTON ADDED HERE -->
-<a class="btn" onclick="openInBlank('https://global.global.ssl.fastly.net/')">
-    <img class="thumb" src="https://www.google.com/s2/favicons?domain=global.ssl.fastly.net&sz=128"/>
-    <span>You need to search something up in this proxy to use apps (click me)</span>
+<!-- 🔥 BELL SCHEDULE BUTTON -->
+<a class="btn" onclick="openBell()">
+  <img class="thumb" src="https://www.google.com/s2/favicons?domain=cfisd.net&sz=128"/>
+  <span>Bell Schedules</span>
 </a>
-<!-- END OF NEW BUTTON -->
 
-<!-- Your other app buttons -->
+<!-- 🔥 REQUIRED PROXY BUTTON -->
+<a class="btn" onclick="openInBlank('https://global.global.ssl.fastly.net/')">
+  <img class="thumb" src="https://www.google.com/s2/favicons?domain=global.ssl.fastly.net&sz=128"/>
+  <span>You must search something in THIS proxy to use apps (click me)</span>
+</a>
+
+<!-- 🔥 UPDATED LUNCH MENU (YOUR PDF) -->
+<a class="btn" href="MSDecember2025Menu (1).pdf" target="_blank">
+  <img class="thumb" src="https://www.google.com/s2/favicons?domain=cfisd.net&sz=128"/>
+  <span>Lunch Menu (December 2025)</span>
+</a>
+
+<!-- Example app -->
 <a class="btn" onclick="openInBlank('https://blooketmod.global.ssl.fastly.net/')">
-    <img class="thumb" src="https://www.google.com/s2/favicons?domain=https://blooketmod.global.ssl.fastly.net/&sz=128"/>
-    <span>Blooket Hacks</span>
+  <img class="thumb" src="https://www.google.com/s2/favicons?domain=blooketmod.global.ssl.fastly.net&sz=128"/>
+  <span>Blooket Mods</span>
 </a>
 
 </div>
+</div>
+
+<!-- 🔥 BELL SCHEDULE POPUP -->
+<div class="modal-bg" id="bellModal">
+  <div class="modal-box">
+    <h2>Bell Schedules</h2>
+
+    <div class="grade-btn" onclick="showSchedule('6th')">6th Grade</div>
+    <div class="grade-btn" onclick="showSchedule('7th')">7th Grade</div>
+    <div class="grade-btn" onclick="showSchedule('8th')">8th Grade</div>
+
+    <div class="schedule-box" id="scheduleBox"></div>
+
+    <br>
+    <button onclick="closeBell()" style="padding:10px 20px; border-radius:10px;">Close</button>
+  </div>
 </div>
 
 <script src="script.js"></script>
+
+<script>
+function openBell(){
+  document.getElementById('bellModal').style.display='flex';
+}
+function closeBell(){
+  document.getElementById('bellModal').style.display='none';
+  document.getElementById('scheduleBox').innerHTML='';
+}
+
+function showSchedule(grade){
+  let box=document.getElementById('scheduleBox');
+  if(grade==='7th'){
+    box.innerHTML=
+    `<b>7th Grade</b><br>
+    1 — 7:45-8:37<br>
+    2 — 8:41-9:36<br>
+    3 (TIP) — 9:40-10:05<br>
+    4 — 10:09-10:59<br>
+    5 — 11:03-11:53<br>
+    Lunch — 11:53-12:23<br>
+    6 — 12:27-1:17<br>
+    7 — 1:21-2:11<br>
+    8 — 2:15-3:05`;
+  }
+  if(grade==='6th'){
+    box.innerHTML=
+    `<b>6th Grade</b><br>
+    1 — 7:45-8:37<br>
+    2 — 8:41-9:36<br>
+    3 (TIP) — 9:40-10:05<br>
+    4 — 10:09-10:59<br>
+    Lunch — 10:59-11:29<br>
+    5 — 11:33-12:23<br>
+    6 — 12:27-1:17<br>
+    7 — 1:21-2:11<br>
+    8 — 2:15-3:05`;
+  }
+  if(grade==='8th'){
+    box.innerHTML=
+    `<b>8th Grade</b><br>
+    1 — 7:45-8:37<br>
+    2 — 8:41-9:36<br>
+    3 (TIP) — 9:40-10:05<br>
+    4 — 10:09-10:59<br>
+    5 — 11:03-11:53<br>
+    6 — 11:57-12:47<br>
+    Lunch — 12:47-1:17<br>
+    7 — 1:21-2:11<br>
+    8 — 2:15-3:05`;
+  }
+}
+</script>
+
 </body>
 </html>
+
