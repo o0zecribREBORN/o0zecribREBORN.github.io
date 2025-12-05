@@ -2,9 +2,9 @@
 <html>
 <head>
 <title>O0ZE34's Crib REBORN — Home</title>
-<link href="style.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-<link href="favicon.png" rel="icon" type="image/png"/>
+<link href="style.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<link href="favicon.png" rel="icon" type="image/png" />
 </head>
 
 <body>
@@ -20,7 +20,7 @@
 <canvas id="stars"></canvas>
 <canvas id="stars2"></canvas>
 
-<!-- ⭐ SIDEBAR (STAFF ADDED) -->
+<!-- ⭐ SIDEBAR (SHOP + STAFF) -->
 <div class="sidebar">
 <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
 <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
@@ -31,6 +31,11 @@
 <a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
 <a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
 <a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+
+<!-- ⭐ NEW SHOP -->
+<a href="shop.html"><i class="fa-solid fa-bag-shopping"></i><span>Shop</span></a>
+
+<!-- ⭐ STAFF -->
 <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
 </div>
 
@@ -86,6 +91,7 @@
 <a class="quick-btn" href="games.html">Games</a>
 <a class="quick-btn" href="music.html">Music</a>
 <a class="quick-btn" href="apps.html">Apps</a>
+<a class="quick-btn" href="shop.html">Shop</a>
 </div>
 </div>
 
@@ -104,13 +110,13 @@
 <!-- ⭐ GREETING + USERNAME -->
 <script>
 function updateGreeting(){
-  let h=new Date().getHours();
-  let text="Hello";
+  let h = new Date().getHours();
+  let text = "Hello";
 
-  if(h<12) text="Good Morning";
-  else if(h<17) text="Good Afternoon";
-  else if(h<21) text="Good Evening";
-  else text="Good Night";
+  if(h < 12) text = "Good Morning";
+  else if(h < 17) text = "Good Afternoon";
+  else if(h < 21) text = "Good Evening";
+  else text = "Good Night";
 
   let name = localStorage.getItem("username") || "Guest";
   document.getElementById("greet_txt").innerText = text + ", " + name + "!";
@@ -152,11 +158,15 @@ function claimDaily(){
     xp += 50;
     localStorage.setItem("xp", xp);
 
+    let coins = parseInt(localStorage.getItem("coins") || "0");
+    coins += 25;
+    localStorage.setItem("coins", coins);
+
     let streak = parseInt(localStorage.getItem("streak") || "0");
     streak++;
     localStorage.setItem("streak", streak);
 
-    document.getElementById("daily_status").innerText = "Claimed! +50 XP";
+    document.getElementById("daily_status").innerText = "Claimed! +50 XP | +25 Coins";
     loadXP();
   } else {
     document.getElementById("daily_status").innerText = "Already claimed today";
@@ -167,30 +177,36 @@ function claimDaily(){
 <!-- ⭐ NEXT UPDATE TIMER -->
 <script>
 function getNextSaturday(){
-  const now=new Date();
-  let diff=(6-now.getDay()+7)%7;
-  if(diff===0) diff=7;
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+diff, 0,0,0);
+  const now = new Date();
+  let diff = (6 - now.getDay() + 7) % 7;
+  if(diff === 0) diff = 7;
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + diff, 0, 0, 0);
 }
 
 function startNextUpdateTimer(){
-  const el=document.getElementById("next-update-timer");
-  let target=getNextSaturday();
+  const el = document.getElementById("next-update-timer");
+  let target = getNextSaturday();
 
   function tick(){
-    let now=new Date();
-    let diff=target-now;
-    if(diff<=0){ target=getNextSaturday(); diff=target-now; }
-    const s=Math.floor(diff/1000);
-    const d=Math.floor(s/86400);
-    const h=Math.floor((s%86400)/3600);
-    const m=Math.floor((s%3600)/60);
-    const sec=s%60;
+    let now = new Date();
+    let diff = target - now;
+
+    if(diff <= 0){
+      target = getNextSaturday();
+      diff = target - now;
+    }
+
+    const s = Math.floor(diff / 1000);
+    const d = Math.floor(s / 86400);
+    const h = Math.floor((s % 86400) / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+
     el.textContent = `${d}d : ${String(h).padStart(2,"0")}h : ${String(m).padStart(2,"0")}m : ${String(sec).padStart(2,"0")}s`;
   }
 
   tick();
-  setInterval(tick,1000);
+  setInterval(tick, 1000);
 }
 document.addEventListener("DOMContentLoaded", startNextUpdateTimer);
 </script>
