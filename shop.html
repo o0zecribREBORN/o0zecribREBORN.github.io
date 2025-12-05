@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>O0ZE34's Crib REBORN — Shop</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
+<style>
+.shop-section {
+  background: rgba(255,255,255,0.1);
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(6px);
+}
+
+.shop-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.shop-item {
+  background: rgba(255,255,255,0.15);
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  transition: .2s;
+}
+
+.shop-item.locked {
+  opacity: 0.4;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+.shop-item:hover {
+  transform: scale(1.05);
+}
+
+.shop-buy {
+  background: #00ffcc;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.coin-box {
+  background: rgba(255,255,255,0.15);
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+
+<!-- ⭐ SIDEBAR -->
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+<a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
+</div>
+
+<!-- ⭐ MAIN -->
+<div class="main">
+<h1>Shop</h1>
+
+<div class="coin-box">
+  Coins: <span id="coinCount">0</span> 🪙  
+  | Level: <span id="userLevel">0</span>
+</div>
+
+<div id="lockedMsg" style="display:none; padding:15px; background:rgba(255,0,0,0.3); border-radius:10px; margin-bottom:20px;">
+  🔒 You must reach **Level 1** to unlock the shop!
+</div>
+
+<!-- ⭐ TRAILS -->
+<div class="shop-section">
+  <h2>Mouse Trails</h2>
+  <div class="shop-grid">
+
+    <div class="shop-item" data-cost="100" data-id="trail_blue">
+      <h3>Blue Trail</h3>
+      <p>Cost: 100</p>
+      <button class="shop-buy" onclick="buyItem('trail_blue', 100)">Buy</button>
+    </div>
+
+    <div class="shop-item" data-cost="200" data-id="trail_red">
+      <h3>Red Trail</h3>
+      <p>Cost: 200</p>
+      <button class="shop-buy" onclick="buyItem('trail_red', 200)">Buy</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ⭐ THEMES -->
+<div class="shop-section">
+  <h2>Themes</h2>
+  <div class="shop-grid">
+
+    <div class="shop-item" data-cost="150" data-id="theme_neon">
+      <h3>Neon Theme</h3>
+      <p>Cost: 150</p>
+      <button class="shop-buy" onclick="buyItem('theme_neon',150)">Buy</button>
+    </div>
+
+    <div class="shop-item" data-cost="300" data-id="theme_midnight">
+      <h3>Midnight Theme</h3>
+      <p>Cost: 300</p>
+      <button class="shop-buy" onclick="buyItem('theme_midnight',300)">Buy</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ⭐ CUSTOM BADGE -->
+<div class="shop-section">
+  <h2>Custom Badge</h2>
+  <div class="shop-grid">
+    <div class="shop-item" data-cost="500" data-id="badge_custom">
+      <h3>Custom Badge Slot</h3>
+      <p>Cost: 500</p>
+      <button class="shop-buy" onclick="buyItem('badge_custom',500)">Buy</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ⭐ Load coins + level
+function loadData(){
+  let coins = parseInt(localStorage.getItem("coins") || "0");
+  let xp = parseInt(localStorage.getItem("xp") || "0");
+  let lvl = Math.floor(xp / 100);
+
+  document.getElementById("coinCount").innerText = coins;
+  document.getElementById("userLevel").innerText = lvl;
+
+  if(lvl < 1){
+    document.getElementById("lockedMsg").style.display = "block";
+    document.querySelectorAll(".shop-item").forEach(i => i.classList.add("locked"));
+  }
+}
+
+// ⭐ Buying items
+function buyItem(id, cost){
+  let coins = parseInt(localStorage.getItem("coins") || "0");
+
+  if(coins < cost){
+    alert("Not enough coins!");
+    return;
+  }
+
+  coins -= cost;
+  localStorage.setItem("coins", coins);
+
+  let owned = JSON.parse(localStorage.getItem("owned_items") || "{}");
+  owned[id] = true;
+  localStorage.setItem("owned_items", JSON.stringify(owned));
+
+  document.getElementById("coinCount").innerText = coins;
+  alert("Purchased!");
+}
+
+loadData();
+</script>
+
+</body>
+</html>
