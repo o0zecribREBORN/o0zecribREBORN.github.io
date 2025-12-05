@@ -2,63 +2,13 @@
 <html>
 <head>
 <title>O0ZE34's Crib REBORN — Shop</title>
-<link href="style.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-<link href="favicon.png" rel="icon" type="image/png"/>
-<style>
-.shop-section {
-  background: rgba(255,255,255,0.1);
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 15px;
-  backdrop-filter: blur(6px);
-}
-
-.shop-grid {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-}
-
-.shop-item {
-  background: rgba(255,255,255,0.15);
-  padding: 15px;
-  border-radius: 12px;
-  text-align: center;
-  transition: .2s;
-}
-
-.shop-item.locked {
-  opacity: 0.4;
-  filter: grayscale(1);
-  pointer-events: none;
-}
-
-.shop-item:hover {
-  transform: scale(1.05);
-}
-
-.shop-buy {
-  background: #00ffcc;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 8px;
-}
-
-.coin-box {
-  background: rgba(255,255,255,0.15);
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 12px;
-  font-size: 18px;
-}
-</style>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 
 <body>
-
+<div id="clock"></div>
 <canvas id="stars"></canvas>
 <canvas id="stars2"></canvas>
 
@@ -76,110 +26,216 @@
 <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
 </div>
 
-<!-- ⭐ MAIN -->
+<!-- ⭐ MAIN SHOP PAGE -->
 <div class="main">
-<h1>Shop</h1>
+<h1>O0ZE SHOP</h1>
+<p id="coinsDisplay">Coins: 0</p>
 
-<div class="coin-box">
-  Coins: <span id="coinCount">0</span> 🪙  
-  | Level: <span id="userLevel">0</span>
-</div>
-
-<div id="lockedMsg" style="display:none; padding:15px; background:rgba(255,0,0,0.3); border-radius:10px; margin-bottom:20px;">
-  🔒 You must reach **Level 1** to unlock the shop!
-</div>
-
-<!-- ⭐ TRAILS -->
 <div class="shop-section">
-  <h2>Mouse Trails</h2>
-  <div class="shop-grid">
+<h2>🔥 Season Pass</h2>
+<div class="shop-grid">
 
-    <div class="shop-item" data-cost="100" data-id="trail_blue">
-      <h3>Blue Trail</h3>
-      <p>Cost: 100</p>
-      <button class="shop-buy" onclick="buyItem('trail_blue', 100)">Buy</button>
-    </div>
-
-    <div class="shop-item" data-cost="200" data-id="trail_red">
-      <h3>Red Trail</h3>
-      <p>Cost: 200</p>
-      <button class="shop-buy" onclick="buyItem('trail_red', 200)">Buy</button>
-    </div>
-
-  </div>
+<div class="shop-item" onclick="buySeasonPass()">
+    <h3>Season Pass</h3>
+    <p>Unlock exclusive rewards</p>
+    <span class="price">5000 Coins</span>
 </div>
 
-<!-- ⭐ THEMES -->
+</div>
+</div>
+
 <div class="shop-section">
-  <h2>Themes</h2>
-  <div class="shop-grid">
+<h2>⚡ XP Boosters</h2>
+<div class="shop-grid">
 
-    <div class="shop-item" data-cost="150" data-id="theme_neon">
-      <h3>Neon Theme</h3>
-      <p>Cost: 150</p>
-      <button class="shop-buy" onclick="buyItem('theme_neon',150)">Buy</button>
-    </div>
-
-    <div class="shop-item" data-cost="300" data-id="theme_midnight">
-      <h3>Midnight Theme</h3>
-      <p>Cost: 300</p>
-      <button class="shop-buy" onclick="buyItem('theme_midnight',300)">Buy</button>
-    </div>
-
-  </div>
+<div class="shop-item" onclick="buyXPBoost(2)">
+    <h3>2× XP Booster</h3>
+    <p>Boost lasts 20 minutes</p>
+    <span class="price">750 Coins</span>
 </div>
 
-<!-- ⭐ CUSTOM BADGE -->
+<div class="shop-item" onclick="buyXPBoost(3)">
+    <h3>3× XP Booster</h3>
+    <p>Boost lasts 20 minutes</p>
+    <span class="price">1500 Coins</span>
+</div>
+
+</div>
+</div>
+
 <div class="shop-section">
-  <h2>Custom Badge</h2>
-  <div class="shop-grid">
-    <div class="shop-item" data-cost="500" data-id="badge_custom">
-      <h3>Custom Badge Slot</h3>
-      <p>Cost: 500</p>
-      <button class="shop-buy" onclick="buyItem('badge_custom',500)">Buy</button>
-    </div>
-  </div>
+<h2>🎁 Chests</h2>
+<div class="shop-grid">
+
+<div class="shop-item" onclick="openChest('common')">
+    <h3>Common Chest</h3>
+    <p>Random Trail</p>
+    <span class="price">500 Coins</span>
+</div>
+
+<div class="shop-item" onclick="openChest('rare')">
+    <h3>Rare Chest</h3>
+    <p>Better rewards</p>
+    <span class="price">1200 Coins</span>
+</div>
+
+<div class="shop-item" onclick="openChest('legendary')">
+    <h3>Legendary Chest</h3>
+    <p>Highest rarity item</p>
+    <span class="price">3500 Coins</span>
 </div>
 
 </div>
+</div>
+
+<div class="shop-section">
+<h2>🎨 Themes</h2>
+<div class="shop-grid">
+
+<div class="shop-item locked" data-req="5">
+    <h3>Galaxy Theme</h3>
+    <p>Level 5 Required</p>
+    <span class="price">1000 Coins</span>
+</div>
+
+<div class="shop-item locked" data-req="10">
+    <h3>Neon Lime Theme</h3>
+    <p>Level 10 Required</p>
+    <span class="price">1500 Coins</span>
+</div>
+
+</div>
+</div>
+
+<div class="shop-section">
+<h2>🐾 Mouse Trails</h2>
+<div class="shop-grid">
+
+<div class="shop-item" onclick="buyTrail('Fire Trail', 800)">
+    <h3>Fire Trail</h3>
+    <span class="price">800 Coins</span>
+</div>
+
+<div class="shop-item" onclick="buyTrail('Pixel Trail', 600)">
+    <h3>Pixel Trail</h3>
+    <span class="price">600 Coins</span>
+</div>
+
+<div class="shop-item" onclick="buyTrail('Golden Trail', 1500)">
+    <h3>Golden Trail</h3>
+    <span class="price">1500 Coins</span>
+</div>
+
+</div>
+</div>
+
+<div class="shop-section">
+<h2>💰 Buy Coins</h2>
+<div class="shop-grid">
+
+<div class="shop-item" onclick="addCoins(500)">
+    <h3>500 Coins</h3>
+    <span class="price">$0 (Free)</span>
+</div>
+
+<div class="shop-item" onclick="addCoins(2000)">
+    <h3>2000 Coins</h3>
+    <span class="price">$0 (Free)</span>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<!-- ⭐ POPUP -->
+<div id="popup" class="popup">Nothing Yet</div>
 
 <script>
-// ⭐ Load coins + level
-function loadData(){
-  let coins = parseInt(localStorage.getItem("coins") || "0");
-  let xp = parseInt(localStorage.getItem("xp") || "0");
-  let lvl = Math.floor(xp / 100);
+// -------------------- COINS & XP --------------------
+function loadCoins(){
+    let c = parseInt(localStorage.getItem("coins") || "0");
+    document.getElementById("coinsDisplay").innerText = "Coins: " + c;
+    return c;
+}
+function saveCoins(c){
+    localStorage.setItem("coins", c);
+    loadCoins();
+}
+loadCoins();
 
-  document.getElementById("coinCount").innerText = coins;
-  document.getElementById("userLevel").innerText = lvl;
-
-  if(lvl < 1){
-    document.getElementById("lockedMsg").style.display = "block";
-    document.querySelectorAll(".shop-item").forEach(i => i.classList.add("locked"));
-  }
+// -------------------- POPUP SYSTEM --------------------
+function popup(msg){
+    const pop = document.getElementById("popup");
+    pop.innerText = msg;
+    pop.style.opacity = 1;
+    setTimeout(()=> pop.style.opacity = 0, 2000);
 }
 
-// ⭐ Buying items
-function buyItem(id, cost){
-  let coins = parseInt(localStorage.getItem("coins") || "0");
-
-  if(coins < cost){
-    alert("Not enough coins!");
-    return;
-  }
-
-  coins -= cost;
-  localStorage.setItem("coins", coins);
-
-  let owned = JSON.parse(localStorage.getItem("owned_items") || "{}");
-  owned[id] = true;
-  localStorage.setItem("owned_items", JSON.stringify(owned));
-
-  document.getElementById("coinCount").innerText = coins;
-  alert("Purchased!");
+// -------------------- COIN PURCHASE --------------------
+function addCoins(amount){
+    let c = loadCoins();
+    saveCoins(c + amount);
+    popup("Added " + amount + " coins!");
 }
 
-loadData();
+// -------------------- SEASON PASS --------------------
+function buySeasonPass(){
+    let coins = loadCoins();
+    if(coins < 5000) return popup("Not enough coins!");
+    saveCoins(coins - 5000);
+    localStorage.setItem("seasonPass", "true");
+    popup("Season Pass UNLOCKED!");
+}
+
+// -------------------- XP BOOSTERS --------------------
+function buyXPBoost(mult){
+    let cost = (mult === 2) ? 750 : 1500;
+    let coins = loadCoins();
+    if(coins < cost) return popup("Not enough coins!");
+    saveCoins(coins - cost);
+
+    localStorage.setItem("xpBoost", mult);
+    localStorage.setItem("xpBoostTime", Date.now() + (20 * 60000));
+
+    popup(mult + "× XP Booster activated!");
+}
+
+// -------------------- TRAILS --------------------
+function buyTrail(name, cost){
+    let coins = loadCoins();
+    if(coins < cost) return popup("Not enough coins!");
+    saveCoins(coins - cost);
+
+    let owned = JSON.parse(localStorage.getItem("trails") || "[]");
+    owned.push(name);
+    localStorage.setItem("trails", JSON.stringify(owned));
+
+    popup(name + " unlocked!");
+}
+
+// -------------------- CHESTS --------------------
+function openChest(type){
+    let prices = { common:500, rare:1200, legendary:3500 };
+    let coins = loadCoins();
+    if(coins < prices[type]) return popup("Not enough coins!");
+
+    saveCoins(coins - prices[type]);
+
+    let items = {
+        common:["Common Trail", "Blue Trail", "Dust Trail"],
+        rare:["Rare Trail", "Aura Trail", "Ice Trail"],
+        legendary:["Mythic Trail", "Galaxy Trail", "Rainbow Trail"]
+    };
+
+    let reward = items[type][ Math.floor(Math.random()*items[type].length) ];
+
+    let owned = JSON.parse(localStorage.getItem("trails") || "[]");
+    owned.push(reward);
+    localStorage.setItem("trails", JSON.stringify(owned));
+
+    popup("You opened a " + type + " chest and got: " + reward);
+}
 </script>
 
 </body>
