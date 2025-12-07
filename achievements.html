@@ -6,21 +6,37 @@
 <style>
 .ach-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
   gap:20px;
 }
 .ach-card{
   background:rgba(255,255,255,0.12);
   padding:15px;
   border-radius:15px;
-  text-align:center;
   transition:.2s;
+  text-align:center;
 }
-.ach-card.locked{opacity:0.4;filter:grayscale(1);}
-.ach-card.unlocked{border:2px solid #00ff88;}
-.ach-title{font-size:18px;font-weight:bold;}
-.ach-xp{font-size:14px;color:#ffd700;}
-.ach-desc{font-size:13px;color:#ccc;margin-top:5px;}
+.ach-card.locked{
+  opacity:0.4;
+  filter:grayscale(1);
+}
+.ach-card.unlocked{
+  border:2px solid #00ff88;
+  box-shadow:0 0 15px #00ff88;
+}
+.ach-title{
+  font-size:18px;
+  font-weight:bold;
+}
+.ach-desc{
+  font-size:14px;
+  opacity:0.8;
+  margin-top:6px;
+}
+.ach-xp{
+  color:gold;
+  margin-top:6px;
+}
 </style>
 </head>
 
@@ -29,10 +45,11 @@
 <div class="sidebar">
 <a href="index.html">Home</a>
 <a href="games.html">Games</a>
+<a href="apps.html">Apps</a>
 <a href="music.html">Music</a>
 <a href="proxies.html">Proxies</a>
-<a href="apps.html">Apps</a>
-<a href="achievements.html">Achievements</a>
+<a href="movies.html">Movies</a>
+<a href="achievements.html" style="background:rgba(255,255,255,0.15)">Achievements</a>
 <a href="settings.html">Settings</a>
 </div>
 
@@ -42,123 +59,107 @@
 </div>
 
 <script>
-// ✅ REAL ACHIEVEMENTS (30)
+// ✅ SAFE PLAYER STATS (NO UNDEFINED BUGS)
+let xp = parseInt(localStorage.getItem("xp") || "0");
+let level = Math.floor(xp / 100) + 1;
+let visits = parseInt(localStorage.getItem("visits") || "0");
+let dailyClaims = parseInt(localStorage.getItem("dailyClaims") || "0");
+let renamed = localStorage.getItem("username") ? true : false;
+let musicVisits = parseInt(localStorage.getItem("musicVisits") || "0");
+let gameVisits = parseInt(localStorage.getItem("gameVisits") || "0");
+let proxyVisits = parseInt(localStorage.getItem("proxyVisits") || "0");
+let clicks = parseInt(localStorage.getItem("clicks") || "0");
+let daysUsed = parseInt(localStorage.getItem("daysUsed") || "1");
+let secret = localStorage.getItem("secretUnlocked") === "true";
+
+// ✅ LOAD UNLOCKED (SAFE OBJECT)
+let unlocked = JSON.parse(localStorage.getItem("unlocked") || "{}");
+
+// ✅ ACHIEVEMENT LIST (NO MANUAL CLAIMING)
 const achievements = [
-["First Visit",50,"Visit the site once"],
-["Explorer I",75,"Visit the site 10 times"],
-["Explorer II",150,"Visit the site 50 times"],
+  ["First Visit", "Open the site for the first time", 50, () => visits >= 1],
+  ["Explorer I", "Visit 5 times", 100, () => visits >= 5],
+  ["Explorer II", "Visit 25 times", 150, () => visits >= 25],
+  ["Explorer III", "Visit 100 times", 250, () => visits >= 100],
 
-["First Game",50,"Open the Games page"],
-["Game Grinder",150,"Open Games 20 times"],
+  ["First Rename", "Change your username once", 50, () => renamed === true],
 
-["Music Lover",75,"Open the Music page"],
-["Sound Addict",150,"Open Music 25 times"],
+  ["Daily Claimer I", "Claim daily reward once", 100, () => dailyClaims >= 1],
+  ["Daily Claimer II", "Claim daily reward 7 times", 150, () => dailyClaims >= 7],
+  ["Daily Claimer III", "Claim daily reward 30 times", 300, () => dailyClaims >= 30],
 
-["Proxy User",75,"Open the Proxies page"],
-["Proxy Master",200,"Open Proxies 30 times"],
+  ["Level 1 Reached", "Reach Level 1", 50, () => level >= 1],
+  ["Level 3 Reached", "Reach Level 3", 150, () => level >= 3],
+  ["Level 5 Reached", "Reach Level 5", 300, () => level >= 5],
+  ["Level 10 Reached", "Reach Level 10", 500, () => level >= 10],
 
-["First Rename",75,"Change your name once"],
-["Identity Crisis",150,"Rename 5 times"],
+  ["XP Farmer", "Earn 500 XP", 150, () => xp >= 500],
+  ["XP Grinder", "Earn 2,000 XP", 300, () => xp >= 2000],
+  ["XP Addict", "Earn 5,000 XP", 600, () => xp >= 5000],
 
-["Daily Beginner",100,"Claim Daily 1 time"],
-["Daily Grinder",200,"Claim Daily 7 days"],
-["Daily Legend",400,"Claim Daily 30 days"],
+  ["Music Player", "Open music page 5 times", 100, () => musicVisits >= 5],
+  ["Game Player", "Open games page 5 times", 100, () => gameVisits >= 5],
+  ["Proxy User", "Open proxies page 5 times", 100, () => proxyVisits >= 5],
 
-["Level 1",100,"Reach Level 1"],
-["Level 5",200,"Reach Level 5"],
-["Level 10",400,"Reach Level 10"],
+  ["Fast Clicker", "Click 100 times", 100, () => clicks >= 100],
+  ["Mega Clicker", "Click 500 times", 250, () => clicks >= 500],
 
-["XP Farmer",200,"Earn 1,000 XP"],
-["XP God",500,"Earn 10,000 XP"],
+  ["Veteran", "Use the site for 30 days", 500, () => daysUsed >= 30],
+  ["OG User", "Use the site for 100 days", 750, () => daysUsed >= 100],
 
-["Marathon",250,"Stay on site 30 minutes"],
-["No Life Mode",500,"Stay on site 3 hours"],
-
-["Veteran",300,"Use site for 14 days"],
-["OG",500,"Use site for 30 days"],
-
-["Hidden One",300,"Find a secret page"],
-["Click Demon",150,"Click 500 times"],
-
-["Final Boss",750,"Unlock 20 achievements"],
-["Ultimate User",1200,"Unlock all achievements"]
+  ["Secret Finder", "Unlock hidden stat", 400, () => secret === true],
+  ["No Life Mode", "Reach Level 15", 1000, () => level >= 15],
+  ["Final Boss", "Reach Level 25", 2000, () => level >= 25]
 ];
 
-// ✅ SAFE UNLOCK SYSTEM
-function getData(k,d){ return JSON.parse(localStorage.getItem(k)||JSON.stringify(d)); }
-function setData(k,v){ localStorage.setItem(k,JSON.stringify(v)); }
-
-function unlockAch(name,xp){
-  let unlocked = getData("unlocked",{});
-  if(unlocked[name]) return;
-  unlocked[name]=true;
-  setData("unlocked",unlocked);
-
-  let totalXP = parseInt(localStorage.getItem("xp")||"0");
-  totalXP += xp;
-  localStorage.setItem("xp",totalXP);
-}
-
-// ✅ AUTO CHECK
+// ✅ CHECK ACHIEVEMENTS (XP ONLY ADDED ONCE)
 function checkAchievements(){
-  let visits=parseInt(localStorage.getItem("visits")||"0");
-  let games=parseInt(localStorage.getItem("gamesOpen")||"0");
-  let music=parseInt(localStorage.getItem("musicOpen")||"0");
-  let proxies=parseInt(localStorage.getItem("proxiesOpen")||"0");
-  let renames=parseInt(localStorage.getItem("renames")||"0");
-  let streak=parseInt(localStorage.getItem("streak")||"0");
-  let xp=parseInt(localStorage.getItem("xp")||"0");
-  let days=parseInt(localStorage.getItem("daysUsed")||"0");
-
-  if(visits>=1) unlockAch("First Visit",50);
-  if(visits>=10) unlockAch("Explorer I",75);
-  if(visits>=50) unlockAch("Explorer II",150);
-
-  if(games>=1) unlockAch("First Game",50);
-  if(games>=20) unlockAch("Game Grinder",150);
-
-  if(music>=1) unlockAch("Music Lover",75);
-  if(music>=25) unlockAch("Sound Addict",150);
-
-  if(proxies>=1) unlockAch("Proxy User",75);
-  if(proxies>=30) unlockAch("Proxy Master",200);
-
-  if(renames>=1) unlockAch("First Rename",75);
-  if(renames>=5) unlockAch("Identity Crisis",150);
-
-  if(streak>=1) unlockAch("Daily Beginner",100);
-  if(streak>=7) unlockAch("Daily Grinder",200);
-  if(streak>=30) unlockAch("Daily Legend",400);
-
-  if(xp>=100) unlockAch("Level 1",100);
-  if(xp>=500) unlockAch("Level 5",200);
-  if(xp>=1000) unlockAch("Level 10",400);
-
-  if(xp>=1000) unlockAch("XP Farmer",200);
-  if(xp>=10000) unlockAch("XP God",500);
-}
-
-// ✅ RENDER
-function loadAchievements(){
-  checkAchievements();
-  let unlocked = getData("unlocked",{});
-  let grid=document.getElementById("achGrid");
-  grid.innerHTML="";
+  let changed = false;
 
   achievements.forEach(a=>{
-    let div=document.createElement("div");
-    div.className="ach-card "+(unlocked[a[0]]?"unlocked":"locked");
-    div.innerHTML=`
-      <div class="ach-title">${a[0]}</div>
-      <div class="ach-xp">+${a[1]} XP</div>
-      <div class="ach-desc">${a[2]}</div>
-      <div>${unlocked[a[0]]?"✅ UNLOCKED":"🔒 LOCKED"}</div>`;
+    const [name, desc, xpReward, condition] = a;
+
+    if(condition() && !unlocked[name]){
+      unlocked[name] = true;
+      xp += xpReward;
+      changed = true;
+    }
+  });
+
+  if(changed){
+    localStorage.setItem("unlocked", JSON.stringify(unlocked));
+    localStorage.setItem("xp", xp);
+  }
+}
+
+// ✅ RENDER UI
+function renderAchievements(){
+  const grid = document.getElementById("achGrid");
+  grid.innerHTML = "";
+
+  achievements.forEach(a=>{
+    const [name, desc, xpReward] = a;
+    const isUnlocked = unlocked[name];
+
+    const div = document.createElement("div");
+    div.className = "ach-card " + (isUnlocked ? "unlocked" : "locked");
+
+    div.innerHTML = `
+      <div class="ach-title">${name}</div>
+      <div class="ach-desc">${desc}</div>
+      <div class="ach-xp">+${xpReward} XP</div>
+      <div>${isUnlocked ? "✅ UNLOCKED" : "🔒 LOCKED"}</div>
+    `;
+
     grid.appendChild(div);
   });
 }
 
-loadAchievements();
+// ✅ RUN SAFELY
+checkAchievements();
+renderAchievements();
 </script>
 
 </body>
 </html>
+
