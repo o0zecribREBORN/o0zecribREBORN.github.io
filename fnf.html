@@ -8,6 +8,7 @@
 </head>
 
 <body>
+
 <div id="clock"></div>
 <canvas id="stars"></canvas>
 <canvas id="stars2"></canvas>
@@ -31,65 +32,65 @@
 
 <div class="grid">
 
-<!-- ✅ ALL FNF MODS YOU ADDED -->
+<!-- ✅ ALL MODS OPEN NORMALLY (NO ABOUT:BLANK) -->
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-indie-cross-vs-cuphead-sans-bendy-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-indie-cross-vs-cuphead-sans-bendy-game/">
   <span>Indie Cross Better</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-online-multiplayer-edition-no-download-game/')">
+<a class="btn" href="https://gamaverse.com/friday-night-funkin-fnf-online-multiplayer-edition-no-download-game/">
   <span>FNF Multiplayer</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-vs-fnaf-2-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-vs-fnaf-2-game/">
   <span>FNF FNAF 2</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-dead-air-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-dead-air-game/">
   <span>FNF Dead Air</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-vs-fnaf-3-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-vs-fnaf-3-game/">
   <span>FNF FNAF 3</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-marios-madness-game/')">
-  <span>Mario’s Madness</span>
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-marios-madness-game/">
+  <span>Mario Madness FNF</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-vs-rewrite-sonic-exe-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-vs-rewrite-sonic-exe-game/">
   <span>FNF Rewrite Round 2</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-vs-pibby-corrupted-full-week-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-vs-pibby-corrupted-full-week-game/">
   <span>FNF Pibby Corrupted</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-baddies-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-baddies-game/">
   <span>FNF Baddies</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-funk-miss-nagatoro-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-funk-miss-nagatoro-game/">
   <span>FNF Funk! Miss Nagatoro</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-vs-sonic-exe-online-friday-night-funkin-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-vs-sonic-exe-online-friday-night-funkin-game/">
   <span>FNF Sonic.EXE</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-qt-mod-w-cheatbot-friday-night-funkin-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-qt-mod-w-cheatbot-friday-night-funkin-game/">
   <span>FNF QT</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-vs-flippy-online-friday-night-funkin-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-vs-flippy-online-friday-night-funkin-game/">
   <span>FNF Flippy</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/friday-night-funkin-vs-tricky-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/friday-night-funkin-vs-tricky-game/">
   <span>Tricky V2</span>
 </a>
 
-<a class="btn" onclick="openInBlank('https://reborncorn.global.ssl.fastly.net/fnf-vs-oswald-the-rabbit-friday-night-funkin-game/')">
+<a class="btn" href="https://reborncorn.global.ssl.fastly.net/fnf-vs-oswald-the-rabbit-friday-night-funkin-game/">
   <span>FNF Oswald</span>
 </a>
 
@@ -97,5 +98,17 @@
 </div>
 
 <script src="script.js"></script>
+
+<script>
+function filterCards() {
+  let input = document.getElementById("search").value.toLowerCase();
+  let cards = document.querySelectorAll(".btn");
+  cards.forEach(card => {
+    let text = card.innerText.toLowerCase();
+    card.style.display = text.includes(input) ? "block" : "none";
+  });
+}
+</script>
+
 </body>
 </html>
