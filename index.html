@@ -16,11 +16,10 @@
   </div>
 </div>
 
-<div id="clock"></div>
 <canvas id="stars"></canvas>
 <canvas id="stars2"></canvas>
 
-<!-- ⭐ SIDEBAR (NO SHOP) -->
+<!-- ⭐ SIDEBAR -->
 <div class="sidebar">
 <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
 <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
@@ -34,80 +33,37 @@
 <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
 </div>
 
-<!-- ⭐ MAIN CONTENT -->
+<!-- ⭐ MAIN -->
 <div class="main">
 <h1>Home</h1>
 
 <div class="home-sections">
 
-<!-- ⭐ NEXT UPDATE TIMER -->
 <div class="home-card">
-  <h2>NEXT UPDATE:</h2>
-  <div id="next-update-timer">Loading...</div>
-</div>
-
-<!-- ⭐ RENAME MODAL -->
-<div id="renameModal" class="modal-bg" style="display:none;">
-  <div class="modal">
-    <div class="modal-header">
-      <span>Rename Profile</span>
-      <button class="close-btn" onclick="closeModal()">×</button>
-    </div>
-    <input id="nameInput" class="modal-input" placeholder="Enter name...">
-    <button class="save-btn" onclick="saveName()">Save</button>
-  </div>
-</div>
-
-<!-- ⭐ XP CARD -->
-<div class="xp_card">
   <h2>Level <span id="lvl_num">1</span></h2>
   <div class="xp_bar"><div id="xp_fill"></div></div>
   <p id="xp_txt">XP: 0 / 100</p>
 </div>
 
-<!-- ⭐ DAILY REWARD -->
 <div class="daily_card" onclick="claimDaily()">
   <h2>Daily Reward</h2>
   <p id="daily_status">Tap to claim</p>
 </div>
 
-<!-- ⭐ STATS -->
 <div class="stats_grid">
  <div class="stat_box"><h3 id="stat_ach">0</h3><p>Achievements</p></div>
- <div class="stat_box"><h3>200+</h3><p>Games</p></div>
- <div class="stat_box"><h3>15+</h3><p>Proxies</p></div>
- <div class="stat_box"><h3>10+</h3><p>Music</p></div>
-</div>
-
-<!-- ⭐ QUICK LAUNCH WITH SHOP -->
-<div class="home-card">
-<h2>Quick Launch</h2>
-<div class="home-grid">
-<a class="quick-btn" href="games.html">Games</a>
-<a class="quick-btn" href="music.html">Music</a>
-<a class="quick-btn" href="apps.html">Apps</a>
-<a class="quick-btn" href="shop.html">Shop</a> <!-- ⭐ SHOP BUTTON -->
-</div>
-</div>
-
-<!-- ⭐ ACHIEVEMENTS -->
-<div class="home-card">
-<h2>Achievements</h2>
-<p>Check your progress and unlock new rewards.</p>
-<a class="quick-btn" href="achievements.html">View Achievements</a>
+ <div class="stat_box"><h3 id="visits">0</h3><p>Your Visits</p></div>
+ <div class="stat_box"><h3 id="online">1</h3><p>Online Now</p></div>
 </div>
 
 </div>
 </div>
 
-<script src="script.js"></script>
-
-<!-- ⭐ GREETING + USERNAME -->
+<!-- ✅ GREETING -->
 <script>
 function updateGreeting(){
   let h=new Date().getHours();
   let text="Hello";
-
   if(h<12) text="Good Morning";
   else if(h<17) text="Good Afternoon";
   else if(h<21) text="Good Evening";
@@ -117,46 +73,35 @@ function updateGreeting(){
   document.getElementById("greet_txt").innerText = text + ", " + name + "!";
 }
 
-function openModal(){ document.getElementById("renameModal").style.display="flex"; }
-function closeModal(){ document.getElementById("renameModal").style.display="none"; }
-
-function saveName(){
-  let name = document.getElementById("nameInput").value.trim();
-  if(name.length > 0){
-    localStorage.setItem("username", name);
-    updateGreeting();
-  }
-  closeModal();
+document.getElementById("greet_box").onclick=()=>{
+  let n=prompt("Enter your name:");
+  if(n){localStorage.setItem("username",n);updateGreeting();}
 }
 </script>
 
-<!-- ⭐ DAILY + XP SYSTEM -->
+<!-- ✅ XP + LEVEL -->
 <script>
 function loadXP(){
-  let xp = parseInt(localStorage.getItem("xp") || "0");
-  let lvl = Math.floor(xp / 100);
+  let xp = parseInt(localStorage.getItem("xp")||"0");
+  let level = Math.floor(xp/100)+1;
   let cur = xp % 100;
-
-  document.getElementById("lvl_num").innerText = lvl;
-  document.getElementById("xp_txt").innerText = "XP: " + cur + " / 100";
-  document.getElementById("xp_fill").style.width = cur + "%";
+  document.getElementById("lvl_num").innerText = level;
+  document.getElementById("xp_txt").innerText = "XP: "+cur+" / 100";
+  document.getElementById("xp_fill").style.width = cur+"%";
 }
+</script>
 
+<!-- ✅ DAILY -->
+<script>
 function claimDaily(){
-  let last = parseInt(localStorage.getItem("lastDaily") || "0");
-  let today = Math.floor(Date.now() / 86400000);
+  let last = parseInt(localStorage.getItem("lastDaily")||"0");
+  let today = Math.floor(Date.now()/86400000);
 
-  if(today > last){
-    localStorage.setItem("lastDaily", today);
-
-    let xp = parseInt(localStorage.getItem("xp") || "0");
+  if(today>last){
+    localStorage.setItem("lastDaily",today);
+    let xp = parseInt(localStorage.getItem("xp")||"0");
     xp += 50;
-    localStorage.setItem("xp", xp);
-
-    let streak = parseInt(localStorage.getItem("streak") || "0");
-    streak++;
-    localStorage.setItem("streak", streak);
-
+    localStorage.setItem("xp",xp);
     document.getElementById("daily_status").innerText = "Claimed! +50 XP";
     loadXP();
   } else {
@@ -165,51 +110,47 @@ function claimDaily(){
 }
 </script>
 
-<!-- ⭐ NEXT UPDATE TIMER -->
+<!-- ✅ ACHIEVEMENTS GIVE XP -->
 <script>
-function getNextSaturday(){
-  const now=new Date();
-  let diff=(6-now.getDay()+7)%7;
-  if(diff===0) diff=7;
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+diff, 0,0,0);
-}
-
-function startNextUpdateTimer(){
-  const el=document.getElementById("next-update-timer");
-  let target=getNextSaturday();
-
-  function tick(){
-    let now=new Date();
-    let diff=target-now;
-    if(diff<=0){ target=getNextSaturday(); diff=target-now; }
-    const s=Math.floor(diff/1000);
-    const d=Math.floor(s/86400);
-    const h=Math.floor((s%86400)/3600);
-    const m=Math.floor((s%3600)/60);
-    const sec=s%60;
-    el.textContent = `${d}d : ${String(h).padStart(2,"0")}h : ${String(m).padStart(2,"0")}m : ${String(sec).padStart(2,"0")}s`;
+function unlockAchievement(name, xp){
+  let a = JSON.parse(localStorage.getItem("unlocked")||"{}");
+  if(!a[name]){
+    a[name]=true;
+    localStorage.setItem("unlocked",JSON.stringify(a));
+    let totalXP = parseInt(localStorage.getItem("xp")||"0");
+    totalXP+=xp;
+    localStorage.setItem("xp",totalXP);
   }
-
-  tick();
-  setInterval(tick,1000);
 }
-document.addEventListener("DOMContentLoaded", startNextUpdateTimer);
 </script>
 
-<!-- ⭐ ONLOAD -->
+<!-- ✅ VISITS -->
 <script>
-window.onload = function(){
+let visits = parseInt(localStorage.getItem("visits")||"0")+1;
+localStorage.setItem("visits",visits);
+document.getElementById("visits").innerText=visits;
+</script>
+
+<!-- ✅ FAKE ONLINE (SESSION-BASED) -->
+<script>
+document.getElementById("online").innerText =
+  Math.floor(Math.random()*4)+1;
+</script>
+
+<!-- ✅ LOAD -->
+<script>
+window.onload=()=>{
   updateGreeting();
   loadXP();
 
-  let last = parseInt(localStorage.getItem("lastDaily") || "0");
-  let today = Math.floor(Date.now() / 86400000);
-
+  let last = parseInt(localStorage.getItem("lastDaily")||"0");
+  let today = Math.floor(Date.now()/86400000);
   document.getElementById("daily_status").innerText =
-    today > last ? "Tap to claim" : "Already claimed today";
+    today>last?"Tap to claim":"Already claimed today";
 
-  document.getElementById("greet_box").onclick = openModal;
-};
+  let a = JSON.parse(localStorage.getItem("unlocked")||"{}");
+  document.getElementById("stat_ach").innerText=Object.keys(a).length;
+}
 </script>
 
 </body>
