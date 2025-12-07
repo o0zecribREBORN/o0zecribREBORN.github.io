@@ -3,194 +3,140 @@
 <head>
 <title>O0ZE34's Crib REBORN — Achievements</title>
 <link href="style.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-<link href="favicon.png" rel="icon" type="image/png"/>
-
 <style>
-body{
-  background:#050505;
-  color:white;
-  margin:0;
-  font-family:Poppins, sans-serif;
-}
-
-.main{
-  margin-left:260px;
-  padding:40px;
-}
-
-h1{
-  font-size:45px;
-  margin-bottom:20px;
-}
-
-.grid{
+.ach-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:20px;
 }
-
-.ach{
-  background:rgba(255,255,255,0.08);
-  padding:20px;
-  border-radius:18px;
-  border:2px solid rgba(255,255,255,0.1);
-  transition:0.3s;
+.ach-card{
+  background:rgba(255,255,255,0.12);
+  padding:15px;
+  border-radius:15px;
+  text-align:center;
+  transition:.2s;
 }
-
-.ach.locked{
-  opacity:0.45;
+.ach-card.locked{
+  opacity:0.4;
   filter:grayscale(1);
 }
-
-.ach.unlocked{
-  border-color:#00ff9d;
-  box-shadow:0 0 12px #00ff9d77;
+.ach-card.unlocked{
+  border:2px solid #00ff88;
 }
-
-.ach h3{
-  margin:0 0 10px 0;
-  font-size:20px;
+.ach-btn{
+  margin-top:10px;
+  padding:8px 15px;
+  border-radius:10px;
+  border:none;
+  background:#00c853;
+  color:black;
+  cursor:pointer;
 }
-
-.ach p{
-  margin:0;
-  color:#bbb;
-  font-size:15px;
-}
-
-.unlockPopup{
-  position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:#111;
-  padding:30px 40px;
-  border-radius:15px;
-  border:2px solid #00ff9d;
-  font-size:25px;
-  display:none;
-  animation:pop 0.4s ease;
-}
-
-@keyframes pop{
-  0%{transform:translate(-50%,-60%) scale(0.6); opacity:0;}
-  100%{transform:translate(-50%,-50%) scale(1); opacity:1;}
-}
-
+.ach-title{font-size:18px;font-weight:bold;}
+.ach-xp{font-size:14px;color:#ffd700;}
 </style>
 </head>
 
 <body>
 
-<!-- ⭐ SIDEBAR -->
 <div class="sidebar">
-<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
-<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
-<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
-<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
-<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
-<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
-<a href="achievements.html" style="background:rgba(255,255,255,0.12)"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
-<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
-<a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
+<a href="index.html">Home</a>
+<a href="games.html">Games</a>
+<a href="fnf.html">FNF</a>
+<a href="apps.html">Apps</a>
+<a href="music.html">Music</a>
+<a href="proxies.html">Proxies</a>
+<a href="movies.html">Movies</a>
+<a href="achievements.html">Achievements</a>
+<a href="settings.html">Settings</a>
 </div>
 
-<!-- ⭐ MAIN -->
 <div class="main">
 <h1>Achievements</h1>
 
-<p style="color:#bbb;font-size:18px;margin-bottom:20px;">
-Unlock achievements to earn XP! Harder ones reward more XP.
-</p>
-
-<div id="achList" class="grid"></div>
+<div class="ach-grid" id="achGrid"></div>
 
 </div>
 
-<!-- ⭐ POPUP -->
-<div id="unlockPopup" class="unlockPopup"></div>
-
 <script>
-// ⭐ 30 ACHIEVEMENTS LIST
 const achievements = [
-  {id:1, name:"Welcome!", desc:"Visit the home page.", xp:50},
-  {id:2, name:"Explorer", desc:"Open 3 different pages.", xp:60},
-  {id:3, name:"Daily Grinder", desc:"Claim a daily reward.", xp:70},
-  {id:4, name:"Speed Demon", desc:"Load 5 pages fast.", xp:80},
-  {id:5, name:"Night Owl", desc:"Visit between 12am - 5am.", xp:120},
-  {id:6, name:"Early Bird", desc:"Visit between 5am - 7am.", xp:120},
-  {id:7, name:"Game Addict", desc:"Visit Games page 10 times.", xp:150},
-  {id:8, name:"Movie Watcher", desc:"Visit Movies page 5 times.", xp:120},
-  {id:9, name:"Tech Guy", desc:"Visit Apps page 5 times.", xp:120},
-  {id:10, name:"Music Lover", desc:"Visit Music page 5 times.", xp:120},
-  {id:11, name:"Proxy Phantom", desc:"Use a proxy once.", xp:150},
-  {id:12, name:"RNG Luck", desc:"Trigger a rare event.", xp:200},
-  {id:13, name:"Custom Name", desc:"Rename your profile.", xp:100},
-  {id:14, name:"Collector I", desc:"Unlock 5 achievements.", xp:120},
-  {id:15, name:"Collector II", desc:"Unlock 10 achievements.", xp:160},
-  {id:16, name:"Collector III", desc:"Unlock 20 achievements.", xp:200},
-  {id:17, name:"Streak Master", desc:"Get 3 daily streak.", xp:150},
-  {id:18, name:"Ultra Streak", desc:"Get 7 daily streak.", xp:250},
-  {id:19, name:"Level Up!", desc:"Reach level 2.", xp:150},
-  {id:20, name:"Pro Level", desc:"Reach level 5.", xp:300},
-  {id:21, name:"Maxed Out", desc:"Reach level 10.", xp:450},
-  {id:22, name:"OG Visitor", desc:"Visited before V10.", xp:150},
-  {id:23, name:"Fast Clicker", desc:"Click 20 buttons.", xp:140},
-  {id:24, name:"Loyal Fan", desc:"Visit 7 days in a row.", xp:400},
-  {id:25, name:"Super User", desc:"Open the site 100 times.", xp:500},
-  {id:26, name:"UI Pro", desc:"Open settings.", xp:80},
-  {id:27, name:"Staff Peek", desc:"Open Staff page.", xp:100},
-  {id:28, name:"Achievement Hunter", desc:"Open this page.", xp:70},
-  {id:29, name:"Galaxy Walker", desc:"Stay for 3 minutes.", xp:200},
-  {id:30, name:"Legend", desc:"Unlock ALL achievements.", xp:1000}
+["First Visit",50],
+["First Rename",50],
+["First Game Played",50],
+["First Music Play",50],
+["First Proxy Used",50],
+
+["Level 1 Reached",100],
+["Level 3 Reached",100],
+["Level 5 Reached",150],
+
+["Daily Claimer I",100],
+["Daily Claimer II",150],
+["Daily Claimer III",200],
+
+["Explorer I",100],
+["Explorer II",150],
+["Explorer III",200],
+
+["Site Grinder",200],
+["XP Farmer",250],
+["No Life Mode",300],
+
+["Secret Finder",200],
+["Lucky Clicker",150],
+["Fast Clicker",150],
+
+["Music Addict",150],
+["Game Addict",150],
+["Proxy Master",200],
+
+["Early Supporter",300],
+["Veteran",300],
+["OG User",300],
+
+["Hidden Legend",400],
+["Final Boss",500],
+["Ultimate User",750]
 ];
 
-function renderAchievements(){
-  let unlocked = JSON.parse(localStorage.getItem("achUnlocked") || "[]");
-  let wrapper = document.getElementById("achList");
-  wrapper.innerHTML = "";
+function loadAchievements(){
+  let unlocked = JSON.parse(localStorage.getItem("unlocked") || "[]");
+  let grid = document.getElementById("achGrid");
+  grid.innerHTML = "";
 
-  achievements.forEach(a=>{
-    let box = document.createElement("div");
-    box.className = "ach " + (unlocked.includes(a.id) ? "unlocked" : "locked");
-    box.innerHTML = `<h3>${a.name}</h3><p>${a.desc}</p><p style="margin-top:10px;color:#00ff9d;">${a.xp} XP</p>`;
-    wrapper.appendChild(box);
+  achievements.forEach((a,i)=>{
+    let isUnlocked = unlocked.includes(a[0]);
+
+    let div = document.createElement("div");
+    div.className = "ach-card " + (isUnlocked ? "unlocked" : "locked");
+    div.innerHTML = `
+      <div class="ach-title">${a[0]}</div>
+      <div class="ach-xp">+${a[1]} XP</div>
+      ${isUnlocked ? 
+        "<div style='color:#00ff88'>UNLOCKED</div>" :
+        `<button class="ach-btn" onclick="unlockAch('${a[0]}',${a[1]})">Claim</button>`
+      }
+    `;
+    grid.appendChild(div);
   });
 }
 
-function unlockAchievement(id){
-  let unlocked = JSON.parse(localStorage.getItem("achUnlocked") || "[]");
-  if(!unlocked.includes(id)){
-    unlocked.push(id);
-    localStorage.setItem("achUnlocked", JSON.stringify(unlocked));
+function unlockAch(name,xp){
+  let unlocked = JSON.parse(localStorage.getItem("unlocked") || "[]");
+  if(unlocked.includes(name)) return;
 
-    // update stat counter
-    localStorage.setItem("achCount", unlocked.length);
+  unlocked.push(name);
+  localStorage.setItem("unlocked", JSON.stringify(unlocked));
 
-    // give XP
-    let xp = parseInt(localStorage.getItem("xp") || "0");
-    xp += achievements.find(a=>a.id===id).xp;
-    localStorage.setItem("xp", xp);
+  let curXP = parseInt(localStorage.getItem("xp") || "0");
+  curXP += xp;
+  localStorage.setItem("xp", curXP);
 
-    showPopup(achievements.find(a=>a.id===id).name);
-    renderAchievements();
-  }
+  loadAchievements();
 }
 
-function showPopup(name){
-  let pop = document.getElementById("unlockPopup");
-  pop.innerHTML = `Achievement Unlocked: <br><b>${name}</b>`;
-  pop.style.display = "block";
-  setTimeout(()=>pop.style.display="none", 2500);
-}
-
-renderAchievements();
-unlockAchievement(28); // visiting achievements page unlocks this
-
+loadAchievements();
 </script>
 
 </body>
 </html>
-
