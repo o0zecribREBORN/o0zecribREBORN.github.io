@@ -8,7 +8,7 @@
 <link href="favicon.png" rel="icon" type="image/png"/>
 
 <style>
-/* 🎄 CHRISTMAS EXTRAS (SAFE) */
+/* 🎄 CHRISTMAS EXTRAS */
 .snowflake{
   position:fixed;
   width:6px;
@@ -18,7 +18,7 @@
   pointer-events:none;
   animation: fall 4s linear forwards;
   opacity:.9;
-  z-index:9999;
+  z-index:999;
 }
 @keyframes fall{
   to{ transform:translateY(110vh); opacity:0 }
@@ -34,14 +34,14 @@
   border-radius:18px;
   box-shadow:0 0 30px rgba(0,255,150,.4);
   display:none;
-  z-index:99999;
+  z-index:9999;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎁 CHRISTMAS GIFT -->
+<!-- 🎄 GIFT TOAST -->
 <div id="giftToast">
   🎁 <b>You got a gift from O0ZE34!</b><br>
   +25 LEVELS 🎄
@@ -132,71 +132,64 @@ Comments
 <script>
 /* GREETING */
 function updateGreeting(){
-  const h=new Date().getHours();
-  const text=h<12?"Good Morning":h<17?"Good Afternoon":h<21?"Good Evening":"Good Night";
-  const name=localStorage.getItem("username")||"Guest";
-  greet_txt.textContent = `${text}, ${name} 🎄`;
+  let h=new Date().getHours();
+  let text=h<12?"Good Morning":h<17?"Good Afternoon":h<21?"Good Evening":"Good Night";
+  let name=localStorage.getItem("username")||"Guest";
+  greet_txt.innerText = text + ", " + name + " 🎄";
 }
 
 /* RENAME */
 function openModal(){ renameModal.style.display="flex"; }
 function closeModal(){ renameModal.style.display="none"; }
 function saveName(){
-  const n=nameInput.value.trim();
-  if(n){
-    localStorage.setItem("username",n);
-    updateGreeting();
-  }
+  let n=nameInput.value.trim();
+  if(n){ localStorage.setItem("username",n); updateGreeting(); }
   closeModal();
 }
 
 /* XP */
 function loadXP(){
-  const xp=parseInt(localStorage.getItem("xp")||"0");
-  const lvl=Math.floor(xp/100);
-  const cur=xp%100;
-  lvl_num.textContent=lvl;
-  xp_txt.textContent=`XP: ${cur} / 100`;
+  let xp=parseInt(localStorage.getItem("xp")||"0");
+  let lvl=Math.floor(xp/100);
+  let cur=xp%100;
+  lvl_num.innerText=lvl;
+  xp_txt.innerText=`XP: ${cur} / 100`;
   xp_fill.style.width=cur+"%";
 }
 
 /* DAILY */
 function claimDaily(){
-  const today=Math.floor(Date.now()/86400000);
-  const last=parseInt(localStorage.getItem("lastDaily")||"0");
+  let today=Math.floor(Date.now()/86400000);
+  let last=+localStorage.getItem("lastDaily")||0;
   if(today>last){
     localStorage.setItem("lastDaily",today);
     localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+50));
-    daily_status.textContent="Claimed! +50 XP";
+    daily_status.innerText="Claimed! +50 XP";
     loadXP();
-  }else{
-    daily_status.textContent="Already claimed today";
-  }
+  }else daily_status.innerText="Already claimed today";
 }
 
-/* NEXT UPDATE TIMER */
+/* NEXT UPDATE */
 function startNextUpdateTimer(){
-  const el=document.getElementById("next-update-timer");
-  function nextSaturday(){
-    const d=new Date();
-    let diff=(6-d.getDay()+7)%7;
-    if(diff===0) diff=7;
+  let el=document.getElementById("next-update-timer");
+  function nextSat(){
+    let d=new Date(); let diff=(6-d.getDay()+7)%7||7;
     return new Date(d.getFullYear(),d.getMonth(),d.getDate()+diff);
   }
-  let target=nextSaturday();
+  let t=nextSat();
   setInterval(()=>{
-    let diff=target-new Date();
-    if(diff<=0) target=nextSaturday();
-    const s=Math.floor(diff/1000);
-    el.textContent=
-      `${Math.floor(s/86400)}d `+
-      `${Math.floor((s%86400)/3600)}h `+
-      `${Math.floor((s%3600)/60)}m `+
-      `${s%60}s`;
+    let diff=t-new Date();
+    if(diff<=0) t=nextSat();
+    let s=Math.floor(diff/1000),
+        d=Math.floor(s/86400),
+        h=Math.floor((s%86400)/3600),
+        m=Math.floor((s%3600)/60),
+        sc=s%60;
+    el.textContent=`${d}d ${h}h ${m}m ${sc}s`;
   },1000);
 }
 
-/* 🎁 ONE-TIME CHRISTMAS GIFT (+25 LEVELS) */
+/* 🎁 ONE TIME GIFT = 25 LEVELS */
 if(!localStorage.getItem("xmas25")){
   localStorage.setItem("xmas25","1");
   localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+2500));
@@ -204,24 +197,15 @@ if(!localStorage.getItem("xmas25")){
   setTimeout(()=>giftToast.style.display="none",6000);
 }
 
-/* ❄️ SNOW (REPLACES MOUSE TRAIL) */
+/* ❄️ FALLING SNOW ONLY */
 setInterval(()=>{
-  const s=document.createElement("div");
+  let s=document.createElement("div");
   s.className="snowflake";
   s.style.left=Math.random()*innerWidth+"px";
   s.style.top="-10px";
   document.body.appendChild(s);
   setTimeout(()=>s.remove(),4000);
 },120);
-
-document.addEventListener("mousemove",e=>{
-  const s=document.createElement("div");
-  s.className="snowflake";
-  s.style.left=e.pageX+"px";
-  s.style.top=e.pageY+"px";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),2000);
-});
 
 window.onload=()=>{
   updateGreeting();
