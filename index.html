@@ -9,16 +9,26 @@
 
 <body>
 
-<!-- ❄️ SNOW OVERLAY -->
-<div id="snow"></div>
+<!-- 🎄 CHRISTMAS GIFT MODAL -->
+<div id="giftModal" class="modal-bg" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span>🎁 Gift from O0ZE34</span>
+      <button class="close-btn" onclick="closeGift()">×</button>
+    </div>
+    <p style="padding:10px">You received a special Christmas gift! (+2 Levels)</p>
+    <button class="save-btn" onclick="acceptGift()">Accept</button>
+  </div>
+</div>
 
 <!-- ⭐ GREETING CARD -->
 <div class="greeting-card">
   <div id="greet_box" class="greet-content" style="cursor:pointer;">
-    🎄 <span id="greet_txt"></span>
+    <span id="greet_txt"></span>
   </div>
 </div>
 
+<div id="clock"></div>
 <canvas id="stars"></canvas>
 <canvas id="stars2"></canvas>
 
@@ -36,29 +46,40 @@
 <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
 </div>
 
-<!-- ⭐ MAIN -->
-<div class="main" style="margin-top:-20px;">
-<h1>Home 🎄</h1>
+<!-- ⭐ MAIN CONTENT -->
+<div class="main">
+<h1>Home</h1>
 
 <div class="home-sections">
 
-<!-- ⭐ NEXT UPDATE (FIXED) -->
+<!-- ⭐ NEXT UPDATE TIMER -->
 <div class="home-card">
-  <h2>🎄 NEXT UPDATE</h2>
-  <div id="next-update-timer">Starting…</div>
-  <small>Adding pictures • Christmas upgrades</small>
+  <h2>NEXT UPDATE:</h2>
+  <div id="next-update-timer">Calculating…</div>
 </div>
 
-<!-- ⭐ XP -->
+<!-- ⭐ RENAME MODAL -->
+<div id="renameModal" class="modal-bg" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span>Rename Profile</span>
+      <button class="close-btn" onclick="closeModal()">×</button>
+    </div>
+    <input id="nameInput" class="modal-input" placeholder="Enter name...">
+    <button class="save-btn" onclick="saveName()">Save</button>
+  </div>
+</div>
+
+<!-- ⭐ XP CARD -->
 <div class="xp_card">
   <h2>Level <span id="lvl_num">1</span></h2>
   <div class="xp_bar"><div id="xp_fill"></div></div>
   <p id="xp_txt">XP: 0 / 100</p>
 </div>
 
-<!-- ⭐ DAILY -->
+<!-- ⭐ DAILY REWARD -->
 <div class="daily_card" onclick="claimDaily()">
-  <h2>🎁 Daily Reward</h2>
+  <h2>Daily Reward</h2>
   <p id="daily_status">Tap to claim</p>
 </div>
 
@@ -70,92 +91,119 @@
  <div class="stat_box"><h3>10+</h3><p>Music</p></div>
 </div>
 
-<!-- ⭐ QUICK ACCESS (KEPT) -->
+<!-- ⭐ QUICK ACCESS -->
 <div class="home-card">
 <h2>Quick Access</h2>
 <div class="home-grid">
 <a class="quick-btn" href="games.html">Games</a>
 <a class="quick-btn" href="music.html">Music</a>
 <a class="quick-btn" href="apps.html">Apps</a>
-<a class="quick-btn" href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj" target="_blank">Comments</a>
+<a class="quick-btn" href="achievements.html">Achievements</a>
 </div>
 </div>
 
 </div>
-</div>
-
-<!-- 🎁 ONE-TIME CHRISTMAS GIFT -->
-<div id="giftPopup" style="display:none" class="gift-popup">
-🎄 You got a gift from O0ZE34!<br>
-<b>+2 Levels</b>
-<button onclick="acceptGift()">Claim</button>
 </div>
 
 <script src="script.js"></script>
 
+<!-- ⭐ CORE FIXED JS -->
 <script>
-/* 🎄 GREETING */
+/* GREETING */
 function updateGreeting(){
   let h=new Date().getHours();
-  let t="Hello";
-  if(h<12)t="Good Morning";
-  else if(h<17)t="Good Afternoon";
-  else if(h<21)t="Good Evening";
-  else t="Good Night";
-  let name=localStorage.getItem("username")||"Guest";
-  greet_txt.innerText=t+", "+name+"!";
+  let text="Hello";
+  if(h<12) text="Good Morning";
+  else if(h<17) text="Good Afternoon";
+  else if(h<21) text="Good Evening";
+  else text="Good Night";
+  let name = localStorage.getItem("username") || "Guest";
+  document.getElementById("greet_txt").innerText = text + ", " + name + " 🎄";
 }
-greet_box.onclick=()=>document.getElementById("renameModal")?.style?.display==="flex";
 
-/* 🎁 CHRISTMAS GIFT (ONCE) */
-if(!localStorage.getItem("xmasGift")){
-  setTimeout(()=>giftPopup.style.display="block",1200);
+/* RENAME */
+function openModal(){ renameModal.style.display="flex"; }
+function closeModal(){ renameModal.style.display="none"; }
+function saveName(){
+  let v=nameInput.value.trim();
+  if(v){ localStorage.setItem("username",v); updateGreeting(); }
+  closeModal();
 }
-function acceptGift(){
+
+/* XP */
+function loadXP(){
   let xp=parseInt(localStorage.getItem("xp")||"0");
-  xp+=200;
-  localStorage.setItem("xp",xp);
-  localStorage.setItem("xmasGift","1");
-  giftPopup.style.display="none";
-  loadXP();
+  let lvl=Math.floor(xp/100);
+  let cur=xp%100;
+  lvl_num.innerText=lvl;
+  xp_txt.innerText=`XP: ${cur} / 100`;
+  xp_fill.style.width=cur+"%";
 }
 
-/* ⏱️ NEXT UPDATE TIMER — FIXED */
+/* DAILY */
+function claimDaily(){
+  let t=Math.floor(Date.now()/86400000);
+  let last=parseInt(localStorage.getItem("lastDaily")||"0");
+  if(t>last){
+    localStorage.setItem("lastDaily",t);
+    let xp=parseInt(localStorage.getItem("xp")||"0")+50;
+    localStorage.setItem("xp",xp);
+    daily_status.innerText="Claimed! +50 XP";
+    loadXP();
+  }else{
+    daily_status.innerText="Already claimed today";
+  }
+}
+
+/* NEXT UPDATE FIX */
 function startNextUpdateTimer(){
   const el=document.getElementById("next-update-timer");
-  function getNextSaturday(){
-    const n=new Date();
-    let d=(6-n.getDay()+7)%7||7;
-    return new Date(n.getFullYear(),n.getMonth(),n.getDate()+d);
+  function nextSaturday(){
+    let d=new Date();
+    let diff=(6-d.getDay()+7)%7||7;
+    d.setDate(d.getDate()+diff);
+    d.setHours(0,0,0,0);
+    return d;
   }
-  let target=getNextSaturday();
+  let target=nextSaturday();
   function tick(){
     let diff=target-new Date();
+    if(diff<=0){ target=nextSaturday(); diff=target-new Date(); }
     let s=Math.floor(diff/1000);
-    let d=Math.floor(s/86400);
-    let h=Math.floor((s%86400)/3600);
-    let m=Math.floor((s%3600)/60);
-    let sec=s%60;
-    el.textContent=`${d}d ${h}h ${m}m ${sec}s`;
+    el.innerText=
+      Math.floor(s/86400)+"d : "+
+      String(Math.floor((s%86400)/3600)).padStart(2,"0")+"h : "+
+      String(Math.floor((s%3600)/60)).padStart(2,"0")+"m : "+
+      String(s%60).padStart(2,"0")+"s";
   }
   tick(); setInterval(tick,1000);
 }
 
-/* ❄️ SNOW */
-for(let i=0;i<40;i++){
-  let f=document.createElement("div");
-  f.className="snowflake";
-  f.style.left=Math.random()*100+"vw";
-  f.style.animationDuration=5+Math.random()*5+"s";
-  document.body.appendChild(f);
+/* 🎁 CHRISTMAS GIFT (ONE TIME) */
+function acceptGift(){
+  let xp=parseInt(localStorage.getItem("xp")||"0");
+  xp+=200;
+  localStorage.setItem("xp",xp);
+  localStorage.setItem("christmasGift","yes");
+  giftModal.style.display="none";
+  loadXP();
 }
+function closeGift(){ giftModal.style.display="none"; }
 
-/* LOAD */
-window.onload=()=>{
+document.addEventListener("DOMContentLoaded",()=>{
   updateGreeting();
   loadXP();
   startNextUpdateTimer();
-};
+  greet_box.onclick=openModal;
+  let today=Math.floor(Date.now()/86400000);
+  daily_status.innerText =
+    today>parseInt(localStorage.getItem("lastDaily")||"0")
+    ? "Tap to claim" : "Already claimed today";
+
+  if(!localStorage.getItem("christmasGift")){
+    giftModal.style.display="flex";
+  }
+});
 </script>
 
 </body>
