@@ -5,74 +5,12 @@
 <link href="style.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <link href="favicon.png" rel="icon" type="image/png"/>
-
-<style>
-/* 🎄 CHRISTMAS ACCENTS */
-.home-card h2::before {
-  content: "🎄 ";
-}
-.daily_card h2::before {
-  content: "🎁 ";
-}
-.xp_card {
-  box-shadow: 0 0 20px rgba(0,255,180,0.3);
-}
-
-/* ❄️ SNOW */
-.snowflake {
-  position: fixed;
-  top: -10px;
-  color: white;
-  font-size: 14px;
-  pointer-events: none;
-  animation: fall linear forwards;
-}
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-    opacity: 0;
-  }
-}
-
-/* 🎁 GIFT MODAL */
-#giftModal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-#giftModal .box {
-  background: #0b2a2a;
-  border-radius: 20px;
-  padding: 25px;
-  text-align: center;
-  box-shadow: 0 0 30px #00ffcc;
-}
-#giftModal button {
-  margin-top: 15px;
-  padding: 10px 18px;
-  border-radius: 12px;
-  border: none;
-  background: #00ffcc;
-  font-weight: bold;
-  cursor: pointer;
-}
-</style>
 </head>
 
 <body>
 
-<!-- 🎁 CHRISTMAS GIFT -->
-<div id="giftModal">
-  <div class="box">
-    <h2>🎄 Gift from O0ZE34!</h2>
-    <p>You received <b>+2 Levels</b> as a Christmas gift 🎁</p>
-    <button onclick="acceptGift()">Accept</button>
-  </div>
-</div>
+<!-- ⭐ CHRISTMAS SNOW CANVAS -->
+<canvas id="snow"></canvas>
 
 <!-- ⭐ GREETING CARD -->
 <div class="greeting-card">
@@ -101,27 +39,66 @@
 
 <!-- ⭐ MAIN -->
 <div class="main">
-<h1>Home</h1>
+<h1>Home 🎄</h1>
 
 <div class="home-sections">
 
-<!-- ⭐ NEXT UPDATE -->
+<!-- ⭐ NEXT UPDATE TIMER -->
 <div class="home-card">
-  <h2>NEXT UPDATE</h2>
+  <h2>NEXT UPDATE 🎄</h2>
   <div id="next-update-timer">Loading...</div>
+  <small>Adding pictures, Christmas upgrades</small>
 </div>
 
-<!-- ⭐ XP -->
+<!-- ⭐ RENAME MODAL -->
+<div id="renameModal" class="modal-bg" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span>Rename Profile</span>
+      <button class="close-btn" onclick="closeModal()">×</button>
+    </div>
+    <input id="nameInput" class="modal-input" placeholder="Enter name...">
+    <button class="save-btn" onclick="saveName()">Save</button>
+  </div>
+</div>
+
+<!-- ⭐ XP CARD -->
 <div class="xp_card">
   <h2>Level <span id="lvl_num">1</span></h2>
   <div class="xp_bar"><div id="xp_fill"></div></div>
   <p id="xp_txt">XP: 0 / 100</p>
 </div>
 
-<!-- ⭐ DAILY -->
+<!-- ⭐ DAILY REWARD -->
 <div class="daily_card" onclick="claimDaily()">
-  <h2>Daily Reward</h2>
+  <h2>🎁 Daily Reward</h2>
   <p id="daily_status">Tap to claim</p>
+</div>
+
+<!-- ⭐ STATS -->
+<div class="stats_grid">
+ <div class="stat_box"><h3 id="stat_ach">0</h3><p>Achievements</p></div>
+ <div class="stat_box"><h3>200+</h3><p>Games</p></div>
+ <div class="stat_box"><h3>15+</h3><p>Proxies</p></div>
+ <div class="stat_box"><h3>10+</h3><p>Music</p></div>
+</div>
+
+<!-- ⭐ QUICK LAUNCH (NOT REMOVED) -->
+<div class="home-card">
+<h2>Quick Launch</h2>
+<div class="home-grid">
+<a class="quick-btn" href="games.html">Games</a>
+<a class="quick-btn" href="music.html">Music</a>
+<a class="quick-btn" href="apps.html">Apps</a>
+<a class="quick-btn" href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj" target="_blank">Comments</a>
+</div>
+</div>
+
+<!-- ⭐ ACHIEVEMENTS -->
+<div class="home-card">
+<h2>Achievements</h2>
+<p>Unlock rewards and XP</p>
+<a class="quick-btn" href="achievements.html">View Achievements</a>
 </div>
 
 </div>
@@ -129,59 +106,60 @@
 
 <script src="script.js"></script>
 
-<!-- 🎄 GREETING -->
+<!-- ⭐ GREETING -->
 <script>
 function updateGreeting(){
   let h=new Date().getHours();
   let text="Hello";
+
   if(h<12) text="Good Morning";
   else if(h<17) text="Good Afternoon";
   else if(h<21) text="Good Evening";
   else text="Good Night";
+
   let name = localStorage.getItem("username") || "Guest";
   document.getElementById("greet_txt").innerText =
     "🎄 " + text + ", " + name + "!";
 }
-</script>
 
-<!-- 🎁 CHRISTMAS GIFT (ONE TIME) -->
-<script>
-function acceptGift(){
-  let xp = parseInt(localStorage.getItem("xp") || "0");
-  xp += 200; // +2 levels
-  localStorage.setItem("xp", xp);
-  localStorage.setItem("xmasGift", "true");
-  document.getElementById("giftModal").style.display="none";
-  loadXP();
-}
+function openModal(){ renameModal.style.display="flex"; }
+function closeModal(){ renameModal.style.display="none"; }
 
-if(!localStorage.getItem("xmasGift")){
-  document.getElementById("giftModal").style.display="flex";
+function saveName(){
+  let n=nameInput.value.trim();
+  if(n){
+    localStorage.setItem("username",n);
+    updateGreeting();
+  }
+  closeModal();
 }
 </script>
 
-<!-- ⭐ XP + DAILY -->
+<!-- ⭐ XP -->
 <script>
 function loadXP(){
-  let xp = parseInt(localStorage.getItem("xp") || "0");
-  let lvl = Math.floor(xp / 100);
-  let cur = xp % 100;
-  lvl_num.innerText = lvl;
-  xp_txt.innerText = "XP: " + cur + " / 100";
-  xp_fill.style.width = cur + "%";
+  let xp=parseInt(localStorage.getItem("xp")||"0");
+  let lvl=Math.floor(xp/100)+1;
+  let cur=xp%100;
+  lvl_num.innerText=lvl;
+  xp_txt.innerText=`XP: ${cur} / 100`;
+  xp_fill.style.width=cur+"%";
 }
+</script>
 
+<!-- ⭐ DAILY -->
+<script>
 function claimDaily(){
-  let last = parseInt(localStorage.getItem("lastDaily") || "0");
-  let today = Math.floor(Date.now()/86400000);
-  if(today > last){
-    localStorage.setItem("lastDaily", today);
-    let xp = parseInt(localStorage.getItem("xp") || "0") + 50;
-    localStorage.setItem("xp", xp);
-    daily_status.innerText = "Claimed! +50 XP 🎄";
+  let today=Math.floor(Date.now()/86400000);
+  let last=parseInt(localStorage.getItem("lastDaily")||"0");
+  if(today>last){
+    localStorage.setItem("lastDaily",today);
+    let xp=parseInt(localStorage.getItem("xp")||"0")+50;
+    localStorage.setItem("xp",xp);
+    daily_status.innerText="Claimed! +50 XP 🎄";
     loadXP();
-  } else {
-    daily_status.innerText = "Already claimed today";
+  }else{
+    daily_status.innerText="Already claimed today";
   }
 }
 </script>
@@ -192,41 +170,60 @@ function getNextSaturday(){
   const now=new Date();
   let diff=(6-now.getDay()+7)%7;
   if(diff===0) diff=7;
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+diff);
+  return new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()+diff,
+    0,0,0
+  );
 }
 
 function startNextUpdateTimer(){
   const el=document.getElementById("next-update-timer");
   let target=getNextSaturday();
-  setInterval(()=>{
-    let diff=target-new Date();
+
+  function tick(){
+    let now=new Date();
+    let diff=target-now;
+    if(diff<=0){
+      target=getNextSaturday();
+      diff=target-now;
+    }
     let s=Math.floor(diff/1000);
     let d=Math.floor(s/86400);
     let h=Math.floor((s%86400)/3600);
     let m=Math.floor((s%3600)/60);
     let sec=s%60;
-    el.textContent = `${d}d ${h}h ${m}m ${sec}s`;
-  },1000);
+    el.textContent=`${d}d ${h}h ${m}m ${sec}s`;
+  }
+
+  tick();
+  setInterval(tick,1000);
 }
-startNextUpdateTimer();
 </script>
 
-<!-- ❄️ SNOW -->
+<!-- ⭐ ONE-TIME CHRISTMAS GIFT -->
 <script>
-setInterval(()=>{
-  const s=document.createElement("div");
-  s.className="snowflake";
-  s.innerText="❄";
-  s.style.left=Math.random()*100+"vw";
-  s.style.animationDuration=(3+Math.random()*4)+"s";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),7000);
-},200);
+if(!localStorage.getItem("xmasGift")){
+  setTimeout(()=>{
+    alert("🎁 You got a Christmas Gift from O0ZE34!\n+2 Levels 🎄");
+    let xp=parseInt(localStorage.getItem("xp")||"0");
+    xp+=200;
+    localStorage.setItem("xp",xp);
+    localStorage.setItem("xmasGift","true");
+    loadXP();
+  },800);
+}
 </script>
 
+<!-- ⭐ LOAD -->
 <script>
-updateGreeting();
-loadXP();
+window.onload=()=>{
+  updateGreeting();
+  loadXP();
+  startNextUpdateTimer();
+  greet_box.onclick=openModal;
+};
 </script>
 
 </body>
