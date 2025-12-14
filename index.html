@@ -1,24 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>O0ZE34's Crib REBORN — Home</title>
+<title>O0ZE34's Crib REBORN — Christmas 🎄</title>
+
 <link href="style.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <link href="favicon.png" rel="icon" type="image/png"/>
+
+<style>
+/* 🎄 CHRISTMAS EXTRAS */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 60%),
+    linear-gradient(#0b1d3a,#0f3d2e);
+  z-index:-2;
+}
+
+.snowflake{
+  position:fixed;
+  width:6px;
+  height:6px;
+  background:white;
+  border-radius:50%;
+  pointer-events:none;
+  animation: fall 4s linear forwards;
+  opacity:.9;
+}
+@keyframes fall{
+  to{ transform:translateY(110vh); opacity:0 }
+}
+
+#giftToast{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  background:rgba(20,40,30,.95);
+  border:2px solid #3cff9a;
+  padding:18px 22px;
+  border-radius:18px;
+  box-shadow:0 0 30px rgba(0,255,150,.4);
+  display:none;
+  z-index:9999;
+}
+</style>
 </head>
 
 <body>
 
-<!-- 🎄 CHRISTMAS GIFT MODAL -->
-<div id="giftModal" class="modal-bg" style="display:none;">
-  <div class="modal">
-    <div class="modal-header">
-      <span>🎁 Gift from O0ZE34</span>
-      <button class="close-btn" onclick="closeGift()">×</button>
-    </div>
-    <p style="padding:10px">You received a special Christmas gift! (+2 Levels)</p>
-    <button class="save-btn" onclick="acceptGift()">Accept</button>
-  </div>
+<!-- 🎄 GIFT TOAST -->
+<div id="giftToast">
+  🎁 <b>You got a gift from O0ZE34!</b><br>
+  +25 LEVELS 🎄
 </div>
 
 <!-- ⭐ GREETING CARD -->
@@ -46,19 +81,19 @@
 <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
 </div>
 
-<!-- ⭐ MAIN CONTENT -->
+<!-- ⭐ MAIN -->
 <div class="main">
-<h1>Home</h1>
+<h1>🎄 Home</h1>
 
 <div class="home-sections">
 
-<!-- ⭐ NEXT UPDATE TIMER -->
+<!-- NEXT UPDATE -->
 <div class="home-card">
-  <h2>NEXT UPDATE:</h2>
-  <div id="next-update-timer">Calculating…</div>
+  <h2>🎁 NEXT UPDATE:</h2>
+  <div id="next-update-timer">Loading...</div>
 </div>
 
-<!-- ⭐ RENAME MODAL -->
+<!-- RENAME MODAL -->
 <div id="renameModal" class="modal-bg" style="display:none;">
   <div class="modal">
     <div class="modal-header">
@@ -70,35 +105,31 @@
   </div>
 </div>
 
-<!-- ⭐ XP CARD -->
+<!-- XP -->
 <div class="xp_card">
   <h2>Level <span id="lvl_num">1</span></h2>
   <div class="xp_bar"><div id="xp_fill"></div></div>
   <p id="xp_txt">XP: 0 / 100</p>
 </div>
 
-<!-- ⭐ DAILY REWARD -->
+<!-- DAILY -->
 <div class="daily_card" onclick="claimDaily()">
-  <h2>Daily Reward</h2>
+  <h2>🎄 Daily Reward</h2>
   <p id="daily_status">Tap to claim</p>
 </div>
 
-<!-- ⭐ STATS -->
-<div class="stats_grid">
- <div class="stat_box"><h3 id="stat_ach">24</h3><p>Achievements</p></div>
- <div class="stat_box"><h3>200+</h3><p>Games</p></div>
- <div class="stat_box"><h3>15+</h3><p>Proxies</p></div>
- <div class="stat_box"><h3>10+</h3><p>Music</p></div>
-</div>
-
-<!-- ⭐ QUICK ACCESS -->
+<!-- QUICK ACCESS -->
 <div class="home-card">
-<h2>Quick Access</h2>
+<h2>⚡ Quick Access</h2>
 <div class="home-grid">
 <a class="quick-btn" href="games.html">Games</a>
 <a class="quick-btn" href="music.html">Music</a>
 <a class="quick-btn" href="apps.html">Apps</a>
 <a class="quick-btn" href="achievements.html">Achievements</a>
+<a class="quick-btn" target="_blank"
+   href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj">
+Comments
+</a>
 </div>
 </div>
 
@@ -107,26 +138,22 @@
 
 <script src="script.js"></script>
 
-<!-- ⭐ CORE FIXED JS -->
+<!-- 🎄 CORE LOGIC -->
 <script>
 /* GREETING */
 function updateGreeting(){
   let h=new Date().getHours();
-  let text="Hello";
-  if(h<12) text="Good Morning";
-  else if(h<17) text="Good Afternoon";
-  else if(h<21) text="Good Evening";
-  else text="Good Night";
-  let name = localStorage.getItem("username") || "Guest";
-  document.getElementById("greet_txt").innerText = text + ", " + name + " 🎄";
+  let text=h<12?"Good Morning":h<17?"Good Afternoon":h<21?"Good Evening":"Good Night";
+  let name=localStorage.getItem("username")||"Guest";
+  greet_txt.innerText = text + ", " + name + " 🎄";
 }
 
 /* RENAME */
 function openModal(){ renameModal.style.display="flex"; }
 function closeModal(){ renameModal.style.display="none"; }
 function saveName(){
-  let v=nameInput.value.trim();
-  if(v){ localStorage.setItem("username",v); updateGreeting(); }
+  let n=nameInput.value.trim();
+  if(n){ localStorage.setItem("username",n); updateGreeting(); }
   closeModal();
 }
 
@@ -142,68 +169,69 @@ function loadXP(){
 
 /* DAILY */
 function claimDaily(){
-  let t=Math.floor(Date.now()/86400000);
-  let last=parseInt(localStorage.getItem("lastDaily")||"0");
-  if(t>last){
-    localStorage.setItem("lastDaily",t);
-    let xp=parseInt(localStorage.getItem("xp")||"0")+50;
-    localStorage.setItem("xp",xp);
+  let today=Math.floor(Date.now()/86400000);
+  let last=+localStorage.getItem("lastDaily")||0;
+  if(today>last){
+    localStorage.setItem("lastDaily",today);
+    localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+50));
     daily_status.innerText="Claimed! +50 XP";
     loadXP();
-  }else{
-    daily_status.innerText="Already claimed today";
-  }
+  }else daily_status.innerText="Already claimed today";
 }
 
-/* NEXT UPDATE FIX */
+/* NEXT UPDATE */
 function startNextUpdateTimer(){
-  const el=document.getElementById("next-update-timer");
-  function nextSaturday(){
-    let d=new Date();
-    let diff=(6-d.getDay()+7)%7||7;
-    d.setDate(d.getDate()+diff);
-    d.setHours(0,0,0,0);
-    return d;
+  let el=document.getElementById("next-update-timer");
+  function nextSat(){
+    let d=new Date(); let diff=(6-d.getDay()+7)%7||7;
+    return new Date(d.getFullYear(),d.getMonth(),d.getDate()+diff);
   }
-  let target=nextSaturday();
-  function tick(){
-    let diff=target-new Date();
-    if(diff<=0){ target=nextSaturday(); diff=target-new Date(); }
-    let s=Math.floor(diff/1000);
-    el.innerText=
-      Math.floor(s/86400)+"d : "+
-      String(Math.floor((s%86400)/3600)).padStart(2,"0")+"h : "+
-      String(Math.floor((s%3600)/60)).padStart(2,"0")+"m : "+
-      String(s%60).padStart(2,"0")+"s";
-  }
-  tick(); setInterval(tick,1000);
+  let t=nextSat();
+  setInterval(()=>{
+    let diff=t-new Date();
+    if(diff<=0) t=nextSat();
+    let s=Math.floor(diff/1000),
+        d=Math.floor(s/86400),
+        h=Math.floor((s%86400)/3600),
+        m=Math.floor((s%3600)/60),
+        sc=s%60;
+    el.textContent=`${d}d ${h}h ${m}m ${sc}s`;
+  },1000);
 }
 
-/* 🎁 CHRISTMAS GIFT (ONE TIME) */
-function acceptGift(){
-  let xp=parseInt(localStorage.getItem("xp")||"0");
-  xp+=200;
-  localStorage.setItem("xp",xp);
-  localStorage.setItem("christmasGift","yes");
-  giftModal.style.display="none";
-  loadXP();
+/* 🎁 ONE TIME GIFT = 25 LEVELS */
+if(!localStorage.getItem("xmas25")){
+  localStorage.setItem("xmas25","1");
+  localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+2500));
+  giftToast.style.display="block";
+  setTimeout(()=>giftToast.style.display="none",6000);
 }
-function closeGift(){ giftModal.style.display="none"; }
 
-document.addEventListener("DOMContentLoaded",()=>{
+/* ❄️ SNOW */
+setInterval(()=>{
+  let s=document.createElement("div");
+  s.className="snowflake";
+  s.style.left=Math.random()*innerWidth+"px";
+  s.style.top="-10px";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),4000);
+},120);
+
+document.addEventListener("mousemove",e=>{
+  let s=document.createElement("div");
+  s.className="snowflake";
+  s.style.left=e.pageX+"px";
+  s.style.top=e.pageY+"px";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),2000);
+});
+
+window.onload=()=>{
   updateGreeting();
   loadXP();
   startNextUpdateTimer();
   greet_box.onclick=openModal;
-  let today=Math.floor(Date.now()/86400000);
-  daily_status.innerText =
-    today>parseInt(localStorage.getItem("lastDaily")||"0")
-    ? "Tap to claim" : "Already claimed today";
-
-  if(!localStorage.getItem("christmasGift")){
-    giftModal.style.display="flex";
-  }
-});
+};
 </script>
 
 </body>
