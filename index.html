@@ -1,59 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>O0ZE34's Crib REBORN — Christmas 🎄</title>
-
+<title>O0ZE34's Crib REBORN — Home</title>
 <link href="style.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <link href="favicon.png" rel="icon" type="image/png"/>
-
-<style>
-/* 🎄 CHRISTMAS EXTRAS */
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:
-    radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 60%),
-    linear-gradient(#0b1d3a,#0f3d2e);
-  z-index:-2;
-}
-
-.snowflake{
-  position:fixed;
-  width:6px;
-  height:6px;
-  background:white;
-  border-radius:50%;
-  pointer-events:none;
-  animation: fall 4s linear forwards;
-  opacity:.9;
-}
-@keyframes fall{
-  to{ transform:translateY(110vh); opacity:0 }
-}
-
-#giftToast{
-  position:fixed;
-  bottom:25px;
-  right:25px;
-  background:rgba(20,40,30,.95);
-  border:2px solid #3cff9a;
-  padding:18px 22px;
-  border-radius:18px;
-  box-shadow:0 0 30px rgba(0,255,150,.4);
-  display:none;
-  z-index:9999;
-}
-</style>
 </head>
 
 <body>
 
-<!-- 🎄 GIFT TOAST -->
-<div id="giftToast">
-  🎁 <b>You got a gift from O0ZE34!</b><br>
-  +25 LEVELS 🎄
+<!-- 🎄 CHRISTMAS SNOW CONTAINER -->
+<div id="snow-container"></div>
+
+<!-- 🎁 GIFT MODAL -->
+<div id="xmasGift" class="modal-bg" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span>🎁 Gift from O0ZE34</span>
+      <button class="close-btn" onclick="closeGift()">×</button>
+    </div>
+    <p style="padding:10px 0">You received <b>+25 Levels</b> for Christmas 🎄</p>
+    <button class="save-btn" onclick="acceptGift()">Accept</button>
+  </div>
 </div>
 
 <!-- ⭐ GREETING CARD -->
@@ -83,17 +51,17 @@ body::before{
 
 <!-- ⭐ MAIN -->
 <div class="main">
-<h1>🎄 Home</h1>
+<h1>Home</h1>
 
 <div class="home-sections">
 
-<!-- NEXT UPDATE -->
+<!-- ⭐ NEXT UPDATE -->
 <div class="home-card">
-  <h2>🎁 NEXT UPDATE:</h2>
+  <h2>NEXT UPDATE:</h2>
   <div id="next-update-timer">Loading...</div>
 </div>
 
-<!-- RENAME MODAL -->
+<!-- ⭐ RENAME -->
 <div id="renameModal" class="modal-bg" style="display:none;">
   <div class="modal">
     <div class="modal-header">
@@ -105,31 +73,27 @@ body::before{
   </div>
 </div>
 
-<!-- XP -->
+<!-- ⭐ XP -->
 <div class="xp_card">
   <h2>Level <span id="lvl_num">1</span></h2>
   <div class="xp_bar"><div id="xp_fill"></div></div>
   <p id="xp_txt">XP: 0 / 100</p>
 </div>
 
-<!-- DAILY -->
+<!-- ⭐ DAILY -->
 <div class="daily_card" onclick="claimDaily()">
-  <h2>🎄 Daily Reward</h2>
+  <h2>Daily Reward</h2>
   <p id="daily_status">Tap to claim</p>
 </div>
 
-<!-- QUICK ACCESS -->
+<!-- ⭐ QUICK ACCESS -->
 <div class="home-card">
-<h2>⚡ Quick Access</h2>
+<h2>Quick Access</h2>
 <div class="home-grid">
 <a class="quick-btn" href="games.html">Games</a>
 <a class="quick-btn" href="music.html">Music</a>
 <a class="quick-btn" href="apps.html">Apps</a>
 <a class="quick-btn" href="achievements.html">Achievements</a>
-<a class="quick-btn" target="_blank"
-   href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj">
-Comments
-</a>
 </div>
 </div>
 
@@ -138,93 +102,65 @@ Comments
 
 <script src="script.js"></script>
 
-<!-- 🎄 CORE LOGIC -->
+<!-- 🎄 CHRISTMAS + FIXES -->
 <script>
 /* GREETING */
 function updateGreeting(){
   let h=new Date().getHours();
-  let text=h<12?"Good Morning":h<17?"Good Afternoon":h<21?"Good Evening":"Good Night";
+  let text="Hello";
+  if(h<12) text="Good Morning";
+  else if(h<17) text="Good Afternoon";
+  else if(h<21) text="Good Evening";
+  else text="Good Night";
   let name=localStorage.getItem("username")||"Guest";
-  greet_txt.innerText = text + ", " + name + " 🎄";
+  greet_txt.innerText=text+", "+name+"!";
 }
 
-/* RENAME */
-function openModal(){ renameModal.style.display="flex"; }
-function closeModal(){ renameModal.style.display="none"; }
-function saveName(){
-  let n=nameInput.value.trim();
-  if(n){ localStorage.setItem("username",n); updateGreeting(); }
-  closeModal();
+/* NEXT UPDATE FIX */
+function getNextSaturday(){
+  const now=new Date();
+  let d=(6-now.getDay()+7)%7;
+  if(d===0) d=7;
+  return new Date(now.getFullYear(),now.getMonth(),now.getDate()+d);
 }
-
-/* XP */
-function loadXP(){
-  let xp=parseInt(localStorage.getItem("xp")||"0");
-  let lvl=Math.floor(xp/100);
-  let cur=xp%100;
-  lvl_num.innerText=lvl;
-  xp_txt.innerText=`XP: ${cur} / 100`;
-  xp_fill.style.width=cur+"%";
-}
-
-/* DAILY */
-function claimDaily(){
-  let today=Math.floor(Date.now()/86400000);
-  let last=+localStorage.getItem("lastDaily")||0;
-  if(today>last){
-    localStorage.setItem("lastDaily",today);
-    localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+50));
-    daily_status.innerText="Claimed! +50 XP";
-    loadXP();
-  }else daily_status.innerText="Already claimed today";
-}
-
-/* NEXT UPDATE */
 function startNextUpdateTimer(){
-  let el=document.getElementById("next-update-timer");
-  function nextSat(){
-    let d=new Date(); let diff=(6-d.getDay()+7)%7||7;
-    return new Date(d.getFullYear(),d.getMonth(),d.getDate()+diff);
-  }
-  let t=nextSat();
+  const el=document.getElementById("next-update-timer");
+  let target=getNextSaturday();
   setInterval(()=>{
-    let diff=t-new Date();
-    if(diff<=0) t=nextSat();
-    let s=Math.floor(diff/1000),
-        d=Math.floor(s/86400),
-        h=Math.floor((s%86400)/3600),
-        m=Math.floor((s%3600)/60),
-        sc=s%60;
-    el.textContent=`${d}d ${h}h ${m}m ${sc}s`;
+    let diff=target-new Date();
+    if(diff<=0){target=getNextSaturday();diff=target-new Date();}
+    let s=Math.floor(diff/1000);
+    let d=Math.floor(s/86400);
+    let h=Math.floor((s%86400)/3600);
+    let m=Math.floor((s%3600)/60);
+    let sec=s%60;
+    el.textContent=`${d}d ${h}h ${m}m ${sec}s`;
   },1000);
 }
 
-/* 🎁 ONE TIME GIFT = 25 LEVELS */
-if(!localStorage.getItem("xmas25")){
-  localStorage.setItem("xmas25","1");
-  localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+2500));
-  giftToast.style.display="block";
-  setTimeout(()=>giftToast.style.display="none",6000);
+/* 🎁 CHRISTMAS GIFT (+25 LEVELS) */
+function acceptGift(){
+  let xp=parseInt(localStorage.getItem("xp")||"0");
+  xp+=2500;
+  localStorage.setItem("xp",xp);
+  localStorage.setItem("xmasGift","true");
+  closeGift();
+  loadXP();
+}
+function closeGift(){xmasGift.style.display="none";}
+if(!localStorage.getItem("xmasGift")){
+  setTimeout(()=>xmasGift.style.display="flex",1200);
 }
 
-/* ❄️ SNOW */
+/* ❄️ SNOWFLAKES */
 setInterval(()=>{
   let s=document.createElement("div");
   s.className="snowflake";
-  s.style.left=Math.random()*innerWidth+"px";
-  s.style.top="-10px";
+  s.style.left=Math.random()*window.innerWidth+"px";
+  s.style.animationDuration=(3+Math.random()*3)+"s";
   document.body.appendChild(s);
-  setTimeout(()=>s.remove(),4000);
-},120);
-
-document.addEventListener("mousemove",e=>{
-  let s=document.createElement("div");
-  s.className="snowflake";
-  s.style.left=e.pageX+"px";
-  s.style.top=e.pageY+"px";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),2000);
-});
+  setTimeout(()=>s.remove(),6000);
+},180);
 
 window.onload=()=>{
   updateGreeting();
@@ -233,6 +169,24 @@ window.onload=()=>{
   greet_box.onclick=openModal;
 };
 </script>
+
+<!-- ❄️ SNOW STYLE -->
+<style>
+.snowflake{
+ position:fixed;
+ top:-10px;
+ width:6px;
+ height:6px;
+ background:white;
+ border-radius:50%;
+ opacity:.9;
+ animation:fall linear forwards;
+ pointer-events:none;
+}
+@keyframes fall{
+ to{transform:translateY(110vh);}
+}
+</style>
 
 </body>
 </html>
