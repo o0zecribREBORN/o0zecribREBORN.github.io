@@ -5,9 +5,74 @@
 <link href="style.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 <link href="favicon.png" rel="icon" type="image/png"/>
+
+<style>
+/* 🎄 CHRISTMAS ACCENTS */
+.home-card h2::before {
+  content: "🎄 ";
+}
+.daily_card h2::before {
+  content: "🎁 ";
+}
+.xp_card {
+  box-shadow: 0 0 20px rgba(0,255,180,0.3);
+}
+
+/* ❄️ SNOW */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  font-size: 14px;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
+
+/* 🎁 GIFT MODAL */
+#giftModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#giftModal .box {
+  background: #0b2a2a;
+  border-radius: 20px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 0 30px #00ffcc;
+}
+#giftModal button {
+  margin-top: 15px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: none;
+  background: #00ffcc;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
 </head>
 
-<body class="christmas">
+<body>
+
+<!-- 🎁 CHRISTMAS GIFT -->
+<div id="giftModal">
+  <div class="box">
+    <h2>🎄 Gift from O0ZE34!</h2>
+    <p>You received <b>+2 Levels</b> as a Christmas gift 🎁</p>
+    <button onclick="acceptGift()">Accept</button>
+  </div>
+</div>
 
 <!-- ⭐ GREETING CARD -->
 <div class="greeting-card">
@@ -42,20 +107,8 @@
 
 <!-- ⭐ NEXT UPDATE -->
 <div class="home-card">
-  <h2>NEXT UPDATE 🎄</h2>
+  <h2>NEXT UPDATE</h2>
   <div id="next-update-timer">Loading...</div>
-</div>
-
-<!-- ⭐ RENAME MODAL -->
-<div id="renameModal" class="modal-bg" style="display:none;">
-  <div class="modal">
-    <div class="modal-header">
-      <span>Rename Profile</span>
-      <button class="close-btn" onclick="closeModal()">×</button>
-    </div>
-    <input id="nameInput" class="modal-input" placeholder="Enter name...">
-    <button class="save-btn" onclick="saveName()">Save</button>
-  </div>
 </div>
 
 <!-- ⭐ XP -->
@@ -67,34 +120,8 @@
 
 <!-- ⭐ DAILY -->
 <div class="daily_card" onclick="claimDaily()">
-  <h2>🎁 Daily Reward</h2>
+  <h2>Daily Reward</h2>
   <p id="daily_status">Tap to claim</p>
-</div>
-
-<!-- ⭐ STATS -->
-<div class="stats_grid">
- <div class="stat_box"><h3 id="stat_ach">24</h3><p>Achievements</p></div>
- <div class="stat_box"><h3>200+</h3><p>Games</p></div>
- <div class="stat_box"><h3>15+</h3><p>Proxies</p></div>
- <div class="stat_box"><h3>10+</h3><p>Music</p></div>
-</div>
-
-<!-- ⭐ QUICK LAUNCH (NO SHOP) -->
-<div class="home-card">
-<h2>Quick Launch</h2>
-<div class="home-grid">
-<a class="quick-btn" href="games.html">Games</a>
-<a class="quick-btn" href="music.html">Music</a>
-<a class="quick-btn" href="apps.html">Apps</a>
-<a class="quick-btn" href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj" target="_blank">Comments</a>
-</div>
-</div>
-
-<!-- ⭐ ACHIEVEMENTS -->
-<div class="home-card">
-<h2>Achievements</h2>
-<p>Check your progress and unlock new rewards.</p>
-<a class="quick-btn" href="achievements.html">View Achievements</a>
 </div>
 
 </div>
@@ -102,7 +129,7 @@
 
 <script src="script.js"></script>
 
-<!-- ⭐ GREETING -->
+<!-- 🎄 GREETING -->
 <script>
 function updateGreeting(){
   let h=new Date().getHours();
@@ -112,11 +139,28 @@ function updateGreeting(){
   else if(h<21) text="Good Evening";
   else text="Good Night";
   let name = localStorage.getItem("username") || "Guest";
-  document.getElementById("greet_txt").innerText = "🎄 " + text + ", " + name + "!";
+  document.getElementById("greet_txt").innerText =
+    "🎄 " + text + ", " + name + "!";
 }
 </script>
 
-<!-- ⭐ XP + DAILY (UNCHANGED, SAFE) -->
+<!-- 🎁 CHRISTMAS GIFT (ONE TIME) -->
+<script>
+function acceptGift(){
+  let xp = parseInt(localStorage.getItem("xp") || "0");
+  xp += 200; // +2 levels
+  localStorage.setItem("xp", xp);
+  localStorage.setItem("xmasGift", "true");
+  document.getElementById("giftModal").style.display="none";
+  loadXP();
+}
+
+if(!localStorage.getItem("xmasGift")){
+  document.getElementById("giftModal").style.display="flex";
+}
+</script>
+
+<!-- ⭐ XP + DAILY -->
 <script>
 function loadXP(){
   let xp = parseInt(localStorage.getItem("xp") || "0");
@@ -129,7 +173,7 @@ function loadXP(){
 
 function claimDaily(){
   let last = parseInt(localStorage.getItem("lastDaily") || "0");
-  let today = Math.floor(Date.now() / 86400000);
+  let today = Math.floor(Date.now()/86400000);
   if(today > last){
     localStorage.setItem("lastDaily", today);
     let xp = parseInt(localStorage.getItem("xp") || "0") + 50;
@@ -142,26 +186,47 @@ function claimDaily(){
 }
 </script>
 
-<!-- ⭐ SNOW MOUSE TRAIL -->
+<!-- ⭐ NEXT UPDATE TIMER (FIXED) -->
 <script>
-document.addEventListener("mousemove", e=>{
-  if(localStorage.getItem("perf")==="on") return;
-  const s=document.createElement("div");
-  s.className="snowflake";
-  s.style.left=e.pageX+"px";
-  s.style.top=e.pageY+"px";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),1200);
-});
+function getNextSaturday(){
+  const now=new Date();
+  let diff=(6-now.getDay()+7)%7;
+  if(diff===0) diff=7;
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+diff);
+}
+
+function startNextUpdateTimer(){
+  const el=document.getElementById("next-update-timer");
+  let target=getNextSaturday();
+  setInterval(()=>{
+    let diff=target-new Date();
+    let s=Math.floor(diff/1000);
+    let d=Math.floor(s/86400);
+    let h=Math.floor((s%86400)/3600);
+    let m=Math.floor((s%3600)/60);
+    let sec=s%60;
+    el.textContent = `${d}d ${h}h ${m}m ${sec}s`;
+  },1000);
+}
+startNextUpdateTimer();
 </script>
 
-<!-- ⭐ LOAD -->
+<!-- ❄️ SNOW -->
 <script>
-window.onload=()=>{
-  updateGreeting();
-  loadXP();
-  greet_box.onclick=()=>renameModal.style.display="flex";
-};
+setInterval(()=>{
+  const s=document.createElement("div");
+  s.className="snowflake";
+  s.innerText="❄";
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=(3+Math.random()*4)+"s";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),7000);
+},200);
+</script>
+
+<script>
+updateGreeting();
+loadXP();
 </script>
 
 </body>
