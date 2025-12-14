@@ -8,7 +8,7 @@
 <link href="favicon.png" rel="icon" type="image/png"/>
 
 <style>
-/* 🎄 CHRISTMAS SNOW (NO BG OVERRIDE) */
+/* 🎄 CHRISTMAS EXTRAS (SAFE) */
 .snowflake{
   position:fixed;
   width:6px;
@@ -16,33 +16,32 @@
   background:white;
   border-radius:50%;
   pointer-events:none;
-  animation: fall 5s linear forwards;
-  opacity:.85;
-  z-index:5;
+  animation: fall 4s linear forwards;
+  opacity:.9;
+  z-index:9999;
 }
 @keyframes fall{
   to{ transform:translateY(110vh); opacity:0 }
 }
 
-/* 🎁 GIFT TOAST */
 #giftToast{
   position:fixed;
   bottom:25px;
   right:25px;
-  background:rgba(15,35,25,.95);
+  background:rgba(20,40,30,.95);
   border:2px solid #3cff9a;
   padding:18px 22px;
   border-radius:18px;
   box-shadow:0 0 30px rgba(0,255,150,.4);
   display:none;
-  z-index:9999;
+  z-index:99999;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎁 GIFT NOTIFICATION -->
+<!-- 🎁 CHRISTMAS GIFT -->
 <div id="giftToast">
   🎁 <b>You got a gift from O0ZE34!</b><br>
   +25 LEVELS 🎄
@@ -136,7 +135,7 @@ function updateGreeting(){
   const h=new Date().getHours();
   const text=h<12?"Good Morning":h<17?"Good Afternoon":h<21?"Good Evening":"Good Night";
   const name=localStorage.getItem("username")||"Guest";
-  greet_txt.textContent = text + ", " + name + " 🎄";
+  greet_txt.textContent = `${text}, ${name} 🎄`;
 }
 
 /* RENAME */
@@ -164,7 +163,7 @@ function loadXP(){
 /* DAILY */
 function claimDaily(){
   const today=Math.floor(Date.now()/86400000);
-  const last=+localStorage.getItem("lastDaily")||0;
+  const last=parseInt(localStorage.getItem("lastDaily")||"0");
   if(today>last){
     localStorage.setItem("lastDaily",today);
     localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+50));
@@ -178,26 +177,26 @@ function claimDaily(){
 /* NEXT UPDATE TIMER */
 function startNextUpdateTimer(){
   const el=document.getElementById("next-update-timer");
-  function nextSat(){
+  function nextSaturday(){
     const d=new Date();
     let diff=(6-d.getDay()+7)%7;
     if(diff===0) diff=7;
     return new Date(d.getFullYear(),d.getMonth(),d.getDate()+diff);
   }
-  let target=nextSat();
+  let target=nextSaturday();
   setInterval(()=>{
     let diff=target-new Date();
-    if(diff<=0) target=nextSat();
+    if(diff<=0) target=nextSaturday();
     const s=Math.floor(diff/1000);
-    const d=Math.floor(s/86400);
-    const h=Math.floor((s%86400)/3600);
-    const m=Math.floor((s%3600)/60);
-    const sc=s%60;
-    el.textContent=`${d}d ${h}h ${m}m ${sc}s`;
+    el.textContent=
+      `${Math.floor(s/86400)}d `+
+      `${Math.floor((s%86400)/3600)}h `+
+      `${Math.floor((s%3600)/60)}m `+
+      `${s%60}s`;
   },1000);
 }
 
-/* 🎁 ONE-TIME +25 LEVEL GIFT */
+/* 🎁 ONE-TIME CHRISTMAS GIFT (+25 LEVELS) */
 if(!localStorage.getItem("xmas25")){
   localStorage.setItem("xmas25","1");
   localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+2500));
@@ -205,15 +204,24 @@ if(!localStorage.getItem("xmas25")){
   setTimeout(()=>giftToast.style.display="none",6000);
 }
 
-/* ❄️ SNOWFALL */
+/* ❄️ SNOW (REPLACES MOUSE TRAIL) */
 setInterval(()=>{
   const s=document.createElement("div");
   s.className="snowflake";
   s.style.left=Math.random()*innerWidth+"px";
   s.style.top="-10px";
   document.body.appendChild(s);
-  setTimeout(()=>s.remove(),5000);
-},140);
+  setTimeout(()=>s.remove(),4000);
+},120);
+
+document.addEventListener("mousemove",e=>{
+  const s=document.createElement("div");
+  s.className="snowflake";
+  s.style.left=e.pageX+"px";
+  s.style.top=e.pageY+"px";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),2000);
+});
 
 window.onload=()=>{
   updateGreeting();
@@ -225,4 +233,3 @@ window.onload=()=>{
 
 </body>
 </html>
-
