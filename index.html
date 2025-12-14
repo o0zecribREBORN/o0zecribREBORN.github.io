@@ -9,20 +9,8 @@
 
 <body>
 
-<!-- 🎄 CHRISTMAS SNOW CONTAINER -->
+<!-- 🎄 CHRISTMAS SNOW -->
 <div id="snow-container"></div>
-
-<!-- 🎁 GIFT MODAL -->
-<div id="xmasGift" class="modal-bg" style="display:none;">
-  <div class="modal">
-    <div class="modal-header">
-      <span>🎁 Gift from O0ZE34</span>
-      <button class="close-btn" onclick="closeGift()">×</button>
-    </div>
-    <p style="padding:10px 0">You received <b>+25 Levels</b> for Christmas 🎄</p>
-    <button class="save-btn" onclick="acceptGift()">Accept</button>
-  </div>
-</div>
 
 <!-- ⭐ GREETING CARD -->
 <div class="greeting-card">
@@ -55,10 +43,17 @@
 
 <div class="home-sections">
 
+<!-- 🎁 CHRISTMAS GIFT (ONE TIME) -->
+<div id="giftBox" class="home-card" style="display:none">
+  <h2>🎁 Gift from O0ZE34</h2>
+  <p>You received a Christmas gift!</p>
+  <button class="quick-btn" onclick="claimGift()">Claim +25 Levels</button>
+</div>
+
 <!-- ⭐ NEXT UPDATE -->
 <div class="home-card">
-  <h2>NEXT UPDATE:</h2>
-  <div id="next-update-timer">Loading...</div>
+  <h2>NEXT UPDATE</h2>
+  <div id="next-update-timer"></div>
 </div>
 
 <!-- ⭐ RENAME -->
@@ -93,7 +88,6 @@
 <a class="quick-btn" href="games.html">Games</a>
 <a class="quick-btn" href="music.html">Music</a>
 <a class="quick-btn" href="apps.html">Apps</a>
-<a class="quick-btn" href="achievements.html">Achievements</a>
 </div>
 </div>
 
@@ -102,86 +96,111 @@
 
 <script src="script.js"></script>
 
-<!-- 🎄 CHRISTMAS + FIXES -->
+<!-- 🎄 CHRISTMAS LOGIC -->
 <script>
 /* GREETING */
 function updateGreeting(){
   let h=new Date().getHours();
-  let text="Hello";
-  if(h<12) text="Good Morning";
-  else if(h<17) text="Good Afternoon";
-  else if(h<21) text="Good Evening";
-  else text="Good Night";
-  let name=localStorage.getItem("username")||"Guest";
-  greet_txt.innerText=text+", "+name+"!";
+  let t="Hello";
+  if(h<12) t="Good Morning";
+  else if(h<17) t="Good Afternoon";
+  else if(h<21) t="Good Evening";
+  else t="Good Night";
+  let n=localStorage.getItem("username")||"Guest";
+  greet_txt.innerText = "🎄 " + t + ", " + n + "!";
 }
 
-/* NEXT UPDATE FIX */
-function getNextSaturday(){
-  const now=new Date();
-  let d=(6-now.getDay()+7)%7;
-  if(d===0) d=7;
-  return new Date(now.getFullYear(),now.getMonth(),now.getDate()+d);
-}
-function startNextUpdateTimer(){
-  const el=document.getElementById("next-update-timer");
-  let target=getNextSaturday();
-  setInterval(()=>{
-    let diff=target-new Date();
-    if(diff<=0){target=getNextSaturday();diff=target-new Date();}
-    let s=Math.floor(diff/1000);
-    let d=Math.floor(s/86400);
-    let h=Math.floor((s%86400)/3600);
-    let m=Math.floor((s%3600)/60);
-    let sec=s%60;
-    el.textContent=`${d}d ${h}h ${m}m ${sec}s`;
-  },1000);
+/* RENAME */
+function openModal(){renameModal.style.display="flex";}
+function closeModal(){renameModal.style.display="none";}
+function saveName(){
+ let n=nameInput.value.trim();
+ if(n){localStorage.setItem("username",n);updateGreeting();}
+ closeModal();
 }
 
-/* 🎁 CHRISTMAS GIFT (+25 LEVELS) */
-function acceptGift(){
-  let xp=parseInt(localStorage.getItem("xp")||"0");
-  xp+=2500;
+/* XP */
+function loadXP(){
+ let xp=parseInt(localStorage.getItem("xp")||"0");
+ let lvl=Math.floor(xp/100);
+ lvl_num.innerText=lvl;
+ xp_txt.innerText=`XP: ${xp%100} / 100`;
+ xp_fill.style.width=(xp%100)+"%";
+}
+
+/* DAILY */
+function claimDaily(){
+ let today=Math.floor(Date.now()/86400000);
+ if(localStorage.getItem("lastDaily")!=today){
+  localStorage.setItem("lastDaily",today);
+  let xp=parseInt(localStorage.getItem("xp")||"0")+50;
   localStorage.setItem("xp",xp);
-  localStorage.setItem("xmasGift","true");
-  closeGift();
+  daily_status.innerText="Claimed +50 XP";
   loadXP();
+ } else daily_status.innerText="Already claimed today";
 }
-function closeGift(){xmasGift.style.display="none";}
+
+/* 🎁 ONE TIME GIFT (+25 LEVELS) */
+function claimGift(){
+ let xp=parseInt(localStorage.getItem("xp")||"0");
+ xp += 2500; // 25 levels
+ localStorage.setItem("xp",xp);
+ localStorage.setItem("xmasGift","claimed");
+ giftBox.style.display="none";
+ loadXP();
+}
+
+/* SHOW GIFT ONCE */
 if(!localStorage.getItem("xmasGift")){
-  setTimeout(()=>xmasGift.style.display="flex",1200);
+ giftBox.style.display="block";
 }
 
-/* ❄️ SNOWFLAKES */
+/* NEXT UPDATE TIMER FIX */
+function nextSaturday(){
+ let d=new Date();
+ let diff=(6-d.getDay()+7)%7 || 7;
+ let n=new Date(d);
+ n.setDate(d.getDate()+diff);
+ n.setHours(0,0,0,0);
+ return n;
+}
+let target=nextSaturday();
 setInterval(()=>{
-  let s=document.createElement("div");
-  s.className="snowflake";
-  s.style.left=Math.random()*window.innerWidth+"px";
-  s.style.animationDuration=(3+Math.random()*3)+"s";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),6000);
-},180);
+ let diff=target-new Date();
+ if(diff<=0){target=nextSaturday();diff=target-new Date();}
+ let s=Math.floor(diff/1000);
+ let d=Math.floor(s/86400);
+ let h=Math.floor(s%86400/3600);
+ let m=Math.floor(s%3600/60);
+ let sec=s%60;
+ next-update-timer.innerText=`${d}d ${h}h ${m}m ${sec}s`;
+},1000);
 
-window.onload=()=>{
-  updateGreeting();
-  loadXP();
-  startNextUpdateTimer();
-  greet_box.onclick=openModal;
-};
+/* 🎄 SNOW */
+setInterval(()=>{
+ let s=document.createElement("div");
+ s.className="snowflake";
+ s.style.left=Math.random()*100+"vw";
+ s.style.animationDuration=(3+Math.random()*4)+"s";
+ document.body.appendChild(s);
+ setTimeout(()=>s.remove(),8000);
+},200);
+
+greet_box.onclick=openModal;
+updateGreeting();
+loadXP();
 </script>
 
-<!-- ❄️ SNOW STYLE -->
 <style>
+/* 🎄 SNOW STYLE */
 .snowflake{
  position:fixed;
  top:-10px;
- width:6px;
- height:6px;
+ width:6px;height:6px;
  background:white;
  border-radius:50%;
- opacity:.9;
- animation:fall linear forwards;
- pointer-events:none;
+ opacity:.8;
+ animation:fall linear;
 }
 @keyframes fall{
  to{transform:translateY(110vh);}
