@@ -8,44 +8,46 @@
 <link href="favicon.png" rel="icon" type="image/png"/>
 
 <style>
-.settings-grid{
+.settings-container{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:20px;
 }
+
 .setting-card{
   background:rgba(255,255,255,0.08);
   border-radius:18px;
   padding:18px;
-  border:1px solid rgba(255,255,255,0.15);
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 25px rgba(0,0,0,.25);
 }
+
 .setting-card h3{
   margin:0 0 8px;
 }
-.setting-card p{
-  opacity:.8;
-  font-size:14px;
-}
+
 .setting-card button,
-.setting-card input[type="color"]{
+.setting-card select,
+.setting-card input{
   margin-top:10px;
-  padding:10px 14px;
+  width:100%;
+  padding:10px;
   border-radius:12px;
   border:none;
+  background:rgba(255,255,255,.15);
+  color:white;
+  font-weight:600;
   cursor:pointer;
-  font-weight:700;
 }
-.toggle{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+
+.setting-card button:hover{
+  background:rgba(255,255,255,.25);
 }
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar">
 <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
 <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
@@ -55,118 +57,147 @@
 <a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
 <a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
 <a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
-<a href="settings.html" class="active"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+<a href="settings.html" style="background:rgba(255,255,255,0.15)">
+<i class="fa-solid fa-gear"></i><span>Settings</span></a>
 </div>
 
-<!-- MAIN -->
 <div class="main">
-<h1>⚙️ Settings</h1>
+<h1><i class="fa fa-gear"></i> Settings</h1>
 
-<div class="settings-grid">
+<div class="settings-container">
+
+<!-- CORE -->
+<div class="setting-card">
+<h3>Theme</h3>
+<button onclick="toggleTheme()">Toggle Light / Dark</button>
+</div>
+
+<div class="setting-card">
+<h3>Sidebar Position</h3>
+<button onclick="moveSidebar()">Move Sidebar</button>
+</div>
+
+<div class="setting-card">
+<h3>Performance Mode</h3>
+<button onclick="setPerf(true)">Enable</button>
+<button onclick="setPerf(false)">Disable</button>
+</div>
+
+<div class="setting-card">
+<h3>Visual Mode</h3>
+<button onclick="toggleExtra('glassUI')">Toggle Glass UI</button>
+</div>
 
 <!-- THEME MAKER -->
 <div class="setting-card">
-<h3>🎨 Theme Maker</h3>
-<p>Customize your site accent color.</p>
-<input type="color" id="accentPicker">
-<button onclick="saveAccent()">Save Theme</button>
+<h3>Theme Maker</h3>
+<label>Background Color</label>
+<input type="color" onchange="setBG(this.value)">
+<label>Accent Color</label>
+<input type="color" onchange="setAccent(this.value)">
 </div>
 
-<!-- VISUAL MODE -->
+<!-- WINDOWS XP MODE -->
 <div class="setting-card">
-<div class="toggle">
-  <h3>✨ Visual Mode</h3>
-  <button onclick="toggleVisual()">Toggle</button>
-</div>
-<p>Extra glow, glass UI, and effects.</p>
+<h3>Windows XP Mode 😂</h3>
+<button onclick="toggleXP()">Toggle XP Mode</button>
 </div>
 
-<!-- PERFORMANCE MODE -->
+<!-- FONT CHANGER -->
 <div class="setting-card">
-<div class="toggle">
-  <h3>⚡ Performance Mode</h3>
-  <button onclick="togglePerformance()">Toggle</button>
-</div>
-<p>Disables snow & heavy animations.</p>
+<h3>Font Changer</h3>
+<select onchange="setFont(this.value)">
+<option value="">Default</option>
+<option value="Arial">Arial</option>
+<option value="Verdana">Verdana</option>
+<option value="Tahoma">Tahoma</option>
+<option value="Trebuchet MS">Trebuchet</option>
+<option value="Comic Sans MS">Comic Sans 💀</option>
+<option value="Courier New">Courier</option>
+<option value="Georgia">Georgia</option>
+<option value="Times New Roman">Times</option>
+<option value="Impact">Impact</option>
+<option value="Lucida Console">Lucida</option>
+</select>
 </div>
 
-<!-- LIGHT / DARK -->
-<div class="setting-card">
-<h3>🌗 Light / Dark Mode</h3>
-<button onclick="toggleTheme()">Toggle Theme</button>
-</div>
-
-<!-- SIDEBAR POSITION -->
-<div class="setting-card">
-<h3>📐 Sidebar Position</h3>
-<button onclick="toggleSidebar()">Move Sidebar</button>
-</div>
+<!-- EXTRA VISUALS -->
+<div class="setting-card"><h3>Blur Background</h3><button onclick="toggleExtra('blurBG')">Toggle</button></div>
+<div class="setting-card"><h3>Mega Glow</h3><button onclick="toggleExtra('megaGlow')">Toggle</button></div>
+<div class="setting-card"><h3>Thick Borders</h3><button onclick="toggleExtra('thickBorders')">Toggle</button></div>
+<div class="setting-card"><h3>Thin Borders</h3><button onclick="toggleExtra('thinBorders')">Toggle</button></div>
+<div class="setting-card"><h3>Compact Mode</h3><button onclick="toggleExtra('superCompact')">Toggle</button></div>
+<div class="setting-card"><h3>Wide Layout</h3><button onclick="toggleExtra('wideLayout')">Toggle</button></div>
+<div class="setting-card"><h3>Big Titles</h3><button onclick="toggleExtra('bigTitles')">Toggle</button></div>
+<div class="setting-card"><h3>Ultra Neon</h3><button onclick="toggleExtra('ultraNeon')">Toggle</button></div>
 
 <!-- RESET -->
 <div class="setting-card">
-<h3>♻️ Reset Settings</h3>
-<p>Resets ONLY visual preferences.</p>
-<button onclick="resetSettings()" style="background:#ff4d4d;color:white;">Reset</button>
+<h3>Reset Everything</h3>
+<button onclick="resetSettings()">RESET SITE</button>
 </div>
 
 </div>
 </div>
+
+<script src="script.js"></script>
 
 <script>
-/* THEME COLOR */
-function saveAccent(){
-  let c=document.getElementById("accentPicker").value;
-  document.documentElement.style.setProperty("--accent",c);
-  localStorage.setItem("accent",c);
-}
+/* === SETTINGS LOGIC === */
 
-/* VISUAL MODE */
-function toggleVisual(){
-  let v=localStorage.getItem("visual")==="1";
-  localStorage.setItem("visual",v?"0":"1");
-  document.body.classList.toggle("visual-mode",!v);
-}
-
-/* PERFORMANCE MODE */
-function togglePerformance(){
-  let p=localStorage.getItem("perf")==="1";
-  localStorage.setItem("perf",p?"0":"1");
-  alert(p?"Performance OFF":"Performance ON");
-}
-
-/* LIGHT/DARK */
 function toggleTheme(){
-  document.body.classList.toggle("light-theme");
-  localStorage.setItem("theme",
-    document.body.classList.contains("light-theme")?"light":"dark");
+ document.body.classList.toggle("light-theme");
+ localStorage.setItem("theme",
+   document.body.classList.contains("light-theme")?"light":"dark");
 }
 
-/* SIDEBAR */
-function toggleSidebar(){
-  document.body.classList.toggle("sidebar-right");
-  localStorage.setItem("sidebar",
-    document.body.classList.contains("sidebar-right")?"right":"left");
+function moveSidebar(){
+ document.body.classList.toggle("sidebar-right");
+ localStorage.setItem("sidebarPos",
+   document.body.classList.contains("sidebar-right")?"right":"left");
 }
 
-/* RESET */
+function setPerf(v){
+ localStorage.setItem("perf",v?"on":"off");
+ alert(v?"Performance Mode ON":"Performance Mode OFF");
+}
+
+function setBG(c){
+ document.body.style.background = c;
+ localStorage.setItem("bgColor",c);
+}
+
+function setAccent(c){
+ document.documentElement.style.setProperty("--accent",c);
+ localStorage.setItem("accent",c);
+}
+
+function setFont(f){
+ document.body.style.fontFamily = f || "";
+ localStorage.setItem("font",f);
+}
+
+function toggleXP(){
+ toggleExtra("winXPMode");
+}
+
 function resetSettings(){
-  ["accent","visual","perf","theme","sidebar"].forEach(k=>localStorage.removeItem(k));
+ if(confirm("This will RESET EVERYTHING. Continue?")){
+  localStorage.clear();
   location.reload();
+ }
 }
 
-/* LOAD SAVED */
+/* LOAD SETTINGS */
 window.onload=()=>{
-  let a=localStorage.getItem("accent");
-  if(a){
-    document.documentElement.style.setProperty("--accent",a);
-    accentPicker.value=a;
-  }
-  if(localStorage.getItem("visual")==="1")
-    document.body.classList.add("visual-mode");
-  if(localStorage.getItem("theme")==="light")
-    document.body.classList.add("light-theme");
-  if(localStorage.getItem("sidebar")==="right")
-    document.body.classList.add("sidebar-right");
+ if(localStorage.getItem("theme")==="light")
+   document.body.classList.add("light-theme");
+ if(localStorage.getItem("sidebarPos")==="right")
+   document.body.classList.add("sidebar-right");
+ if(localStorage.getItem("bgColor"))
+   document.body.style.background=localStorage.getItem("bgColor");
+ if(localStorage.getItem("font"))
+   document.body.style.fontFamily=localStorage.getItem("font");
 };
 </script>
 
