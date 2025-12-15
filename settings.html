@@ -1,13 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Settings — O0ZE34's Crib REBORN</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="https://yt3.ggpht.com/wthq9MjtAgvnZgY_erp84UbFXaWIsav1BkSsGMVWKBZvV59BRfj-1hQn8t2Ei2xIwWAapF_Stonefw=s280-rw-nd-v1">
+<title>Settings — O0ZE34's Crib REBORN</title>
+
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
+
+<style>
+.settings-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.setting-card{
+  background:rgba(255,255,255,0.08);
+  border-radius:18px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,0.15);
+}
+.setting-card h3{
+  margin:0 0 8px;
+}
+.setting-card p{
+  opacity:.8;
+  font-size:14px;
+}
+.setting-card button,
+.setting-card input[type="color"]{
+  margin-top:10px;
+  padding:10px 14px;
+  border-radius:12px;
+  border:none;
+  cursor:pointer;
+  font-weight:700;
+}
+.toggle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+</style>
 </head>
+
 <body>
 
+<!-- SIDEBAR -->
 <div class="sidebar">
 <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
 <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
@@ -17,47 +55,120 @@
 <a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
 <a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
 <a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
-<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+<a href="settings.html" class="active"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
 </div>
 
-<div class="content">
-    <h1 class="page-title"><i class="fa fa-gear"></i> Settings</h1>
+<!-- MAIN -->
+<div class="main">
+<h1>⚙️ Settings</h1>
 
-    <div class="settings-container">
+<div class="settings-grid">
 
-        <div class="setting-card">
-            <h3>Theme</h3>
-            <p>Switch between light and dark mode.</p>
-            <button onclick="toggleTheme()">Toggle Theme</button>
-        </div>
+<!-- THEME MAKER -->
+<div class="setting-card">
+<h3>🎨 Theme Maker</h3>
+<p>Customize your site accent color.</p>
+<input type="color" id="accentPicker">
+<button onclick="saveAccent()">Save Theme</button>
+</div>
 
-        <div class="setting-card">
-            <h3>Sidebar Position</h3>
-            <p>Move the sidebar to the left or right.</p>
-            <button onclick="moveSidebar()">Move Sidebar</button>
-        </div>
+<!-- VISUAL MODE -->
+<div class="setting-card">
+<div class="toggle">
+  <h3>✨ Visual Mode</h3>
+  <button onclick="toggleVisual()">Toggle</button>
+</div>
+<p>Extra glow, glass UI, and effects.</p>
+</div>
 
-        <div class="setting-card">
-            <h3>Reset Preferences</h3>
-            <p>Clear all saved settings and reload defaults.</p>
-            <button onclick="resetSettings()">Reset</button>
-        </div>
+<!-- PERFORMANCE MODE -->
+<div class="setting-card">
+<div class="toggle">
+  <h3>⚡ Performance Mode</h3>
+  <button onclick="togglePerformance()">Toggle</button>
+</div>
+<p>Disables snow & heavy animations.</p>
+</div>
 
-    
-<div class="setting-card"><h3>Blur Background</h3><button onclick="toggleExtra('blurBG')">Toggle</button></div>
-<div class="setting-card"><h3>Glass UI</h3><button onclick="toggleExtra('glassUI')">Toggle</button></div>
-<div class="setting-card"><h3>Mega Glow</h3><button onclick="toggleExtra('megaGlow')">Toggle</button></div>
-<div class="setting-card"><h3>Thick Borders</h3><button onclick="toggleExtra('thickBorders')">Toggle</button></div>
-<div class="setting-card"><h3>Thin Borders</h3><button onclick="toggleExtra('thinBorders')">Toggle</button></div>
-<div class="setting-card"><h3>Super Compact</h3><button onclick="toggleExtra('superCompact')">Toggle</button></div>
-<div class="setting-card"><h3>Wide Layout</h3><button onclick="toggleExtra('wideLayout')">Toggle</button></div>
-<div class="setting-card"><h3>Big Titles</h3><button onclick="toggleExtra('bigTitles')">Toggle</button></div>
-<div class="setting-card"><h3>Ultra Neon Mode</h3><button onclick="toggleExtra('ultraNeon')">Toggle</button></div>
-<div class="setting-card"><h3>Windows XP Mode 😂</h3><button onclick="toggleExtra('winXPMode')">Toggle</button></div>
+<!-- LIGHT / DARK -->
+<div class="setting-card">
+<h3>🌗 Light / Dark Mode</h3>
+<button onclick="toggleTheme()">Toggle Theme</button>
+</div>
+
+<!-- SIDEBAR POSITION -->
+<div class="setting-card">
+<h3>📐 Sidebar Position</h3>
+<button onclick="toggleSidebar()">Move Sidebar</button>
+</div>
+
+<!-- RESET -->
+<div class="setting-card">
+<h3>♻️ Reset Settings</h3>
+<p>Resets ONLY visual preferences.</p>
+<button onclick="resetSettings()" style="background:#ff4d4d;color:white;">Reset</button>
+</div>
 
 </div>
 </div>
 
-<script src="script.js"></script>
+<script>
+/* THEME COLOR */
+function saveAccent(){
+  let c=document.getElementById("accentPicker").value;
+  document.documentElement.style.setProperty("--accent",c);
+  localStorage.setItem("accent",c);
+}
+
+/* VISUAL MODE */
+function toggleVisual(){
+  let v=localStorage.getItem("visual")==="1";
+  localStorage.setItem("visual",v?"0":"1");
+  document.body.classList.toggle("visual-mode",!v);
+}
+
+/* PERFORMANCE MODE */
+function togglePerformance(){
+  let p=localStorage.getItem("perf")==="1";
+  localStorage.setItem("perf",p?"0":"1");
+  alert(p?"Performance OFF":"Performance ON");
+}
+
+/* LIGHT/DARK */
+function toggleTheme(){
+  document.body.classList.toggle("light-theme");
+  localStorage.setItem("theme",
+    document.body.classList.contains("light-theme")?"light":"dark");
+}
+
+/* SIDEBAR */
+function toggleSidebar(){
+  document.body.classList.toggle("sidebar-right");
+  localStorage.setItem("sidebar",
+    document.body.classList.contains("sidebar-right")?"right":"left");
+}
+
+/* RESET */
+function resetSettings(){
+  ["accent","visual","perf","theme","sidebar"].forEach(k=>localStorage.removeItem(k));
+  location.reload();
+}
+
+/* LOAD SAVED */
+window.onload=()=>{
+  let a=localStorage.getItem("accent");
+  if(a){
+    document.documentElement.style.setProperty("--accent",a);
+    accentPicker.value=a;
+  }
+  if(localStorage.getItem("visual")==="1")
+    document.body.classList.add("visual-mode");
+  if(localStorage.getItem("theme")==="light")
+    document.body.classList.add("light-theme");
+  if(localStorage.getItem("sidebar")==="right")
+    document.body.classList.add("sidebar-right");
+};
+</script>
+
 </body>
 </html>
