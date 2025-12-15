@@ -1,331 +1,252 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Settings — O0ZE34's Crib REBORN</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link rel="icon" type="image/png" href="favicon.png">
-  <style>
-    /* 🎄 Settings extras */
-    .content{ margin-left:260px; padding:30px; }
-    .page-title{ font-size:38px; margin:0 0 18px; }
-    .settings-container{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:18px;
-      margin-top:18px;
-    }
-    .setting-card{
-      background:rgba(255,255,255,.09);
-      border:1px solid rgba(255,255,255,.15);
-      border-radius:18px;
-      padding:18px;
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
-      backdrop-filter: blur(10px);
-    }
-    .setting-card h3{ margin:0 0 8px; font-size:20px; }
-    .setting-card p{ margin:0 0 12px; opacity:.9; line-height:1.35; }
+<title>O0ZE34's Crib REBORN — Christmas 🎄</title>
 
-    .set-row{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-    .btn-set{
-      border:none; cursor:pointer;
-      padding:10px 14px; border-radius:14px;
-      background:rgba(255,255,255,.12);
-      color:#fff; font-weight:800;
-      transition:.15s transform;
-    }
-    .btn-set:hover{ transform:translateY(-2px); }
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
 
-    .toggle{
-      display:flex; align-items:center; gap:10px;
-      background:rgba(0,0,0,.25);
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-    }
-    .toggle input{ width:18px; height:18px; accent-color:#3cff9a; cursor:pointer; }
+<style>
+/* 🎄 CHRISTMAS EXTRAS */
+.snowflake{
+  position:fixed;
+  width:6px;
+  height:6px;
+  background:white;
+  border-radius:50%;
+  pointer-events:none;
+  animation: fall 4s linear forwards;
+  opacity:.9;
+  z-index:999;
+}
+@keyframes fall{
+  to{ transform:translateY(110vh); opacity:0 }
+}
 
-    .color-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .color-grid label{
-      display:flex; justify-content:space-between; align-items:center;
-      gap:10px;
-      background:rgba(0,0,0,.22);
-      padding:10px 12px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-    }
-    .color-grid input[type="color"]{
-      width:44px; height:34px; border:none; background:transparent; cursor:pointer;
-    }
-
-    /* Modal that matches rename style-ish */
-    .modal-bg{
-      position:fixed; inset:0;
-      background:rgba(0,0,0,.65);
-      display:none;
-      align-items:center; justify-content:center;
-      z-index:9999;
-    }
-    .modal{
-      width:min(520px,92vw);
-      background:rgba(15,35,25,.95);
-      border:2px solid rgba(60,255,154,.35);
-      box-shadow:0 0 40px rgba(0,255,150,.25);
-      border-radius:18px;
-      padding:16px;
-      backdrop-filter: blur(12px);
-    }
-    .modal-header{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:10px;
-      font-weight:900;
-    }
-    .close-btn{
-      border:none; cursor:pointer;
-      width:38px; height:38px;
-      border-radius:12px;
-      background:rgba(255,255,255,.12);
-      color:#fff; font-size:20px;
-    }
-    .modal p{ margin:8px 0 14px; line-height:1.35; opacity:.95; }
-    .modal-actions{ display:flex; gap:10px; flex-wrap:wrap; }
-    .save-btn{
-      border:none; cursor:pointer;
-      padding:10px 14px;
-      border-radius:14px;
-      background:#3cff9a;
-      color:#05150d;
-      font-weight:1000;
-    }
-    .ghost-btn{
-      border:1px solid rgba(255,255,255,.2);
-      cursor:pointer;
-      padding:10px 14px;
-      border-radius:14px;
-      background:rgba(255,255,255,.08);
-      color:#fff;
-      font-weight:900;
-    }
-  </style>
+#giftToast{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  background:rgba(20,40,30,.95);
+  border:2px solid #3cff9a;
+  padding:18px 22px;
+  border-radius:18px;
+  box-shadow:0 0 30px rgba(0,255,150,.4);
+  display:none;
+  z-index:9999;
+}
+</style>
 </head>
+
 <body>
 
-<div class="sidebar">
-  <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-  <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
-  <a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
-  <a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
-  <a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
-  <a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
-  <a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
-  <a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
-  <a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
-  <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
+<!-- 🎁 GIFT TOAST -->
+<div id="giftToast">
+  🎁 <b>You got a gift from O0ZE34!</b><br>
+  +25 LEVELS 🎄
 </div>
 
-<div class="content">
-  <h1 class="page-title"><i class="fa fa-gear"></i> Settings</h1>
-
-  <div class="settings-container">
-
-    <div class="setting-card">
-      <h3>⚡ Performance Mode</h3>
-      <p>Disables heavy visuals (extra particles, fancy effects) for smoother speed.</p>
-      <div class="toggle">
-        <input id="perfToggle" type="checkbox">
-        <b id="perfLabel">OFF</b>
-      </div>
-    </div>
-
-    <div class="setting-card">
-      <h3>👁️ Visual Mode</h3>
-      <p>Controls the “Christmas visual intensity”.</p>
-      <div class="set-row">
-        <button class="btn-set" onclick="setVisual('low')">Low</button>
-        <button class="btn-set" onclick="setVisual('med')">Medium</button>
-        <button class="btn-set" onclick="setVisual('high')">High</button>
-        <span id="visualTag" style="opacity:.9;font-weight:900;"></span>
-      </div>
-    </div>
-
-    <div class="setting-card">
-      <h3>🎨 Theme Maker</h3>
-      <p>Pick your own colors. Saved forever on your device.</p>
-      <div class="color-grid">
-        <label>Accent <input id="cAccent" type="color" value="#3cff9a"></label>
-        <label>Card <input id="cCard" type="color" value="#0f2a1e"></label>
-        <label>Glow <input id="cGlow" type="color" value="#00ff95"></label>
-        <label>Text <input id="cText" type="color" value="#ffffff"></label>
-      </div>
-      <div class="set-row" style="margin-top:12px;">
-        <button class="save-btn" onclick="saveTheme()">Save Theme</button>
-        <button class="ghost-btn" onclick="resetTheme()">Reset</button>
-      </div>
-      <small style="opacity:.8;">(Theme Maker works best if your CSS uses variables — this page adds them automatically.)</small>
-    </div>
-
-    <div class="setting-card">
-      <h3>📦 Reset</h3>
-      <p>Reset saved preferences (theme/perf/visual). Doesn’t wipe XP/username unless you want.</p>
-      <div class="set-row">
-        <button class="btn-set" onclick="resetPrefs()">Reset Preferences</button>
-        <button class="ghost-btn" onclick="resetEverything()">RESET EVERYTHING</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- 🗣️ Update Message Modal -->
-<div id="updateModalBG" class="modal-bg">
+<!-- 📢 UPDATE MESSAGE MODAL -->
+<div id="updateModal" class="modal-bg" style="display:none;">
   <div class="modal">
     <div class="modal-header">
-      <span>Message from O0ZE34 🎄</span>
-      <button class="close-btn" onclick="closeUpdateModal()">×</button>
+      <span>Update Notice</span>
+      <button class="close-btn" onclick="closeUpdate()">×</button>
     </div>
 
-    <p id="updateMsg">
+    <p id="updateText" style="margin-bottom:18px;">
       sorry if this update was buns, i will work on this site everyday until christmas then ill do the updates every saturday
     </p>
 
-    <div id="updateActions" class="modal-actions">
-      <button class="save-btn" onclick="chooseBet()">Bet</button>
-      <button class="ghost-btn" onclick="chooseBroWhy()">bro why</button>
+    <div id="updateBtns" style="display:flex;gap:12px;">
+      <button class="save-btn" onclick="acceptUpdate()">Bet</button>
+      <button class="save-btn" onclick="whyUpdate()">bro why</button>
     </div>
   </div>
+</div>
+
+<!-- ⭐ GREETING CARD -->
+<div class="greeting-card">
+  <div id="greet_box" class="greet-content" style="cursor:pointer;">
+    <span id="greet_txt"></span>
+  </div>
+</div>
+
+<div id="clock"></div>
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+
+<!-- ⭐ SIDEBAR -->
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+<a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
+</div>
+
+<!-- ⭐ MAIN -->
+<div class="main">
+<h1>🎄 Home</h1>
+
+<div class="home-sections">
+
+<div class="home-card">
+  <h2>🎁 NEXT UPDATE:</h2>
+  <div id="next-update-timer">Loading...</div>
+</div>
+
+<!-- RENAME MODAL -->
+<div id="renameModal" class="modal-bg" style="display:none;">
+  <div class="modal">
+    <div class="modal-header">
+      <span>Rename Profile</span>
+      <button class="close-btn" onclick="closeModal()">×</button>
+    </div>
+    <input id="nameInput" class="modal-input" placeholder="Enter name...">
+    <button class="save-btn" onclick="saveName()">Save</button>
+  </div>
+</div>
+
+<div class="xp_card">
+  <h2>Level <span id="lvl_num">1</span></h2>
+  <div class="xp_bar"><div id="xp_fill"></div></div>
+  <p id="xp_txt">XP: 0 / 100</p>
+</div>
+
+<div class="daily_card" onclick="claimDaily()">
+  <h2>🎄 Daily Reward</h2>
+  <p id="daily_status">Tap to claim</p>
+</div>
+
+<div class="home-card">
+<h2>⚡ Quick Access</h2>
+<div class="home-grid">
+<a class="quick-btn" href="games.html">Games</a>
+<a class="quick-btn" href="music.html">Music</a>
+<a class="quick-btn" href="apps.html">Apps</a>
+<a class="quick-btn" href="achievements.html">Achievements</a>
+<a class="quick-btn" target="_blank"
+   href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj">
+Comments
+</a>
+</div>
+</div>
+
+</div>
 </div>
 
 <script src="script.js"></script>
 
 <script>
-/* ========== STORAGE KEYS ========== */
-const KEY_PERF = "perf";
-const KEY_VIS  = "visualMode";
-const KEY_THEME = "oozeTheme";
-
-/* ========== PERF MODE ========== */
-function applyPerfUI(){
-  const on = localStorage.getItem(KEY_PERF) === "on";
-  perfToggle.checked = on;
-  perfLabel.textContent = on ? "ON" : "OFF";
+/* GREETING */
+function updateGreeting(){
+  let h=new Date().getHours();
+  let text=h<12?"Good Morning":h<17?"Good Afternoon":h<21?"Good Evening":"Good Night";
+  let name=localStorage.getItem("username")||"Guest";
+  greet_txt.innerText = text + ", " + name + " 🎄";
 }
-perfToggle.addEventListener("change", () => {
-  localStorage.setItem(KEY_PERF, perfToggle.checked ? "on" : "off");
-  applyPerfUI();
-});
 
-/* ========== VISUAL MODE ========== */
-function setVisual(mode){
-  localStorage.setItem(KEY_VIS, mode);
-  applyVisualTag();
+/* RENAME */
+function openModal(){ renameModal.style.display="flex"; }
+function closeModal(){ renameModal.style.display="none"; }
+function saveName(){
+  let n=nameInput.value.trim();
+  if(n){ localStorage.setItem("username",n); updateGreeting(); }
+  closeModal();
 }
-function applyVisualTag(){
-  const v = localStorage.getItem(KEY_VIS) || "med";
-  visualTag.textContent = "Current: " + v.toUpperCase();
-}
-applyVisualTag();
 
-/* ========== THEME MAKER (CSS vars) ========== */
-function applyThemeVars(theme){
-  // add variables to :root
-  document.documentElement.style.setProperty("--ooze-accent", theme.accent);
-  document.documentElement.style.setProperty("--ooze-card", theme.card);
-  document.documentElement.style.setProperty("--ooze-glow", theme.glow);
-  document.documentElement.style.setProperty("--ooze-text", theme.text);
-
-  // quick “instant effect” even if style.css isn’t fully variable-based yet
-  document.body.style.color = theme.text;
+/* XP */
+function loadXP(){
+  let xp=parseInt(localStorage.getItem("xp")||"0");
+  let lvl=Math.floor(xp/100);
+  let cur=xp%100;
+  lvl_num.innerText=lvl;
+  xp_txt.innerText=`XP: ${cur} / 100`;
+  xp_fill.style.width=cur+"%";
 }
-function loadThemeToInputs(){
-  const saved = JSON.parse(localStorage.getItem(KEY_THEME) || "null");
-  if(saved){
-    cAccent.value = saved.accent;
-    cCard.value = saved.card;
-    cGlow.value = saved.glow;
-    cText.value = saved.text;
-    applyThemeVars(saved);
+
+/* DAILY */
+function claimDaily(){
+  let today=Math.floor(Date.now()/86400000);
+  let last=+localStorage.getItem("lastDaily")||0;
+  if(today>last){
+    localStorage.setItem("lastDaily",today);
+    localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+50));
+    daily_status.innerText="Claimed! +50 XP";
+    loadXP();
+  }else daily_status.innerText="Already claimed today";
+}
+
+/* NEXT UPDATE */
+function startNextUpdateTimer(){
+  let el=document.getElementById("next-update-timer");
+  function nextSat(){
+    let d=new Date(); let diff=(6-d.getDay()+7)%7||7;
+    return new Date(d.getFullYear(),d.getMonth(),d.getDate()+diff);
+  }
+  let t=nextSat();
+  setInterval(()=>{
+    let diff=t-new Date();
+    if(diff<=0) t=nextSat();
+    let s=Math.floor(diff/1000),
+        d=Math.floor(s/86400),
+        h=Math.floor((s%86400)/3600),
+        m=Math.floor((s%3600)/60),
+        sc=s%60;
+    el.textContent=`${d}d ${h}h ${m}m ${sc}s`;
+  },1000);
+}
+
+/* 🎁 ONE TIME GIFT */
+if(!localStorage.getItem("xmas25")){
+  localStorage.setItem("xmas25","1");
+  localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+2500));
+  giftToast.style.display="block";
+  setTimeout(()=>giftToast.style.display="none",6000);
+}
+
+/* ❄️ SNOW */
+setInterval(()=>{
+  let s=document.createElement("div");
+  s.className="snowflake";
+  s.style.left=Math.random()*innerWidth+"px";
+  s.style.top="-10px";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),4000);
+},120);
+
+/* 📢 UPDATE MESSAGE LOGIC */
+function showUpdate(){
+  if(!localStorage.getItem("updateSeen")){
+    updateModal.style.display="flex";
   }
 }
-function saveTheme(){
-  const theme = {
-    accent: cAccent.value,
-    card: cCard.value,
-    glow: cGlow.value,
-    text: cText.value
-  };
-  localStorage.setItem(KEY_THEME, JSON.stringify(theme));
-  applyThemeVars(theme);
-  toastQuick("Theme saved ✅");
+function acceptUpdate(){
+  localStorage.setItem("updateSeen","1");
+  updateModal.style.display="none";
 }
-function resetTheme(){
-  localStorage.removeItem(KEY_THEME);
-  toastQuick("Theme reset ✅ (refresh if needed)");
+function whyUpdate(){
+  updateText.innerText="bro because i had to set up my christmas lights";
+  updateBtns.innerHTML='<button class="save-btn" onclick="acceptUpdate()">Okay</button>';
+}
+function closeUpdate(){
+  acceptUpdate();
 }
 
-/* tiny toast */
-function toastQuick(txt){
-  const t=document.createElement("div");
-  t.style.position="fixed";
-  t.style.bottom="25px";
-  t.style.right="25px";
-  t.style.padding="14px 16px";
-  t.style.borderRadius="16px";
-  t.style.background="rgba(0,0,0,.65)";
-  t.style.border="1px solid rgba(255,255,255,.15)";
-  t.style.backdropFilter="blur(10px)";
-  t.style.fontWeight="900";
-  t.style.zIndex="99999";
-  t.innerText=txt;
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(),2200);
-}
-
-/* ========== RESET ========== */
-function resetPrefs(){
-  localStorage.removeItem(KEY_PERF);
-  localStorage.removeItem(KEY_VIS);
-  localStorage.removeItem(KEY_THEME);
-  applyPerfUI();
-  applyVisualTag();
-  toastQuick("Preferences reset ✅");
-}
-function resetEverything(){
-  localStorage.clear();
-  toastQuick("Everything wiped ✅");
-  setTimeout(()=>location.reload(),900);
-}
-
-/* ========== UPDATE MODAL ========== */
-function openUpdateModal(){
-  updateModalBG.style.display="flex";
-}
-function closeUpdateModal(){
-  updateModalBG.style.display="none";
-}
-function chooseBet(){
-  closeUpdateModal();
-  localStorage.setItem("updateMsgSeen","1");
-  toastQuick("Bet 😼");
-}
-function chooseBroWhy(){
-  // change message + show only OK
-  updateMsg.innerHTML = "bro because i had to set up my christmas lights 😭🎄";
-  updateActions.innerHTML = `<button class="save-btn" onclick="chooseOk()">okay</button>`;
-}
-function chooseOk(){
-  closeUpdateModal();
-  localStorage.setItem("updateMsgSeen","1");
-  toastQuick("Okay ✅");
-}
-
-/* show once */
-window.addEventListener("DOMContentLoaded", () => {
-  applyPerfUI();
-  loadThemeToInputs();
-
-  if(!localStorage.getItem("updateMsgSeen")){
-    openUpdateModal();
-  }
-});
+window.onload=()=>{
+  updateGreeting();
+  loadXP();
+  startNextUpdateTimer();
+  greet_box.onclick=openModal;
+  showUpdate();
+};
 </script>
 
 </body>
