@@ -337,9 +337,20 @@ document.addEventListener("DOMContentLoaded",applyExtraSettings);
 
 // === NAME BAN ===
  const BAN_MESSAGE="ur banned lol imagine getting rejected XD";
+ const BAN_FLAG_KEY="bannedUser";
+ const BAN_NAME_KEY="bannedName";
 
  function isBannedUser(name){
    return typeof name==="string" && name.toLowerCase().includes("angel");
+ }
+
+ function rememberBan(name){
+   localStorage.setItem(BAN_FLAG_KEY,"true");
+   if(typeof name==="string" && name.trim()){
+     localStorage.setItem(BAN_NAME_KEY,name);
+   }else{
+     localStorage.removeItem(BAN_NAME_KEY);
+   }
  }
 
  function showBanOverlay(name){
@@ -359,7 +370,8 @@ document.addEventListener("DOMContentLoaded",applyExtraSettings);
    banNote.textContent=BAN_MESSAGE;
 
    const detail=document.createElement("p");
-   const displayName=typeof name==="string" && name.trim()?name:"Angel";
+   const storedName=typeof name==="string" && name.trim()?name:localStorage.getItem(BAN_NAME_KEY);
+   const displayName=storedName && storedName.trim()?storedName:"Angel";
    detail.textContent=`Your name "${displayName}" has been banned from all sites.`;
 
    card.append(title,banNote,detail);
@@ -370,11 +382,21 @@ document.addEventListener("DOMContentLoaded",applyExtraSettings);
 
 function enforceNameBan(){
   const stored=localStorage.getItem("username");
+  const hasBanFlag=localStorage.getItem(BAN_FLAG_KEY)==="true";
+
   if(isBannedUser(stored)){
+    rememberBan(stored);
     showBanOverlay(stored);
     localStorage.removeItem("username");
     return true;
   }
+
+  if(hasBanFlag){
+    const priorName=localStorage.getItem(BAN_NAME_KEY);
+    showBanOverlay(priorName);
+    return true;
+  }
+
   return false;
 }
 
