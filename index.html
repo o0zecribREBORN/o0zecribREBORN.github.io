@@ -8,7 +8,7 @@
 <link href="favicon.png" rel="icon" type="image/png"/>
 
 <style>
-/* 🎄 CHRISTMAS EXTRAS */
+/* ❄️ SNOW */
 .snowflake{
   position:fixed;
   width:6px;
@@ -24,77 +24,50 @@
   to{ transform:translateY(110vh); opacity:0 }
 }
 
-#giftToast{
-  position:fixed;
-  bottom:25px;
-  right:25px;
-  background:rgba(20,40,30,.95);
-  border:2px solid #3cff9a;
-  padding:18px 22px;
-  border-radius:18px;
-  box-shadow:0 0 30px rgba(0,255,150,.4);
-  display:none;
-  z-index:9999;
-}
-
-/* 🚫 BAN SCREEN */
-#banScreen{
+/* 🚫 BANNED SCREEN */
+#bannedScreen{
   position:fixed;
   inset:0;
-  background:black;
-  color:red;
+  background:#000;
+  color:white;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
-  font-size:48px;
-  font-weight:900;
+  font-family:Arial, sans-serif;
+  text-align:center;
   z-index:999999;
 }
-#banScreen p{
+#bannedScreen h1{
+  font-size:48px;
+  margin-bottom:20px;
+}
+#bannedScreen p{
   font-size:22px;
-  color:white;
-  margin-top:15px;
+  opacity:.85;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🚫 BAN SCREEN -->
-<div id="banScreen" style="display:none;">
-  🚫 ur banned lol
-  <p>nice try 😭</p>
+<!-- 🚫 BANNED SCREEN -->
+<div id="bannedScreen" style="display:none;">
+  <h1>🚫 ur banned buddy 😭</h1>
+  <p>imagine getting rejected</p>
 </div>
 
 <!-- 🎁 GIFT TOAST -->
-<div id="giftToast">
+<div id="giftToast" style="display:none; position:fixed; bottom:25px; right:25px;
+background:rgba(20,40,30,.95); border:2px solid #3cff9a; padding:18px 22px;
+border-radius:18px; box-shadow:0 0 30px rgba(0,255,150,.4); z-index:9999;">
   🎁 <b>You got a gift from O0ZE34!</b><br>
   +25 LEVELS 🎄
 </div>
 
-<!-- 📢 UPDATE MESSAGE MODAL -->
-<div id="updateModal" class="modal-bg" style="display:none;">
-  <div class="modal">
-    <div class="modal-header">
-      <span>Update Notice</span>
-      <button class="close-btn" onclick="closeUpdate()">×</button>
-    </div>
-
-    <p id="updateText" style="margin-bottom:18px;">
-      sorry if this update was buns, i will work on this site everyday until christmas then ill do the updates every saturday
-    </p>
-
-    <div id="updateBtns" style="display:flex;gap:12px;">
-      <button class="save-btn" onclick="acceptUpdate()">Bet</button>
-      <button class="save-btn" onclick="whyUpdate()">bro why</button>
-    </div>
-  </div>
-</div>
-
-<!-- ⭐ GREETING CARD -->
+<!-- ⭐ GREETING -->
 <div class="greeting-card">
-  <div id="greet_box" class="greet-content" style="cursor:pointer;">
+  <div id="greet_box" class="greet-content">
     <span id="greet_txt"></span>
   </div>
 </div>
@@ -151,37 +124,22 @@
   <p id="daily_status">Tap to claim</p>
 </div>
 
-<div class="home-card">
-<h2>⚡ Quick Access</h2>
-<div class="home-grid">
-<a class="quick-btn" href="games.html">Games</a>
-<a class="quick-btn" href="music.html">Music</a>
-<a class="quick-btn" href="apps.html">Apps</a>
-<a class="quick-btn" href="achievements.html">Achievements</a>
-<a class="quick-btn" target="_blank"
-   href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj">
-Comments
-</a>
 </div>
 </div>
-
-</div>
-</div>
-
-<script src="script.js"></script>
 
 <script>
-/* 🚫 NAME BAN SYSTEM */
-const bannedWords = ["angel"]; // add more here
-(function(){
-  let name = (localStorage.getItem("username") || "").toLowerCase();
+/* 🚫 BAN SYSTEM */
+const bannedWords = ["angel"]; // add more if you want
+
+function checkBan(){
+  const name = (localStorage.getItem("username") || "").toLowerCase();
   if(bannedWords.some(w => name.includes(w))){
     document.body.innerHTML = "";
-    document.body.appendChild(document.getElementById("banScreen"));
-    banScreen.style.display = "flex";
-    throw new Error("User banned");
+    document.body.appendChild(document.getElementById("bannedScreen"));
+    document.getElementById("bannedScreen").style.display="flex";
+    throw new Error("BANNED");
   }
-})();
+}
 
 /* GREETING */
 function updateGreeting(){
@@ -196,7 +154,12 @@ function openModal(){ renameModal.style.display="flex"; }
 function closeModal(){ renameModal.style.display="none"; }
 function saveName(){
   let n=nameInput.value.trim();
-  if(n){ localStorage.setItem("username",n); location.reload(); }
+  if(n){
+    localStorage.setItem("username",n);
+    checkBan();
+    updateGreeting();
+  }
+  closeModal();
 }
 
 /* XP */
@@ -221,7 +184,7 @@ function claimDaily(){
   }else daily_status.innerText="Already claimed today";
 }
 
-/* NEXT UPDATE */
+/* NEXT UPDATE TIMER */
 function startNextUpdateTimer(){
   let el=document.getElementById("next-update-timer");
   function nextSat(){
@@ -259,28 +222,12 @@ setInterval(()=>{
   setTimeout(()=>s.remove(),4000);
 },120);
 
-/* 📢 UPDATE MESSAGE */
-function showUpdate(){
-  if(!localStorage.getItem("updateSeen")){
-    updateModal.style.display="flex";
-  }
-}
-function acceptUpdate(){
-  localStorage.setItem("updateSeen","1");
-  updateModal.style.display="none";
-}
-function whyUpdate(){
-  updateText.innerText="bro because i had to set up my christmas lights";
-  updateBtns.innerHTML='<button class="save-btn" onclick="acceptUpdate()">Okay</button>';
-}
-function closeUpdate(){ acceptUpdate(); }
-
 window.onload=()=>{
+  checkBan();
   updateGreeting();
   loadXP();
   startNextUpdateTimer();
   greet_box.onclick=openModal;
-  showUpdate();
 };
 </script>
 
