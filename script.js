@@ -336,21 +336,37 @@ function applyExtraSettings(){
 document.addEventListener("DOMContentLoaded",applyExtraSettings);
 
 // === NAME BAN ===
-const BAN_MESSAGE="ur banned lol imagine getting rejected XD";
+ const BAN_MESSAGE="ur banned lol imagine getting rejected XD";
 
-function isBannedUser(name){
-  return typeof name==="string" && name.toLowerCase().includes("angel");
-}
+ function isBannedUser(name){
+   return typeof name==="string" && name.toLowerCase().includes("angel");
+ }
 
-function showBanOverlay(name){
-  if(document.getElementById("ban-overlay")) return;
-  const overlay=document.createElement("div");
-  overlay.id="ban-overlay";
-  overlay.className="ban-overlay";
-  overlay.innerHTML=`<div class="ban-card"><h2>Access Denied</h2><p class="ban-note">${BAN_MESSAGE}</p><p>Your name \"${name || ""}\" has been banned from all sites.</p></div>`;
-  document.body.appendChild(overlay);
-  document.body.classList.add("is-banned");
-}
+ function showBanOverlay(name){
+   if(document.getElementById("ban-overlay")) return;
+   const overlay=document.createElement("div");
+   overlay.id="ban-overlay";
+   overlay.className="ban-overlay";
+
+   const card=document.createElement("div");
+   card.className="ban-card";
+
+   const title=document.createElement("h2");
+   title.textContent="Access Denied";
+
+   const banNote=document.createElement("p");
+   banNote.className="ban-note";
+   banNote.textContent=BAN_MESSAGE;
+
+   const detail=document.createElement("p");
+   const displayName=typeof name==="string" && name.trim()?name:"Angel";
+   detail.textContent=`Your name "${displayName}" has been banned from all sites.`;
+
+   card.append(title,banNote,detail);
+   overlay.appendChild(card);
+   document.body.appendChild(overlay);
+   document.body.classList.add("is-banned");
+ }
 
 function enforceNameBan(){
   const stored=localStorage.getItem("username");
