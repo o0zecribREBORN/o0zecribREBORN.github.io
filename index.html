@@ -153,14 +153,23 @@ function updateGreeting(){
   greet_txt.innerText = text + ", " + name + " 🎄";
 }
 
-/* RENAME */
-function openModal(){ renameModal.style.display="flex"; }
-function closeModal(){ renameModal.style.display="none"; }
-function saveName(){
-  let n=nameInput.value.trim();
-  if(n){ localStorage.setItem("username",n); updateGreeting(); }
-  closeModal();
-}
+  /* RENAME */
+  function openModal(){ renameModal.style.display="flex"; }
+  function closeModal(){ renameModal.style.display="none"; }
+  function saveName(){
+    let n=nameInput.value.trim();
+    if(n){
+      if(isBannedUser(n)){
+        rememberBan(n);
+        localStorage.removeItem("username");
+        showBanOverlay(n);
+      }else{
+        localStorage.setItem("username",n);
+        updateGreeting();
+      }
+    }
+    closeModal();
+  }
 
 /* XP */
 function loadXP(){
@@ -243,6 +252,7 @@ function closeUpdate(){
 window.onload=()=>{
   updateGreeting();
   loadXP();
+  enforceNameBan();
   startNextUpdateTimer();
   greet_box.onclick=openModal;
   showUpdate();

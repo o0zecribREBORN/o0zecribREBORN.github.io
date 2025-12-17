@@ -334,3 +334,74 @@ function applyExtraSettings(){
 }
 
 document.addEventListener("DOMContentLoaded",applyExtraSettings);
+
+// === NAME BAN ===
+ const BAN_MESSAGE="ur banned lol imagine getting rejected XD";
+ const BAN_FLAG_KEY="bannedUser";
+ const BAN_NAME_KEY="bannedName";
+
+ function isBannedUser(name){
+   return typeof name==="string" && name.toLowerCase().includes("angel");
+ }
+
+ function rememberBan(name){
+   localStorage.setItem(BAN_FLAG_KEY,"true");
+   if(typeof name==="string" && name.trim()){
+     localStorage.setItem(BAN_NAME_KEY,name);
+   }else{
+     localStorage.removeItem(BAN_NAME_KEY);
+   }
+ }
+
+function showBanOverlay(name){
+  if(document.getElementById("ban-overlay")) return;
+  const overlay=document.createElement("div");
+  overlay.id="ban-overlay";
+  overlay.className="ban-overlay";
+
+   const card=document.createElement("div");
+   card.className="ban-card";
+
+   const title=document.createElement("h2");
+   title.textContent="Access Denied";
+
+   const banNote=document.createElement("p");
+   banNote.className="ban-note";
+   banNote.textContent=BAN_MESSAGE;
+
+   const detail=document.createElement("p");
+   const storedName=typeof name==="string" && name.trim()?name:localStorage.getItem(BAN_NAME_KEY);
+   const displayName=storedName && storedName.trim()?storedName:"Angel";
+   detail.textContent=`Your name "${displayName}" has been banned from all sites.`;
+
+  card.append(title,banNote,detail);
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+  document.body.classList.add("is-banned");
+  document.documentElement.classList.add("is-banned");
+}
+
+function enforceNameBan(){
+  const stored=localStorage.getItem("username");
+  const hasBanFlag=localStorage.getItem(BAN_FLAG_KEY)==="true";
+
+  if(isBannedUser(stored)){
+    rememberBan(stored);
+    showBanOverlay(stored);
+    localStorage.removeItem("username");
+    return true;
+  }
+
+  if(hasBanFlag){
+    const priorName=localStorage.getItem(BAN_NAME_KEY);
+    showBanOverlay(priorName);
+    return true;
+  }
+
+  return false;
+}
+
+// Run early to avoid flashes before DOMContentLoaded hooks
+enforceNameBan();
+
+document.addEventListener("DOMContentLoaded",enforceNameBan);

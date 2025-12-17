@@ -483,6 +483,25 @@ h2{margin:0 0 10px 0;font-size:24px;font-weight:700;color:white;text-shadow:0 0 
 }
 .save-btn:hover{background:#ddd;}
 
+.ban-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;align-items:center;justify-content:center;
+  z-index:2000;padding:20px;text-align:center;
+  backdrop-filter:blur(6px);
+}
+html.is-banned,body.is-banned{overflow:hidden;}
+.ban-card{
+  background:linear-gradient(135deg,#1b0f1f,#0b1c2f);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:14px;
+  padding:26px;max-width:420px;width:100%;
+  box-shadow:0 12px 30px rgba(0,0,0,0.45);
+}
+.ban-card h2{margin:0 0 10px;font-size:26px;color:#ff4d6d;}
+.ban-card p{margin:8px 0;color:#e2e8f0;line-height:1.5;}
+.ban-note{color:#ffb347;font-weight:700;}
+
 #greet_box{transition:.25s;}
 #greet_box:hover{
  transform:scale(1.05);
