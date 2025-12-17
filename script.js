@@ -353,11 +353,11 @@ document.addEventListener("DOMContentLoaded",applyExtraSettings);
    }
  }
 
- function showBanOverlay(name){
-   if(document.getElementById("ban-overlay")) return;
-   const overlay=document.createElement("div");
-   overlay.id="ban-overlay";
-   overlay.className="ban-overlay";
+function showBanOverlay(name){
+  if(document.getElementById("ban-overlay")) return;
+  const overlay=document.createElement("div");
+  overlay.id="ban-overlay";
+  overlay.className="ban-overlay";
 
    const card=document.createElement("div");
    card.className="ban-card";
@@ -374,11 +374,12 @@ document.addEventListener("DOMContentLoaded",applyExtraSettings);
    const displayName=storedName && storedName.trim()?storedName:"Angel";
    detail.textContent=`Your name "${displayName}" has been banned from all sites.`;
 
-   card.append(title,banNote,detail);
-   overlay.appendChild(card);
-   document.body.appendChild(overlay);
-   document.body.classList.add("is-banned");
- }
+  card.append(title,banNote,detail);
+  overlay.appendChild(card);
+  document.body.appendChild(overlay);
+  document.body.classList.add("is-banned");
+  document.documentElement.classList.add("is-banned");
+}
 
 function enforceNameBan(){
   const stored=localStorage.getItem("username");

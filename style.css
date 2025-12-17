@@ -490,7 +490,7 @@ h2{margin:0 0 10px 0;font-size:24px;font-weight:700;color:white;text-shadow:0 0 
   z-index:2000;padding:20px;text-align:center;
   backdrop-filter:blur(6px);
 }
-.is-banned{overflow:hidden;}
+html.is-banned,body.is-banned{overflow:hidden;}
 .ban-card{
   background:linear-gradient(135deg,#1b0f1f,#0b1c2f);
   border:1px solid rgba(255,255,255,0.12);
