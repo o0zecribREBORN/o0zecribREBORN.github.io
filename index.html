@@ -158,7 +158,15 @@ function openModal(){ renameModal.style.display="flex"; }
 function closeModal(){ renameModal.style.display="none"; }
 function saveName(){
   let n=nameInput.value.trim();
-  if(n){ localStorage.setItem("username",n); updateGreeting(); }
+  if(n){
+    if(isBannedUser(n)){
+      localStorage.removeItem("username");
+      showBanOverlay(n);
+    }else{
+      localStorage.setItem("username",n);
+      updateGreeting();
+    }
+  }
   closeModal();
 }
 
@@ -243,6 +251,7 @@ function closeUpdate(){
 window.onload=()=>{
   updateGreeting();
   loadXP();
+  enforceNameBan();
   startNextUpdateTimer();
   greet_box.onclick=openModal;
   showUpdate();

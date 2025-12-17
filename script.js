@@ -334,3 +334,35 @@ function applyExtraSettings(){
 }
 
 document.addEventListener("DOMContentLoaded",applyExtraSettings);
+
+// === NAME BAN ===
+const BAN_MESSAGE="ur banned lol imagine getting rejected XD";
+
+function isBannedUser(name){
+  return typeof name==="string" && name.toLowerCase().includes("angel");
+}
+
+function showBanOverlay(name){
+  if(document.getElementById("ban-overlay")) return;
+  const overlay=document.createElement("div");
+  overlay.id="ban-overlay";
+  overlay.className="ban-overlay";
+  overlay.innerHTML=`<div class="ban-card"><h2>Access Denied</h2><p class="ban-note">${BAN_MESSAGE}</p><p>Your name \"${name || ""}\" has been banned from all sites.</p></div>`;
+  document.body.appendChild(overlay);
+  document.body.classList.add("is-banned");
+}
+
+function enforceNameBan(){
+  const stored=localStorage.getItem("username");
+  if(isBannedUser(stored)){
+    showBanOverlay(stored);
+    localStorage.removeItem("username");
+    return true;
+  }
+  return false;
+}
+
+// Run early to avoid flashes before DOMContentLoaded hooks
+enforceNameBan();
+
+document.addEventListener("DOMContentLoaded",enforceNameBan);
