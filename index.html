@@ -36,10 +36,36 @@
   display:none;
   z-index:9999;
 }
+
+/* 🚫 BAN SCREEN */
+#banScreen{
+  position:fixed;
+  inset:0;
+  background:black;
+  color:red;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  font-size:48px;
+  font-weight:900;
+  z-index:999999;
+}
+#banScreen p{
+  font-size:22px;
+  color:white;
+  margin-top:15px;
+}
 </style>
 </head>
 
 <body>
+
+<!-- 🚫 BAN SCREEN -->
+<div id="banScreen" style="display:none;">
+  🚫 ur banned lol
+  <p>nice try 😭</p>
+</div>
 
 <!-- 🎁 GIFT TOAST -->
 <div id="giftToast">
@@ -145,6 +171,18 @@ Comments
 <script src="script.js"></script>
 
 <script>
+/* 🚫 NAME BAN SYSTEM */
+const bannedWords = ["angel"]; // add more here
+(function(){
+  let name = (localStorage.getItem("username") || "").toLowerCase();
+  if(bannedWords.some(w => name.includes(w))){
+    document.body.innerHTML = "";
+    document.body.appendChild(document.getElementById("banScreen"));
+    banScreen.style.display = "flex";
+    throw new Error("User banned");
+  }
+})();
+
 /* GREETING */
 function updateGreeting(){
   let h=new Date().getHours();
@@ -158,8 +196,7 @@ function openModal(){ renameModal.style.display="flex"; }
 function closeModal(){ renameModal.style.display="none"; }
 function saveName(){
   let n=nameInput.value.trim();
-  if(n){ localStorage.setItem("username",n); updateGreeting(); }
-  closeModal();
+  if(n){ localStorage.setItem("username",n); location.reload(); }
 }
 
 /* XP */
@@ -222,7 +259,7 @@ setInterval(()=>{
   setTimeout(()=>s.remove(),4000);
 },120);
 
-/* 📢 UPDATE MESSAGE LOGIC */
+/* 📢 UPDATE MESSAGE */
 function showUpdate(){
   if(!localStorage.getItem("updateSeen")){
     updateModal.style.display="flex";
@@ -236,9 +273,7 @@ function whyUpdate(){
   updateText.innerText="bro because i had to set up my christmas lights";
   updateBtns.innerHTML='<button class="save-btn" onclick="acceptUpdate()">Okay</button>';
 }
-function closeUpdate(){
-  acceptUpdate();
-}
+function closeUpdate(){ acceptUpdate(); }
 
 window.onload=()=>{
   updateGreeting();
