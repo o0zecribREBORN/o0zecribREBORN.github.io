@@ -1,235 +1,290 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>O0ZE34's Crib REBORN — Christmas 🎄</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="style.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-<link href="favicon.png" rel="icon" type="image/png"/>
+  <title>O0ZE34's Crib REBORN — Christmas 🎄</title>
 
-<style>
-/* ❄️ SNOW */
-.snowflake{
-  position:fixed;
-  width:6px;
-  height:6px;
-  background:white;
-  border-radius:50%;
-  pointer-events:none;
-  animation: fall 4s linear forwards;
-  opacity:.9;
-  z-index:999;
-}
-@keyframes fall{
-  to{ transform:translateY(110vh); opacity:0 }
-}
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
 
-/* 🚫 BANNED SCREEN */
-#bannedScreen{
-  position:fixed;
-  inset:0;
-  background:#000;
-  color:white;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  font-family:Arial, sans-serif;
-  text-align:center;
-  z-index:999999;
-}
-#bannedScreen h1{
-  font-size:48px;
-  margin-bottom:20px;
-}
-#bannedScreen p{
-  font-size:22px;
-  opacity:.85;
-}
-</style>
+  <style>
+    /* 🎄 CHRISTMAS EXTRAS */
+    .snowflake {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: fall 4s linear forwards;
+      opacity: 0.9;
+      z-index: 999;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    #giftToast {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: rgba(20, 40, 30, 0.95);
+      border: 2px solid #3cff9a;
+      padding: 18px 22px;
+      border-radius: 18px;
+      box-shadow: 0 0 30px rgba(0, 255, 150, 0.4);
+      display: none;
+      z-index: 9999;
+    }
+  </style>
 </head>
 
 <body>
-
-<!-- 🚫 BANNED SCREEN -->
-<div id="bannedScreen" style="display:none;">
-  <h1>🚫 ur banned buddy 😭</h1>
-  <p>imagine getting rejected</p>
-</div>
-
-<!-- 🎁 GIFT TOAST -->
-<div id="giftToast" style="display:none; position:fixed; bottom:25px; right:25px;
-background:rgba(20,40,30,.95); border:2px solid #3cff9a; padding:18px 22px;
-border-radius:18px; box-shadow:0 0 30px rgba(0,255,150,.4); z-index:9999;">
-  🎁 <b>You got a gift from O0ZE34!</b><br>
-  +25 LEVELS 🎄
-</div>
-
-<!-- ⭐ GREETING -->
-<div class="greeting-card">
-  <div id="greet_box" class="greet-content">
-    <span id="greet_txt"></span>
+  <!-- 🎁 GIFT TOAST -->
+  <div id="giftToast">
+    🎁 <b>You got a gift from O0ZE34!</b><br />
+    +25 LEVELS 🎄
   </div>
-</div>
 
-<div id="clock"></div>
-<canvas id="stars"></canvas>
-<canvas id="stars2"></canvas>
+  <!-- 📢 UPDATE MODAL -->
+  <div id="updateModal" class="modal-bg" style="display:none;">
+    <div class="modal">
+      <div class="modal-header">
+        <span>Update Notice</span>
+        <button class="close-btn" onclick="closeUpdate()">×</button>
+      </div>
 
-<!-- ⭐ SIDEBAR -->
-<div class="sidebar">
-<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
-<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
-<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
-<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
-<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
-<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
-<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
-<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
-<a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
-</div>
+      <p id="updateText">
+        sorry if this update was buns, i will work on this site everyday until
+        christmas then ill do the updates every saturday
+      </p>
 
-<!-- ⭐ MAIN -->
-<div class="main">
-<h1>🎄 Home</h1>
-
-<div class="home-sections">
-
-<div class="home-card">
-  <h2>🎁 NEXT UPDATE:</h2>
-  <div id="next-update-timer">Loading...</div>
-</div>
-
-<!-- RENAME MODAL -->
-<div id="renameModal" class="modal-bg" style="display:none;">
-  <div class="modal">
-    <div class="modal-header">
-      <span>Rename Profile</span>
-      <button class="close-btn" onclick="closeModal()">×</button>
+      <div id="updateBtns" style="display:flex; gap:12px;">
+        <button class="save-btn" onclick="acceptUpdate()">Bet</button>
+        <button class="save-btn" onclick="whyUpdate()">bro why</button>
+      </div>
     </div>
-    <input id="nameInput" class="modal-input" placeholder="Enter name...">
-    <button class="save-btn" onclick="saveName()">Save</button>
   </div>
-</div>
 
-<div class="xp_card">
-  <h2>Level <span id="lvl_num">1</span></h2>
-  <div class="xp_bar"><div id="xp_fill"></div></div>
-  <p id="xp_txt">XP: 0 / 100</p>
-</div>
+  <!-- ⭐ GREETING -->
+  <div class="greeting-card">
+    <div id="greet_box" class="greet-content" style="cursor:pointer;">
+      <span id="greet_txt"></span>
+    </div>
+  </div>
 
-<div class="daily_card" onclick="claimDaily()">
-  <h2>🎄 Daily Reward</h2>
-  <p id="daily_status">Tap to claim</p>
-</div>
+  <div id="clock"></div>
+  <canvas id="stars"></canvas>
+  <canvas id="stars2"></canvas>
 
-</div>
-</div>
+  <!-- ⭐ SIDEBAR -->
+  <div class="sidebar">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+    <a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+    <a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+    <a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+    <a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+    <a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+    <a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
+  </div>
 
-<script>
-/* 🚫 BAN SYSTEM */
-const bannedWords = ["angel"]; // add more if you want
+  <!-- ⭐ MAIN -->
+  <div class="main">
+    <h1>🎄 Home</h1>
 
-function checkBan(){
-  const name = (localStorage.getItem("username") || "").toLowerCase();
-  if(bannedWords.some(w => name.includes(w))){
-    document.body.innerHTML = "";
-    document.body.appendChild(document.getElementById("bannedScreen"));
-    document.getElementById("bannedScreen").style.display="flex";
-    throw new Error("BANNED");
-  }
-}
+    <div class="home-sections">
+      <div class="home-card">
+        <h2>🎁 NEXT UPDATE:</h2>
+        <div id="next-update-timer">Loading...</div>
+      </div>
 
-/* GREETING */
-function updateGreeting(){
-  let h=new Date().getHours();
-  let text=h<12?"Good Morning":h<17?"Good Afternoon":h<21?"Good Evening":"Good Night";
-  let name=localStorage.getItem("username")||"Guest";
-  greet_txt.innerText = text + ", " + name + " 🎄";
-}
+      <!-- ✏️ RENAME MODAL -->
+      <div id="renameModal" class="modal-bg" style="display:none;">
+        <div class="modal">
+          <div class="modal-header">
+            <span>Rename Profile</span>
+            <button class="close-btn" onclick="closeModal()">×</button>
+          </div>
+          <input id="nameInput" class="modal-input" placeholder="Enter name..." />
+          <button class="save-btn" onclick="saveName()">Save</button>
+        </div>
+      </div>
 
-/* RENAME */
-function openModal(){ renameModal.style.display="flex"; }
-function closeModal(){ renameModal.style.display="none"; }
-function saveName(){
-  let n=nameInput.value.trim();
-  if(n){
-    localStorage.setItem("username",n);
-    checkBan();
-    updateGreeting();
-  }
-  closeModal();
-}
+      <!-- XP -->
+      <div class="xp_card">
+        <h2>Level <span id="lvl_num">1</span></h2>
+        <div class="xp_bar">
+          <div id="xp_fill"></div>
+        </div>
+        <p id="xp_txt">XP: 0 / 100</p>
+      </div>
 
-/* XP */
-function loadXP(){
-  let xp=parseInt(localStorage.getItem("xp")||"0");
-  let lvl=Math.floor(xp/100);
-  let cur=xp%100;
-  lvl_num.innerText=lvl;
-  xp_txt.innerText=`XP: ${cur} / 100`;
-  xp_fill.style.width=cur+"%";
-}
+      <!-- DAILY -->
+      <div class="daily_card" onclick="claimDaily()">
+        <h2>🎄 Daily Reward</h2>
+        <p id="daily_status">Tap to claim</p>
+      </div>
 
-/* DAILY */
-function claimDaily(){
-  let today=Math.floor(Date.now()/86400000);
-  let last=+localStorage.getItem("lastDaily")||0;
-  if(today>last){
-    localStorage.setItem("lastDaily",today);
-    localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+50));
-    daily_status.innerText="Claimed! +50 XP";
-    loadXP();
-  }else daily_status.innerText="Already claimed today";
-}
+      <!-- QUICK ACCESS -->
+      <div class="home-card">
+        <h2>⚡ Quick Access</h2>
+        <div class="home-grid">
+          <a class="quick-btn" href="games.html">Games</a>
+          <a class="quick-btn" href="music.html">Music</a>
+          <a class="quick-btn" href="apps.html">Apps</a>
+          <a class="quick-btn" href="achievements.html">Achievements</a>
+          <a class="quick-btn" target="_blank" href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj">
+            Comments
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-/* NEXT UPDATE TIMER */
-function startNextUpdateTimer(){
-  let el=document.getElementById("next-update-timer");
-  function nextSat(){
-    let d=new Date(); let diff=(6-d.getDay()+7)%7||7;
-    return new Date(d.getFullYear(),d.getMonth(),d.getDate()+diff);
-  }
-  let t=nextSat();
-  setInterval(()=>{
-    let diff=t-new Date();
-    if(diff<=0) t=nextSat();
-    let s=Math.floor(diff/1000),
-        d=Math.floor(s/86400),
-        h=Math.floor((s%86400)/3600),
-        m=Math.floor((s%3600)/60),
-        sc=s%60;
-    el.textContent=`${d}d ${h}h ${m}m ${sc}s`;
-  },1000);
-}
+  <script src="script.js"></script>
 
-/* 🎁 ONE TIME GIFT */
-if(!localStorage.getItem("xmas25")){
-  localStorage.setItem("xmas25","1");
-  localStorage.setItem("xp",(parseInt(localStorage.getItem("xp")||0)+2500));
-  giftToast.style.display="block";
-  setTimeout(()=>giftToast.style.display="none",6000);
-}
+  <script>
+    /* GREETING */
+    function updateGreeting() {
+      const h = new Date().getHours();
+      const text =
+        h < 12 ? "Good Morning" :
+        h < 17 ? "Good Afternoon" :
+        h < 21 ? "Good Evening" : "Good Night";
 
-/* ❄️ SNOW */
-setInterval(()=>{
-  let s=document.createElement("div");
-  s.className="snowflake";
-  s.style.left=Math.random()*innerWidth+"px";
-  s.style.top="-10px";
-  document.body.appendChild(s);
-  setTimeout(()=>s.remove(),4000);
-},120);
+      const name = localStorage.getItem("username") || "Guest";
+      document.getElementById("greet_txt").innerText =
+        text + ", " + name + " 🎄";
+    }
 
-window.onload=()=>{
-  checkBan();
-  updateGreeting();
-  loadXP();
-  startNextUpdateTimer();
-  greet_box.onclick=openModal;
-};
-</script>
+    /* RENAME */
+    function openModal() {
+      document.getElementById("renameModal").style.display = "flex";
+    }
+    function closeModal() {
+      document.getElementById("renameModal").style.display = "none";
+    }
+    function saveName() {
+      const n = document.getElementById("nameInput").value.trim();
+      if (n) {
+        localStorage.setItem("username", n);
+        updateGreeting();
+      }
+      closeModal();
+    }
 
+    /* XP */
+    function loadXP() {
+      const xp = parseInt(localStorage.getItem("xp") || "0");
+      const lvl = Math.floor(xp / 100);
+      const cur = xp % 100;
+
+      document.getElementById("lvl_num").innerText = lvl;
+      document.getElementById("xp_txt").innerText = `XP: ${cur} / 100`;
+      document.getElementById("xp_fill").style.width = cur + "%";
+    }
+
+    /* DAILY */
+    function claimDaily() {
+      const today = Math.floor(Date.now() / 86400000);
+      const last = Number(localStorage.getItem("lastDaily") || 0);
+
+      if (today > last) {
+        localStorage.setItem("lastDaily", today);
+        localStorage.setItem("xp", (parseInt(localStorage.getItem("xp") || 0) + 50));
+        document.getElementById("daily_status").innerText = "Claimed! +50 XP";
+        loadXP();
+      } else {
+        document.getElementById("daily_status").innerText = "Already claimed today";
+      }
+    }
+
+    /* NEXT UPDATE TIMER */
+    function startNextUpdateTimer() {
+      const el = document.getElementById("next-update-timer");
+
+      function nextSaturday() {
+        const d = new Date();
+        const diff = (6 - d.getDay() + 7) % 7 || 7;
+        return new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
+      }
+
+      let target = nextSaturday();
+
+      setInterval(() => {
+        let diff = target - new Date();
+        if (diff <= 0) target = nextSaturday();
+
+        const s = Math.floor(diff / 1000);
+        const d = Math.floor(s / 86400);
+        const h = Math.floor((s % 86400) / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        const sc = s % 60;
+
+        el.textContent = `${d}d ${h}h ${m}m ${sc}s`;
+      }, 1000);
+    }
+
+    /* 🎁 ONE-TIME GIFT */
+    if (!localStorage.getItem("xmas25")) {
+      localStorage.setItem("xmas25", "1");
+      localStorage.setItem("xp", (parseInt(localStorage.getItem("xp") || 0) + 2500));
+      document.getElementById("giftToast").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("giftToast").style.display = "none";
+      }, 6000);
+    }
+
+    /* ❄️ SNOW */
+    setInterval(() => {
+      const s = document.createElement("div");
+      s.className = "snowflake";
+      s.style.left = Math.random() * window.innerWidth + "px";
+      s.style.top = "-10px";
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 4000);
+    }, 120);
+
+    /* UPDATE MODAL */
+    function showUpdate() {
+      if (!localStorage.getItem("updateSeen")) {
+        document.getElementById("updateModal").style.display = "flex";
+      }
+    }
+    function acceptUpdate() {
+      localStorage.setItem("updateSeen", "1");
+      document.getElementById("updateModal").style.display = "none";
+    }
+    function whyUpdate() {
+      document.getElementById("updateText").innerText =
+        "bro because i had to set up my christmas lights";
+      document.getElementById("updateBtns").innerHTML =
+        '<button class="save-btn" onclick="acceptUpdate()">Okay</button>';
+    }
+    function closeUpdate() {
+      acceptUpdate();
+    }
+
+    window.onload = () => {
+      updateGreeting();
+      loadXP();
+      startNextUpdateTimer();
+      document.getElementById("greet_box").onclick = openModal;
+      showUpdate();
+    };
+  </script>
 </body>
 </html>
