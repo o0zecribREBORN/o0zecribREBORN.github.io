@@ -1,28 +1,168 @@
-
 <!DOCTYPE html>
 <html>
 <head>
+<title>O0ZE34's Crib REBORN — Movies</title>
 <link rel="stylesheet" href="style.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link rel="icon" href="favicon.png">
+
+<style>
+/* NETFLIX STYLE */
+.movie-row{
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  padding:20px 0;
+  scroll-behavior:smooth;
+}
+.movie-row::-webkit-scrollbar{height:8px;}
+.movie-row::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.25);
+  border-radius:10px;
+}
+
+.movie-card{
+  min-width:180px;
+  height:270px;
+  background:rgba(255,255,255,0.08);
+  border-radius:16px;
+  backdrop-filter:blur(8px);
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:14px;
+  cursor:pointer;
+  transition:.25s;
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+.movie-card:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 30px rgba(255,255,255,0.4);
+}
+
+.movie-thumb{
+  position:absolute;
+  inset:0;
+  border-radius:16px;
+  background:linear-gradient(135deg,#222,#444);
+  opacity:.6;
+}
+.movie-title{
+  position:relative;
+  font-weight:700;
+  font-size:16px;
+  text-shadow:0 0 10px black;
+}
+</style>
 </head>
+
 <body>
-<!-- Sidebar preserved -->
 
-<div class="movie-frame" style="width:100%;text-align:center;margin-top:25px;">
-<iframe id="moviePlayer" src="https://oozemadethislol2.global.ssl.fastly.net/frog/ixl/hvtrs8%2F-ckngmc.%60z-mmvkeq"
-style="width:92%;height:700px;border:none;border-radius:20px;"></iframe>
-<div style="text-align:center;margin-top:20px;">
-<a class="btn" href="https://oozemadethislol2.global.ssl.fastly.net/frog/ixl/hvtrs8%2F-ckngmc.%60z-" target="_blank">
-Movies 2
-</a>
+<div id="clock"></div>
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+</div>
+
+<div class="main">
+<h1>🎬 Movies</h1>
+
+<div class="movie-row">
+
+<!-- ALL MOVIES -->
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1uIF2nvMVZIHoo3YwOOqm3IiS1x4NL1P8/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Fantastic 4</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/14oClAGiPk9r6-QFjQGETBj6cVotkLXds/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Minecraft Movie</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1oO5htds_SCGuuvrpBr0IEKJIWP4_5Ixl/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Toy Story</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1ow1Un4n_xJGlgrp7K18WrI1B9imHz8u7/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Toy Story 3</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/13MGaIocVRTGM8fl4Pgy1byGsTouD6BoJ/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Toy Story 4</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1rHarA6zN6Oj_pUYORqaLMYIGhQwT-t_2/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Toy Story: That Time Forgot</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1WX8MKLf1vjfCjFE55nuNmDiNG7v1H7BF/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Inside Out</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1ZILcPxB3UYUHd7JtaxEusVoFqP-tduGb/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Inside Out 2</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1RRwSLgXs5FluVpOzDWdU6V6R7wAxTPa3/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Terrifier 3</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/13JTPvvDpgtSsuwZBjS79eaUWLLnUzdkD/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Smile 2</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/11ucdZqlUHigswxIolTQV84SMyLLgFhCj/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Moana 2</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1c39wmia_3Mw1V2y0t9WTDbJ-xOAR59tX/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Lilo & Stitch</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1gDqcs2wTf1tZ-3cGQePKSZL38ypQqshZ/view')">
+  <div class="movie-thumb"></div><div class="movie-title">The Bad Guys 2</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1wZnvdx2VQacVb2mCBnywLpg4sr-V98yq/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Superman</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1GYNxJk32xJfVFwUfCmZ47ugW6wIBMTfl/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Smurfs</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1YJU7li7PxW_jJpIbmWUwsyTpq-ewZUPW/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Demon Slayer: Infinity Castle</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1Z7nbr_l6qQCD-yqljhafDHCKHJqOqNhC/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Jurassic World Rebirth</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/15ajlecl414X2EvUgMQ4SR-AvZJveOnK8/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Elio</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1ac6sb42PNPRYfKTQOB7h5RUg9fidb8NV/view')">
+  <div class="movie-thumb"></div><div class="movie-title">K-Pop Demon Hunters</div>
+</div>
+
+<div class="movie-card" onclick="openMovie('https://drive.google.com/file/d/1ch7gDcVujTNGMyHRBoS7Nbg_GpsS2cfq/view')">
+  <div class="movie-thumb"></div><div class="movie-title">Jujutsu Kaisen 0</div>
 </div>
 
 </div>
-<div style="margin-top:15px;text-align:center;"><button class="btn" onclick="openFullscreen()">Fullscreen</button></div>
-<br>
-<div style="text-align:center;margin-top:20px;">
-<a class="btn" href="https://oozemadethislol2.global.ssl.fastly.net/" target="_blank">
-You need to search something up in this website to use all apps (click me)
-</a>
 </div>
+
+<script>
+function openMovie(url){
+  window.open(url,"_blank");
+}
+</script>
+
 </body>
 </html>
