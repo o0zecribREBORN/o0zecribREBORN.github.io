@@ -6,49 +6,52 @@
   <link rel="icon" href="favicon.png">
 
   <style>
-  /* ===== SEARCH ===== */
-  .movie-search{
-    width:100%;
-    max-width:420px;
-    padding:14px 18px;
-    border-radius:14px;
-    border:none;
-    margin:20px 0;
-    font-size:18px;
-    background:rgba(255,255,255,0.12);
-    color:white;
-    outline:none;
-  }
+    h1{margin-bottom:15px;}
 
-  /* ===== GRID ===== */
-  .movie-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-    gap:22px;
-  }
+    .movie-search{
+      width:100%;
+      max-width:420px;
+      padding:14px 18px;
+      border-radius:14px;
+      border:none;
+      font-size:18px;
+      background:rgba(255,255,255,0.12);
+      color:white;
+      outline:none;
+      margin:15px 0 30px;
+    }
 
-  .movie-card{
-    aspect-ratio:2 / 3;
-    border-radius:18px;
-    overflow:hidden;
-    background:#111;
-    cursor:pointer;
-    box-shadow:0 0 18px rgba(0,0,0,0.6);
-    transition:transform .25s ease, box-shadow .25s ease;
-  }
+    .movie-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+      gap:22px;
+    }
 
-  .movie-card:hover{
-    transform:scale(1.06);
-    z-index:2;
-    box-shadow:0 0 35px rgba(255,255,255,0.35);
-  }
+    .movie-card{
+      aspect-ratio:2 / 3;
+      border-radius:16px;
+      overflow:hidden;
+      background:#000;
+      cursor:pointer;
+      box-shadow:0 0 20px rgba(0,0,0,0.55);
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
 
-  .movie-card img{
-    width:100%;
-    height:100%;
-    object-fit:contain;   /* 🔑 NO CROP */
-    background:#000;
-  }
+    .movie-card:hover{
+      transform:scale(1.08);
+      box-shadow:0 0 40px rgba(255,255,255,0.45);
+      z-index:5;
+    }
+
+    /* NO ZOOM / NO CROP */
+    .movie-thumb{
+      width:100%;
+      height:100%;
+      background-size:contain;
+      background-position:center;
+      background-repeat:no-repeat;
+      background-color:#000;
+    }
   </style>
 </head>
 
@@ -64,68 +67,106 @@
 
 <input class="movie-search" placeholder="Search movies..." oninput="filterMovies(this.value)">
 
-<div class="movie-grid" id="movieGrid">
-
-<!-- ===== ALL MOVIES ===== -->
+<div class="movie-grid">
 
 <!-- Fantastic 4 -->
-<div class="movie-card" data-title="Fantastic 4" onclick="openMovie('https://drive.google.com/file/d/1uIF2nvMVZIHoo3YwOOqm3IiS1x4NL1P8/view')">
-  <img src="https://lumiere-a.akamaihd.net/v1/images/p_studios_fantasticfourfirststeps_homeentannounce_poste_2eaafb1e.jpeg">
+<div class="movie-card" data-title="fantastic 4" onclick="openMovie('https://drive.google.com/file/d/1uIF2nvMVZIHoo3YwOOqm3IiS1x4NL1P8/view')">
+  <div class="movie-thumb" style="background-image:url('https://lumiere-a.akamaihd.net/v1/images/p_studios_fantasticfourfirststeps_homeentannounce_poste_2eaafb1e.jpeg?region=0%2C0%2C540%2C810');"></div>
 </div>
 
 <!-- Minecraft Movie -->
-<div class="movie-card" data-title="Minecraft Movie" onclick="openMovie('https://drive.google.com/file/d/14oClAGiPk9r6-QFjQGETBj6cVotkLXds/view')">
-  <img src="https://m.media-amazon.com/images/M/MV5BYzFjMzNjOTktNDBlNy00YWZhLWExYTctZDcxNDA4OWVhOTJjXkEyXkFqcGc@._V1_.jpg">
+<div class="movie-card" data-title="minecraft movie" onclick="openMovie('https://drive.google.com/file/d/14oClAGiPk9r6-QFjQGETBj6cVotkLXds/view')">
+  <div class="movie-thumb" style="background-image:url('https://m.media-amazon.com/images/M/MV5BYzFjMzNjOTktNDBlNy00YWZhLWExYTctZDcxNDA4OWVhOTJjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg');"></div>
 </div>
 
 <!-- Toy Story -->
-<div class="movie-card" data-title="Toy Story" onclick="openMovie('https://drive.google.com/file/d/1oO5htds_SCGuuvrpBr0IEKJIWP4_5Ixl/view')">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnosqSu2AqlIJMCm8JeWL00GcDFPKrXRvOLtoWJq0_ZyJtUqknstFgFdlKqK6ysN-XsLDnzg&s=10">
+<div class="movie-card" data-title="toy story" onclick="openMovie('https://drive.google.com/file/d/1oO5htds_SCGuuvrpBr0IEKJIWP4_5Ixl/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnosqSu2AqlIJMCm8JeWL00GcDFPKrXRvOLtoWJq0_ZyJtUqknstFgFdlKqK6ysN-XsLDnzg&s=10');"></div>
 </div>
 
 <!-- Toy Story 3 -->
-<div class="movie-card" data-title="Toy Story 3" onclick="openMovie('https://drive.google.com/file/d/1ow1Un4n_xJGlgrp7K18WrI1B9imHz8u7/view')">
-  <img src="https://resizing.flixster.com/F4qdcvTFMYoEmut3WmhBVmYeSVI=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzlhZDg3ZjU1LTk3ZTAtNDMzMC04MzliLTNiMzE5YmQ3ZDQ4OC53ZWJw">
+<div class="movie-card" data-title="toy story 3" onclick="openMovie('https://drive.google.com/file/d/1ow1Un4n_xJGlgrp7K18WrI1B9imHz8u7/view')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/F4qdcvTFMYoEmut3WmhBVmYeSVI=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzlhZDg3ZjU1LTk3ZTAtNDMzMC04MzliLTNiMzE5YmQ3ZDQ4OC53ZWJw');"></div>
 </div>
 
 <!-- Toy Story 4 -->
-<div class="movie-card" data-title="Toy Story 4" onclick="openMovie('https://drive.google.com/file/d/13MGaIocVRTGM8fl4Pgy1byGsTouD6BoJ/view')">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDLHKfu7-Ajo1uKgPrnJl65uiCFKtLySsJYCwObZJ7HG4atJa3-84NczbTsLqHnsiYNBLO&s=10">
+<div class="movie-card" data-title="toy story 4" onclick="openMovie('https://drive.google.com/file/d/13MGaIocVRTGM8fl4Pgy1byGsTouD6BoJ/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDLHKfu7-Ajo1uKgPrnJl65uiCFKtLySsJYCwObZJ7HG4atJa3-84NczbTsLqHnsiYNBLO&s=10');"></div>
+</div>
+
+<!-- Toy Story: That Time Forgot -->
+<div class="movie-card" data-title="toy story that time forgot" onclick="openMovie('https://drive.google.com/file/d/1rHarA6zN6Oj_pUYORqaLMYIGhQwT-t_2/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHQtUQQvkEqVK8gSFUWxZIAQ_N2m35s123bV0Jo-AQhSe0Co26ccpvwSvr_KCpQjg2tyIO&s=10');"></div>
 </div>
 
 <!-- Inside Out -->
-<div class="movie-card" data-title="Inside Out" onclick="openMovie('https://drive.google.com/file/d/1WX8MKLf1vjfCjFE55nuNmDiNG7v1H7BF/view')">
-  <img src="https://lumiere-a.akamaihd.net/v1/images/p_insideout_19751_af12286c.jpeg">
+<div class="movie-card" data-title="inside out" onclick="openMovie('https://drive.google.com/file/d/1WX8MKLf1vjfCjFE55nuNmDiNG7v1H7BF/view')">
+  <div class="movie-thumb" style="background-image:url('https://lumiere-a.akamaihd.net/v1/images/p_insideout_19751_af12286c.jpeg');"></div>
 </div>
 
 <!-- Inside Out 2 -->
-<div class="movie-card" data-title="Inside Out 2" onclick="openMovie('https://drive.google.com/file/d/1ZILcPxB3UYUHd7JtaxEusVoFqP-tduGb/view')">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR-nhD4r2BN-8ajkk69yfFyh72SWxvs2CatBGUMQEFwyZbSppp8K57RbiKBcq430NWMxm2&s=10">
+<div class="movie-card" data-title="inside out 2" onclick="openMovie('https://drive.google.com/file/d/1ZILcPxB3UYUHd7JtaxEusVoFqP-tduGb/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR-nhD4r2BN-8ajkk69yfFyh72SWxvs2CatBGUMQEFwyZbSppp8K57RbiKBcq430NWMxm2&s=10');"></div>
 </div>
 
 <!-- Terrifier 3 -->
-<div class="movie-card" data-title="Terrifier 3" onclick="openMovie('https://drive.google.com/file/d/1RRwSLgXs5FluVpOzDWdU6V6R7wAxTPa3/view')">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS16fhjJJhDgV2c5wCd6ST9PO8WQpyzUjxwGnYm13_7XXLX9E0NAGqthfRgIv8LePQWQ4Kw&s=10">
+<div class="movie-card" data-title="terrifier 3" onclick="openMovie('https://drive.google.com/file/d/1RRwSLgXs5FluVpOzDWdU6V6R7wAxTPa3/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS16fhjJJhDgV2c5wCd6ST9PO8WQpyzUjxwGnYm13_7XXLX9E0NAGqthfRgIv8LePQWQ4Kw&s=10');"></div>
 </div>
 
 <!-- Smile 2 -->
-<div class="movie-card" data-title="Smile 2" onclick="openMovie('https://drive.google.com/file/d/13JTPvvDpgtSsuwZBjS79eaUWLLnUzdkD/view')">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zwd67_uhHEa1Nll9zwFWsfuSk_rJYSgD8XFi0_mZBVySfPni8qpd9S12Vt-cMbxPK4FNFA&s=10">
+<div class="movie-card" data-title="smile 2" onclick="openMovie('https://drive.google.com/file/d/13JTPvvDpgtSsuwZBjS79eaUWLLnUzdkD/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zwd67_uhHEa1Nll9zwFWsfuSk_rJYSgD8XFi0_mZBVySfPni8qpd9S12Vt-cMbxPK4FNFA&s=10');"></div>
 </div>
 
 <!-- Moana 2 -->
-<div class="movie-card" data-title="Moana 2" onclick="openMovie('https://drive.google.com/file/d/11ucdZqlUHigswxIolTQV84SMyLLgFhCj/view')">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy2LRW1pi29BFqnmuMnmAserguY8ZS_nP6EZpeWsL90i3rMjTHLVKeJ6YzIVZvjeiK9Yn-&s=10">
+<div class="movie-card" data-title="moana 2" onclick="openMovie('https://drive.google.com/file/d/11ucdZqlUHigswxIolTQV84SMyLLgFhCj/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy2LRW1pi29BFqnmuMnmAserguY8ZS_nP6EZpeWsL90i3rMjTHLVKeJ6YzIVZvjeiK9Yn-&s=10');"></div>
 </div>
 
 <!-- Lilo & Stitch -->
-<div class="movie-card" data-title="Lilo & Stitch" onclick="openMovie('https://drive.google.com/file/d/1c39wmia_3Mw1V2y0t9WTDbJ-xOAR59tX/view')">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgHc8T47gD-K5hnyKL9k24JlVGGNQjLm0HKDpv5UWKqA5f5Lc5X2FmLdNDdomAKpTIEd7BSA&s=10">
+<div class="movie-card" data-title="lilo and stitch" onclick="openMovie('https://drive.google.com/file/d/1c39wmia_3Mw1V2y0t9WTDbJ-xOAR59tX/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgHc8T47gD-K5hnyKL9k24JlVGGNQjLm0HKDpv5UWKqA5f5Lc5X2FmLdNDdomAKpTIEd7BSA&s=10');"></div>
+</div>
+
+<!-- The Bad Guys 2 -->
+<div class="movie-card" data-title="the bad guys 2" onclick="openMovie('https://drive.google.com/file/d/1gDqcs2wTf1tZ-3cGQePKSZL38ypQqshZ/view')">
+  <div class="movie-thumb" style="background-image:url('https://m.media-amazon.com/images/M/MV5BY2YwODhmODctMjE2OS00Y2EyLWEyZTEtOGU3ODk5MGIzYmU1XkEyXkFqcGc@._V1_.jpg');"></div>
+</div>
+
+<!-- Superman -->
+<div class="movie-card" data-title="superman" onclick="openMovie('https://drive.google.com/file/d/1wZnvdx2VQacVb2mCBnywLpg4sr-V98yq/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScF097fNii5MqhjcAKcES48ifmqc9NgZIWafW3od--h3auWrO6KN28R0Keu6nxY75VX27fCg&s=10');"></div>
+</div>
+
+<!-- Smurfs -->
+<div class="movie-card" data-title="smurfs" onclick="openMovie('https://drive.google.com/file/d/1GYNxJk32xJfVFwUfCmZ47ugW6wIBMTfl/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgACwus8Mk5ka670qG1HfYmkYGRLOtAelMD3Df-nOWFJ8ZDuemAueQwCS0KkRwaNjwFh1Agg&s=10');"></div>
+</div>
+
+<!-- Demon Slayer: Infinity Castle -->
+<div class="movie-card" data-title="demon slayer infinity castle" onclick="openMovie('https://drive.google.com/file/d/1YJU7li7PxW_jJpIbmWUwsyTpq-ewZUPW/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvVvpymkY7nGRYgMnMi2kIXnhCSaIHkfWLdbBO4Ic5F9jb2agcVt_lb-nkOHDj99Cttpeq&s=10');"></div>
+</div>
+
+<!-- Jurassic World Rebirth -->
+<div class="movie-card" data-title="jurassic world rebirth" onclick="openMovie('https://drive.google.com/file/d/1Z7nbr_l6qQCD-yqljhafDHCKHJqOqNhC/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxWaBBrMltfku16N59Td3CInf_AVaGsHQqdgE7pBiq1ubQ_2KXxvv6n9WoQRaT7kGNBFWk&s=10');"></div>
+</div>
+
+<!-- Elio -->
+<div class="movie-card" data-title="elio" onclick="openMovie('https://drive.google.com/file/d/15ajlecl414X2EvUgMQ4SR-AvZJveOnK8/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRusSG6wmx70TSTC000LmocvzAt2BQ85txs7J4tV8ZwtBQOpqbZ9QIs8nHzlnUVtq-VuajoEQ&s=10');"></div>
+</div>
+
+<!-- K-Pop Demon Hunters -->
+<div class="movie-card" data-title="k-pop demon hunters" onclick="openMovie('https://drive.google.com/file/d/1ac6sb42PNPRYfKTQOB7h5RUg9fidb8NV/view')">
+  <div class="movie-thumb" style="background-image:url('https://m.media-amazon.com/images/M/MV5BNTBiYWJlMjQtOTIyMy00NTY4LWFhOWItOWZhNzc3NGMyMjc2XkEyXkFqcGc@._V1_.jpg');"></div>
 </div>
 
 <!-- Jujutsu Kaisen 0 -->
-<div class="movie-card" data-title="Jujutsu Kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1ch7gDcVujTNGMyHRBoS7Nbg_GpsS2cfq/view')">
-  <img src="https://archive.nevadasagebrush.com/wp-content/uploads/2022/04/jjk-0.jpg">
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1ch7gDcVujTNGMyHRBoS7Nbg_GpsS2cfq/view')">
+  <div class="movie-thumb" style="background-image:url('https://archive.nevadasagebrush.com/wp-content/uploads/2022/04/jjk-0.jpg');"></div>
 </div>
 
 </div>
@@ -135,12 +176,10 @@
 function openMovie(url){
   window.open(url,"_blank");
 }
-
 function filterMovies(q){
   q=q.toLowerCase();
-  document.querySelectorAll('.movie-card').forEach(card=>{
-    card.style.display =
-      card.dataset.title.toLowerCase().includes(q) ? "block" : "none";
+  document.querySelectorAll('.movie-card').forEach(c=>{
+    c.style.display=c.dataset.title.includes(q)?"block":"none";
   });
 }
 </script>
