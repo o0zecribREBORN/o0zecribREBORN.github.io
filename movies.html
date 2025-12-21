@@ -6,6 +6,7 @@
   <link rel="icon" href="favicon.png">
 
   <style>
+  /* ===== SEARCH BAR ===== */
   .movie-search{
     width:100%;
     max-width:420px;
@@ -18,36 +19,45 @@
     color:white;
     outline:none;
   }
+  .movie-search::placeholder{color:#bbb;}
 
+  /* ===== MOVIE GRID ===== */
   .movie-grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
     gap:22px;
+    margin-top:20px;
   }
 
   .movie-card{
-    aspect-ratio:2/3;
+    aspect-ratio:2 / 3;
     border-radius:18px;
     overflow:hidden;
     cursor:pointer;
     background:#111;
     position:relative;
     box-shadow:0 0 18px rgba(0,0,0,0.6);
-    transition:.25s;
+    transition:transform .25s ease, box-shadow .25s ease;
   }
 
   .movie-card:hover{
-    transform:scale(1.08);
+    transform:scale(1.07);
     z-index:5;
     box-shadow:0 0 40px rgba(255,255,255,0.45);
   }
 
-  .movie-card::before{
-    content:"";
+  .movie-thumb{
     position:absolute;
     inset:0;
     background-size:cover;
-    background-position:center;
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    transition:background-position .25s ease;
+  }
+
+  /* Slight upward nudge on hover (better face crop) */
+  .movie-card:hover .movie-thumb{
+    background-position:50% 35%;
   }
   </style>
 </head>
@@ -62,51 +72,63 @@
 <div class="main">
 <h1>🎬 Movies</h1>
 
-<input class="movie-search" placeholder="Search movies..." oninput="filterMovies(this.value)">
+<input
+  class="movie-search"
+  placeholder="Search movies..."
+  oninput="filterMovies(this.value)"
+>
 
 <div class="movie-grid" id="movieGrid">
 
-<!-- ===== MOVIES (ONE LINE EACH) ===== -->
+<!-- ===== ADD MOVIES BELOW (ONE LINE EACH) ===== -->
 
-<div class="movie-card" data-title="Fantastic 4" data-url="https://drive.google.com/file/d/1uIF2nvMVZIHoo3YwOOqm3IiS1x4NL1P8/view" data-img="https://lumiere-a.akamaihd.net/v1/images/p_studios_fantasticfourfirststeps_homeentannounce_poste_2eaafb1e.jpeg"></div>
+<div class="movie-card" data-title="Fantastic 4"
+ data-url="https://drive.google.com/file/d/1uIF2nvMVZIHoo3YwOOqm3IiS1x4NL1P8/view"
+ data-img="https://lumiere-a.akamaihd.net/v1/images/p_studios_fantasticfourfirststeps_homeentannounce_poste_2eaafb1e.jpeg"></div>
 
-<div class="movie-card" data-title="Minecraft Movie" data-url="https://drive.google.com/file/d/14oClAGiPk9r6-QFjQGETBj6cVotkLXds/view" data-img="https://m.media-amazon.com/images/M/MV5BYzFjMzNjOTktNDBlNy00YWZhLWExYTctZDcxNDA4OWVhOTJjXkEyXkFqcGc@._V1_.jpg"></div>
+<div class="movie-card" data-title="Minecraft Movie"
+ data-url="https://drive.google.com/file/d/14oClAGiPk9r6-QFjQGETBj6cVotkLXds/view"
+ data-img="https://m.media-amazon.com/images/M/MV5BYzFjMzNjOTktNDBlNy00YWZhLWExYTctZDcxNDA4OWVhOTJjXkEyXkFqcGc@._V1_.jpg"></div>
 
-<div class="movie-card" data-title="Toy Story" data-url="https://drive.google.com/file/d/1oO5htds_SCGuuvrpBr0IEKJIWP4_5Ixl/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnosqSu2AqlIJMCm8JeWL00GcDFPKrXRvOLtoWJq0_ZyJtUqknstFgFdlKqK6ysN-XsLDnzg&s=10"></div>
+<div class="movie-card" data-title="Toy Story"
+ data-url="https://drive.google.com/file/d/1oO5htds_SCGuuvrpBr0IEKJIWP4_5Ixl/view"
+ data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnosqSu2AqlIJMCm8JeWL00GcDFPKrXRvOLtoWJq0_ZyJtUqknstFgFdlKqK6ysN-XsLDnzg&s=10"></div>
 
-<div class="movie-card" data-title="Toy Story 3" data-url="https://drive.google.com/file/d/1ow1Un4n_xJGlgrp7K18WrI1B9imHz8u7/view" data-img="https://resizing.flixster.com/F4qdcvTFMYoEmut3WmhBVmYeSVI=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzlhZDg3ZjU1LTk3ZTAtNDMzMC04MzliLTNiMzE5YmQ3ZDQ4OC53ZWJw"></div>
+<div class="movie-card" data-title="Toy Story 3"
+ data-url="https://drive.google.com/file/d/1ow1Un4n_xJGlgrp7K18WrI1B9imHz8u7/view"
+ data-img="https://resizing.flixster.com/F4qdcvTFMYoEmut3WmhBVmYeSVI=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzlhZDg3ZjU1LTk3ZTAtNDMzMC04MzliLTNiMzE5YmQ3ZDQ4OC53ZWJw"></div>
 
-<div class="movie-card" data-title="Toy Story 4" data-url="https://drive.google.com/file/d/13MGaIocVRTGM8fl4Pgy1byGsTouD6BoJ/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDLHKfu7-Ajo1uKgPrnJl65uiCFKtLySsJYCwObZJ7HG4atJa3-84NczbTsLqHnsiYNBLO&s=10"></div>
+<div class="movie-card" data-title="Toy Story 4"
+ data-url="https://drive.google.com/file/d/13MGaIocVRTGM8fl4Pgy1byGsTouD6BoJ/view"
+ data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDLHKfu7-Ajo1uKgPrnJl65uiCFKtLySsJYCwObZJ7HG4atJa3-84NczbTsLqHnsiYNBLO&s=10"></div>
 
-<div class="movie-card" data-title="Toy Story: That Time Forgot" data-url="https://drive.google.com/file/d/1rHarA6zN6Oj_pUYORqaLMYIGhQwT-t_2/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHQtUQQvkEqVK8gSFUWxZIAQ_N2m35s123bV0Jo-AQhSe0Co26ccpvwSvr_KCpQjg2tyIO&s=10"></div>
+<div class="movie-card" data-title="Inside Out"
+ data-url="https://drive.google.com/file/d/1WX8MKLf1vjfCjFE55nuNmDiNG7v1H7BF/view"
+ data-img="https://lumiere-a.akamaihd.net/v1/images/p_insideout_19751_af12286c.jpeg"></div>
 
-<div class="movie-card" data-title="Inside Out" data-url="https://drive.google.com/file/d/1WX8MKLf1vjfCjFE55nuNmDiNG7v1H7BF/view" data-img="https://lumiere-a.akamaihd.net/v1/images/p_insideout_19751_af12286c.jpeg"></div>
+<div class="movie-card" data-title="Inside Out 2"
+ data-url="https://drive.google.com/file/d/1ZILcPxB3UYUHd7JtaxEusVoFqP-tduGb/view"
+ data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR-nhD4r2BN-8ajkk69yfFyh72SWxvs2CatBGUMQEFwyZbSppp8K57RbiKBcq430NWMxm2&s=10"></div>
 
-<div class="movie-card" data-title="Inside Out 2" data-url="https://drive.google.com/file/d/1ZILcPxB3UYUHd7JtaxEusVoFqP-tduGb/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR-nhD4r2BN-8ajkk69yfFyh72SWxvs2CatBGUMQEFwyZbSppp8K57RbiKBcq430NWMxm2&s=10"></div>
+<div class="movie-card" data-title="Terrifier 3"
+ data-url="https://drive.google.com/file/d/1RRwSLgXs5FluVpOzDWdU6V6R7wAxTPa3/view"
+ data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS16fhjJJhDgV2c5wCd6ST9PO8WQpyzUjxwGnYm13_7XXLX9E0NAGqthfRgIv8LePQWQ4Kw&s=10"></div>
 
-<div class="movie-card" data-title="Terrifier 3" data-url="https://drive.google.com/file/d/1RRwSLgXs5FluVpOzDWdU6V6R7wAxTPa3/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS16fhjJJhDgV2c5wCd6ST9PO8WQpyzUjxwGnYm13_7XXLX9E0NAGqthfRgIv8LePQWQ4Kw&s=10"></div>
+<div class="movie-card" data-title="Smile 2"
+ data-url="https://drive.google.com/file/d/13JTPvvDpgtSsuwZBjS79eaUWLLnUzdkD/view"
+ data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zwd67_uhHEa1Nll9zwFWsfuSk_rJYSgD8XFi0_mZBVySfPni8qpd9S12Vt-cMbxPK4FNFA&s=10"></div>
 
-<div class="movie-card" data-title="Smile 2" data-url="https://drive.google.com/file/d/13JTPvvDpgtSsuwZBjS79eaUWLLnUzdkD/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zwd67_uhHEa1Nll9zwFWsfuSk_rJYSgD8XFi0_mZBVySfPni8qpd9S12Vt-cMbxPK4FNFA&s=10"></div>
+<div class="movie-card" data-title="Moana 2"
+ data-url="https://drive.google.com/file/d/11ucdZqlUHigswxIolTQV84SMyLLgFhCj/view"
+ data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy2LRW1pi29BFqnmuMnmAserguY8ZS_nP6EZpeWsL90i3rMjTHLVKeJ6YzIVZvjeiK9Yn-&s=10"></div>
 
-<div class="movie-card" data-title="Moana 2" data-url="https://drive.google.com/file/d/11ucdZqlUHigswxIolTQV84SMyLLgFhCj/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy2LRW1pi29BFqnmuMnmAserguY8ZS_nP6EZpeWsL90i3rMjTHLVKeJ6YzIVZvjeiK9Yn-&s=10"></div>
+<div class="movie-card" data-title="Lilo & Stitch"
+ data-url="https://drive.google.com/file/d/1c39wmia_3Mw1V2y0t9WTDbJ-xOAR59tX/view"
+ data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgHc8T47gD-K5hnyKL9k24JlVGGNQjLm0HKDpv5UWKqA5f5Lc5X2FmLdNDdomAKpTIEd7BSA&s=10"></div>
 
-<div class="movie-card" data-title="Lilo & Stitch" data-url="https://drive.google.com/file/d/1c39wmia_3Mw1V2y0t9WTDbJ-xOAR59tX/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgHc8T47gD-K5hnyKL9k24JlVGGNQjLm0HKDpv5UWKqA5f5Lc5X2FmLdNDdomAKpTIEd7BSA&s=10"></div>
-
-<div class="movie-card" data-title="The Bad Guys 2" data-url="https://drive.google.com/file/d/1gDqcs2wTf1tZ-3cGQePKSZL38ypQqshZ/view" data-img="https://m.media-amazon.com/images/M/MV5BY2YwODhmODctMjE2OS00Y2EyLWEyZTEtOGU3ODk5MGIzYmU1XkEyXkFqcGc@._V1_.jpg"></div>
-
-<div class="movie-card" data-title="Superman" data-url="https://drive.google.com/file/d/1wZnvdx2VQacVb2mCBnywLpg4sr-V98yq/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScF097fNii5MqhjcAKcES48ifmqc9NgZIWafW3od--h3auWrO6KN28R0Keu6nxY75VX27fCg&s=10"></div>
-
-<div class="movie-card" data-title="Smurfs" data-url="https://drive.google.com/file/d/1GYNxJk32xJfVFwUfCmZ47ugW6wIBMTfl/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgACwus8Mk5ka670qG1HfYmkYGRLOtAelMD3Df-nOWFJ8ZDuemAueQwCS0KkRwaNjwFh1Agg&s=10"></div>
-
-<div class="movie-card" data-title="Demon Slayer: Infinity Castle" data-url="https://drive.google.com/file/d/1YJU7li7PxW_jJpIbmWUwsyTpq-ewZUPW/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvVvpymkY7nGRYgMnMi2kIXnhCSaIHkfWLdbBO4Ic5F9jb2agcVt_lb-nkOHDj99Cttpeq&s=10"></div>
-
-<div class="movie-card" data-title="Jurassic World Rebirth" data-url="https://drive.google.com/file/d/1Z7nbr_l6qQCD-yqljhafDHCKHJqOqNhC/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxWaBBrMltfku16N59Td3CInf_AVaGsHQqdgE7pBiq1ubQ_2KXxvv6n9WoQRaT7kGNBFWk&s=10"></div>
-
-<div class="movie-card" data-title="Elio" data-url="https://drive.google.com/file/d/15ajlecl414X2EvUgMQ4SR-AvZJveOnK8/view" data-img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRusSG6wmx70TSTC000LmocvzAt2BQ85txs7J4tV8ZwtBQOpqbZ9QIs8nHzlnUVtq-VuajoEQ&s=10"></div>
-
-<div class="movie-card" data-title="K-Pop Demon Hunters" data-url="https://drive.google.com/file/d/1ac6sb42PNPRYfKTQOB7h5RUg9fidb8NV/view" data-img="https://m.media-amazon.com/images/M/MV5BNTBiYWJlMjQtOTIyMy00NTY4LWFhOWItOWZhNzc3NGMyMjc2XkEyXkFqcGc@._V1_.jpg"></div>
-
-<div class="movie-card" data-title="Jujutsu Kaisen 0" data-url="https://drive.google.com/file/d/1ch7gDcVujTNGMyHRBoS7Nbg_GpsS2cfq/view" data-img="https://archive.nevadasagebrush.com/wp-content/uploads/2022/04/jjk-0.jpg"></div>
+<div class="movie-card" data-title="Jujutsu Kaisen 0"
+ data-url="https://drive.google.com/file/d/1ch7gDcVujTNGMyHRBoS7Nbg_GpsS2cfq/view"
+ data-img="https://archive.nevadasagebrush.com/wp-content/uploads/2022/04/jjk-0.jpg"></div>
 
 </div>
 </div>
@@ -114,13 +136,14 @@
 <script>
 document.querySelectorAll('.movie-card').forEach(card=>{
   card.style.backgroundImage = `url(${card.dataset.img})`;
-  card.onclick = () => window.open(card.dataset.url, "_blank");
+  card.onclick = () => window.open(card.dataset.url,"_blank");
 });
 
 function filterMovies(q){
   q=q.toLowerCase();
   document.querySelectorAll('.movie-card').forEach(card=>{
-    card.style.display = card.dataset.title.toLowerCase().includes(q) ? "block":"none";
+    card.style.display =
+      card.dataset.title.toLowerCase().includes(q) ? "block" : "none";
   });
 }
 </script>
