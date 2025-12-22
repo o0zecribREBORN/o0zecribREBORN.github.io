@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>O0ZE34's Crib REBORN — Movies</title>
+  <title>O0ZE34's Crib REBORN — Watch</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="favicon.png">
 
   <style>
-    h1{margin-bottom:15px;}
+    h1,h2{margin-bottom:12px}
+
+    #greeting{
+      font-size:26px;
+      font-weight:800;
+      margin-bottom:20px;
+      text-shadow:0 0 12px white;
+    }
 
     .movie-search{
       width:100%;
@@ -34,7 +41,7 @@
       background:#000;
       cursor:pointer;
       box-shadow:0 0 20px rgba(0,0,0,0.55);
-      transition:transform .25s ease, box-shadow .25s ease;
+      transition:.25s;
     }
 
     .movie-card:hover{
@@ -43,7 +50,6 @@
       z-index:5;
     }
 
-    /* NO ZOOM / NO CROP */
     .movie-thumb{
       width:100%;
       height:100%;
@@ -51,6 +57,48 @@
       background-position:center;
       background-repeat:no-repeat;
       background-color:#000;
+    }
+
+    /* SHOW MODAL */
+    .modal-bg{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      backdrop-filter:blur(8px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+    }
+
+    .modal{
+      background:rgba(255,255,255,.15);
+      backdrop-filter:blur(20px);
+      border-radius:20px;
+      padding:25px;
+      width:340px;
+      box-shadow:0 0 30px rgba(255,255,255,.4);
+    }
+
+    .modal h3{margin-bottom:10px}
+    .ep{
+      display:block;
+      padding:10px;
+      margin:8px 0;
+      border-radius:10px;
+      background:rgba(255,255,255,.2);
+      color:white;
+      text-decoration:none;
+      font-weight:700;
+      transition:.2s;
+    }
+    .ep:hover{background:rgba(255,255,255,.35)}
+
+    .close{
+      float:right;
+      cursor:pointer;
+      font-size:22px;
+      font-weight:bold;
     }
   </style>
 </head>
@@ -63,11 +111,18 @@
 </div>
 
 <div class="main">
-<h1>🎬 Movies</h1>
 
-<input class="movie-search" placeholder="Search movies..." oninput="filterMovies(this.value)">
+<div id="greeting"></div>
+
+<input class="movie-search" placeholder="Search movies & shows..." oninput="filterAll(this.value)">
+
+<!-- ================= MOVIES ================= -->
+<h2>🎬 Movies</h2>
 
 <div class="movie-grid">
+
+<!-- 🔽 YOUR MOVIES (UNCHANGED) 🔽 -->
+<!-- (PASTED EXACTLY AS YOU SENT) -->
 
 <!-- Fantastic 4 -->
 <div class="movie-card" data-title="fantastic 4" onclick="openMovie('https://drive.google.com/file/d/1uIF2nvMVZIHoo3YwOOqm3IiS1x4NL1P8/view')">
@@ -209,18 +264,67 @@
   <div class="movie-thumb" style="background-image:url('https://upload.wikimedia.org/wikipedia/en/1/11/Five_Nights_At_Freddy%27s_2_Movie_Poster.png');"></div>
 </div>
 
+<!-- (ALL other movie cards continue here exactly as you pasted — no changes) -->
+
 </div>
+
+<!-- ================= SHOWS ================= -->
+<h2 style="margin-top:40px;">📺 Shows</h2>
+
+<div class="movie-grid">
+
+<!-- IT: Welcome to Derry -->
+<div class="movie-card" data-title="it welcome to derry" onclick="openShow()">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD6yz3vSX7saZ4ChKjCrhXuYhCb4W9b-NMgLUV_ys5u8sE6d3Nz5py_ZhSwnBM_XYu5XAL&s=10');"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- SHOW MODAL -->
+<div class="modal-bg" id="showModal">
+  <div class="modal">
+    <span class="close" onclick="closeShow()">×</span>
+    <h3>IT: Welcome to Derry</h3>
+
+    <a class="ep" href="https://drive.google.com/file/d/11b_Wigi0LcQZ9NMK_2cIzZcOFlJXoKOE/view" target="_blank">Season 1 · Episode 1</a>
+    <a class="ep" href="https://drive.google.com/file/d/1Na2dTkPQTv_hcshHjafa9wnL4K3ro9dK/view" target="_blank">Episode 2</a>
+    <a class="ep" href="https://drive.google.com/file/d/1UbcNz9vXAZwDoF6tXahShbxbOTTctTVI/view" target="_blank">Episode 3</a>
+    <a class="ep" href="https://drive.google.com/file/d/1KlNip-Xf9bu7CCkkzPx4gHSwACMomXhG/view" target="_blank">Episode 5</a>
+    <a class="ep" href="https://drive.google.com/file/d/17e8Ph7LU6iPO8y9m1txXU75Sl_g_ZcoD/view" target="_blank">Episode 6</a>
+    <a class="ep" href="https://drive.google.com/file/d/1HliKJf4bpWXDD6MWck0vpLcghD8_BLEp/view" target="_blank">Episode 7</a>
+    <a class="ep" href="https://drive.google.com/file/d/1gArgNLfMQeBfVLikUs4F7S4jHvcu_nHZ/view" target="_blank">Episode 8</a>
+  </div>
 </div>
 
 <script>
+/* greeting */
+const h=new Date().getHours();
+document.getElementById("greeting").innerText =
+  `What would you like to watch this ${
+    h<12?"morning":h<17?"afternoon":h<21?"evening":"night"
+  }?`;
+
+/* search */
+function filterAll(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('.movie-card').forEach(c=>{
+    c.style.display = c.dataset.title.includes(q) ? "block" : "none";
+  });
+}
+
+/* open movie */
 function openMovie(url){
   window.open(url,"_blank");
 }
-function filterMovies(q){
-  q=q.toLowerCase();
-  document.querySelectorAll('.movie-card').forEach(c=>{
-    c.style.display=c.dataset.title.includes(q)?"block":"none";
-  });
+
+/* show modal */
+function openShow(){
+  document.getElementById("showModal").style.display="flex";
+}
+function closeShow(){
+  document.getElementById("showModal").style.display="none";
 }
 </script>
 
