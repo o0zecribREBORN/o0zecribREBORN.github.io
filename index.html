@@ -46,10 +46,69 @@
       display: none;
       z-index: 9999;
     }
-  </style>
+  
+/* 🎟️ CODE REDEEMER (matches REBORN vibe) */
+#codeRedeemer{
+  position:relative;
+  overflow:hidden;
+}
+#codeRedeemer::before{
+  content:"";
+  position:absolute; inset:-2px;
+  background: radial-gradient(circle at 20% 20%, rgba(60,255,154,.18), transparent 55%),
+              radial-gradient(circle at 85% 35%, rgba(120,200,255,.16), transparent 55%),
+              radial-gradient(circle at 50% 110%, rgba(255,255,255,.10), transparent 60%);
+  filter: blur(0px);
+  pointer-events:none;
+}
+#codeRedeemer > *{ position:relative; z-index:2; }
+
+#codeInput{
+  width:100%;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  outline:none;
+  font-size:16px;
+}
+#codeInput::placeholder{ color: rgba(255,255,255,.65); }
+#codeMsg{ margin-top:10px; font-weight:800; opacity:.9; }
+
+#editOverlay{
+  position:fixed;
+  inset:0;
+  background:#000;
+  opacity:0;
+  pointer-events:none;
+  z-index:99999;
+  transition: opacity 17s linear;
+}
+
+/* subtle beat pulse */
+@keyframes oozeBeat {
+  0%   { transform: scale(1); filter: brightness(1); }
+  50%  { transform: scale(1.02); filter: brightness(1.18) saturate(1.05); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+.main.ooze-beat {
+  animation: oozeBeat .14s ease-in-out;
+}
+</style>
 </head>
 
 <body>
+<!-- ⭐ STAR CANVAS (if your script.js uses it) -->
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+
+<!-- 🎟️ CODE SYSTEM -->
+<div id="editOverlay" aria-hidden="true"></div>
+<audio id="editAudio" preload="auto">
+  <source src="edit.mp3" type="audio/mpeg">
+</audio>
+
   <!-- 🎁 GIFT TOAST -->
   <div id="giftToast">
     🎁 <b>You got a gift from O0ZE34!</b><br />
@@ -129,9 +188,38 @@
         <div class="xp_bar">
           <div id="xp_fill"></div>
         </div>
-        <p id="xp_txt">XP: 0 / 100</p>
-      </div>
 
+
+<!-- 🎟️ CODE REDEEMER -->
+<div class="home-card" id="codeRedeemer">
+
+  <!-- XP DISPLAY -->
+  <p id="xp_txt" style="font-weight:700; margin-bottom:10px;">
+    XP: 0 / 100
+  </p>
+
+  <h2>🎟️ Redeem Code</h2>
+
+  <input
+    id="codeInput"
+    class="modal-input"
+    placeholder="Enter code..."
+    autocomplete="off"
+  />
+
+  <button
+    class="save-btn"
+    style="margin-top:10px;"
+    onclick="redeemCode()"
+  >
+    Redeem
+  </button>
+
+  <p id="codeMsg"></p>
+
+</div>
+
+      
       <!-- DAILY -->
       <div class="daily_card" onclick="claimDaily()">
         <h2>🎄 Daily Reward</h2>
@@ -286,5 +374,140 @@
       showUpdate();
     };
   </script>
+
+<script>
+/* =========================
+   🎟️ CODE REDEEMER SYSTEM
+   - Add/expire codes in CODES below
+   - Each code can give levels, run a cutscene, etc.
+   ========================= */
+
+(function () {
+  const inp = document.getElementById("codeInput");
+  if (inp) inp.addEventListener("keydown", (e) => { if (e.key === "Enter") redeemCode(); });
+})();
+
+function setMsg(text, good = false) {
+  const m = document.getElementById("codeMsg");
+  if (!m) return;
+  m.textContent = text;
+  m.style.color = good ? "#3cff9a" : "rgba(255,255,255,.85)";
+}
+
+function addLevels(levels) {
+  const xpNow = parseInt(localStorage.getItem("xp") || "0", 10) || 0;
+  localStorage.setItem("xp", String(xpNow + (levels * 100)));
+  if (typeof loadXP === "function") loadXP();
+}
+
+/* ✅ EDIT THESE to add/remove codes */
+const CODES = {
+  // code: { expires: "YYYY-MM-DD" (optional), levels: number (optional), run: "edit" (optional) }
+  "oozedabest":      { levels: 100,  expires: "2099-01-01" },
+  "newyearnewlevel": { levels: 2026, expires: "2026-01-10" },
+  "edit":            { run: "edit",  expires: "2099-01-01" },
+};
+
+function isExpired(rule) {
+  if (!rule || !rule.expires) return false;
+  const exp = new Date(rule.expires + "T23:59:59");
+  return Date.now() > exp.getTime();
+}
+
+function redeemCode() {
+  const input = document.getElementById("codeInput");
+  if (!input) return;
+  const raw = (input.value || "").trim().toLowerCase();
+  input.value = "";
+
+  if (!raw) { setMsg("Type a code first."); return; }
+
+  const rule = CODES[raw];
+  if (!rule) { setMsg("Invalid code."); return; }
+  if (isExpired(rule)) { setMsg("That code expired."); return; }
+
+  if (typeof rule.levels === "number") {
+    addLevels(rule.levels);
+    setMsg(`+${rule.levels} LEVELS ✅`, true);
+  }
+
+  if (rule.run === "edit") {
+    startEditCutscene();
+  }
+}
+
+/* =========================
+   🌑 EDIT CUTSCENE
+   - Fade to black for 17s
+   - At 17s: screen returns to normal AND bumps to the song
+   - +50 levels after the cutscene starts bumping
+   ========================= */
+
+let editRunning = false;
+let beatTimer = null;
+
+function startEditCutscene() {
+  if (editRunning) return;
+  editRunning = true;
+
+  const overlay = document.getElementById("editOverlay");
+  const audio = document.getElementById("editAudio");
+  const main = document.querySelector(".main") || document.body;
+
+  // Ensure overlay starts transparent
+  overlay.style.transition = "none";
+  overlay.style.opacity = "0";
+
+  // Play audio (must be user gesture: redeem button is a gesture ✅)
+  const p = audio && audio.play ? audio.play() : null;
+  if (p && p.catch) p.catch(() => setMsg("Audio blocked—click Redeem again (or click page once)."));
+
+  // Fade to black over 17s
+  requestAnimationFrame(() => {
+    overlay.style.transition = "opacity 17s linear";
+    overlay.style.opacity = "1";
+  });
+
+  // Set your BPM here (you can change later)
+  const bpm = 132;
+  const beatMs = 60000 / bpm;
+
+  // At 17s: go back to normal (fade out overlay) + start bumping
+  setTimeout(() => {
+    // Force a proper transition back
+    overlay.style.transition = "opacity 0.9s ease-out";
+    overlay.style.opacity = "0";
+
+    // Start bumping
+    if (beatTimer) clearInterval(beatTimer);
+    beatTimer = setInterval(() => {
+      main.classList.remove("ooze-beat");
+      void main.offsetWidth; // restart animation
+      main.classList.add("ooze-beat");
+    }, beatMs);
+
+    // Reward once
+    addLevels(50);
+    setMsg("+50 LEVELS 🎵", true);
+
+    // Stop bumping when the song ends (fallback: stop after 60s)
+    const stop = () => {
+      if (beatTimer) clearInterval(beatTimer);
+      beatTimer = null;
+      main.classList.remove("ooze-beat");
+      editRunning = false;
+    };
+    if (audio) {
+      audio.onended = stop;
+      // In case audio is longer/shorter, also fallback
+      setTimeout(stop, 60000);
+    } else {
+      setTimeout(stop, 60000);
+    }
+  }, 17000);
+}
+</script>
+
+
 </body>
 </html>
