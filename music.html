@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>O0ZE34's Crib REBORN — Music</title>
 
   <link rel="stylesheet" href="style.css" />
@@ -11,61 +12,6 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
   />
-
-  <!-- PAGE-SPECIFIC STYLES (SAFE TO KEEP HERE) -->
-  <style>
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-      gap: 26px;
-      margin-top: 35px;
-    }
-
-    .music-card {
-      background: rgba(18, 24, 40, 0.88);
-      border-radius: 18px;
-      padding: 22px;
-      text-decoration: none;
-      color: white;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-
-      box-shadow:
-        0 0 0 1px rgba(120,140,255,.15),
-        0 15px 40px rgba(0,0,0,.55);
-
-      transition: transform .25s ease, box-shadow .25s ease;
-    }
-
-    .music-card:hover {
-      transform: translateY(-6px) scale(1.04);
-      box-shadow:
-        0 0 0 1px rgba(120,140,255,.35),
-        0 25px 60px rgba(0,0,0,.75);
-    }
-
-    .music-icon {
-      width: 84px;
-      height: 84px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #1e2a55, #0b1022);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 38px;
-      box-shadow: inset 0 0 25px rgba(255,255,255,.08);
-    }
-
-    .music-title {
-      font-size: 16px;
-      font-weight: 700;
-      text-align: center;
-      line-height: 1.2;
-    }
-  </style>
 </head>
 
 <body>
@@ -92,57 +38,43 @@
   <div class="main">
     <h1>Music</h1>
 
-    <input
-      class="search"
-      id="search"
-      type="text"
-      placeholder="Search..."
-      autocomplete="off"
-    />
-
-    <!-- MUSIC GRID -->
+    <!-- MUSIC BUTTONS -->
     <div class="grid">
 
-      <a class="music-card" href="http://drive.google.com/file/d/1ilyYeTsv55h9kGR-WXN1pqBZq-OBGkEp/view" target="_blank">
-        <div class="music-icon"><i class="fa-solid fa-music"></i></div>
-        <div class="music-title">Not Like Us</div>
+      <a class="btn" onclick="openInBlank('http://drive.google.com/file/d/1ilyYeTsv55h9kGR-WXN1pqBZq-OBGkEp/view')">
+        <img class="thumb" src="https://www.google.com/s2/favicons?domain=drive.google.com&sz=128">
+        <span>Not Like Us</span>
       </a>
 
-      <a class="music-card" href="https://drive.google.com/drive/u/1/folders/1kU6hD70gRBZ8m0jszv_ndjxaeXuy-XBg" target="_blank">
-        <div class="music-icon"><i class="fa-solid fa-folder"></i></div>
-        <div class="music-title">GNX</div>
+      <a class="btn" onclick="openInBlank('https://drive.google.com/drive/u/1/folders/1kU6hD70gRBZ8m0jszv_ndjxaeXuy-XBg')">
+        <img class="thumb" src="https://www.google.com/s2/favicons?domain=drive.google.com&sz=128">
+        <span>GNX</span>
       </a>
 
-      <a class="music-card" href="https://drive.google.com/drive/u/1/folders/1-djYLjVLp0I9ALduBoGqO9ctRKH2Z_KW" target="_blank">
-        <div class="music-icon"><i class="fa-solid fa-folder"></i></div>
-        <div class="music-title">Utopia</div>
+      <a class="btn" onclick="openInBlank('https://drive.google.com/drive/u/1/folders/1-djYLjVLp0I9ALduBoGqO9ctRKH2Z_KW')">
+        <img class="thumb" src="https://www.google.com/s2/favicons?domain=drive.google.com&sz=128">
+        <span>Utopia</span>
       </a>
 
-      <a class="music-card" href="https://drive.google.com/drive/u/1/folders/1FiH3N9jzGOPh84BMfHd2tyESw6qBRkSZ" target="_blank">
-        <div class="music-icon"><i class="fa-solid fa-folder"></i></div>
-        <div class="music-title">DAMN</div>
+      <a class="btn" onclick="openInBlank('https://drive.google.com/drive/u/1/folders/1FiH3N9jzGOPh84BMfHd2tyESw6qBRkSZ')">
+        <img class="thumb" src="https://www.google.com/s2/favicons?domain=drive.google.com&sz=128">
+        <span>DAMN</span>
       </a>
 
-      <a class="music-card" href="https://drive.google.com/drive/u/1/folders/1LCN5W-5ciAj6lgYeAT-_Voh2JA7a2TfH" target="_blank">
-        <div class="music-icon"><i class="fa-solid fa-folder"></i></div>
-        <div class="music-title">Mr. Morale & The Big Steppers</div>
+      <a class="btn" onclick="openInBlank('https://drive.google.com/drive/u/1/folders/1LCN5W-5ciAj6lgYeAT-_Voh2JA7a2TfH')">
+        <img class="thumb" src="https://www.google.com/s2/favicons?domain=drive.google.com&sz=128">
+        <span>Mr. Morale & The Big Steppers</span>
       </a>
 
-      <a class="music-card" href="https://drive.google.com/drive/u/1/folders/1GwVEgCwOkgQGus3HEYv-RfzK9U-7bShZ" target="_blank">
-        <div class="music-icon"><i class="fa-solid fa-folder"></i></div>
-        <div class="music-title">Grandson Vol. 1</div>
+      <a class="btn" onclick="openInBlank('https://drive.google.com/drive/u/1/folders/1GwVEgCwOkgQGus3HEYv-RfzK9U-7bShZ')">
+        <img class="thumb" src="https://www.google.com/s2/favicons?domain=drive.google.com&sz=128">
+        <span>Grandson Vol. 1</span>
       </a>
 
-    </div>
-
-    <div style="margin-top:28px;text-align:center;">
-      <a class="btn" href="https://oozemadethislol2.global.ssl.fastly.net/" target="_blank">
-        You need to search something up on this website to use all apps (click me)
-      </a>
     </div>
 
   </div>
 
-  <script src="script.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
