@@ -1,33 +1,163 @@
-
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-<title>O0ZE34's Crib REBORN — Music</title>
-<link href="style.css" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
-<link href="favicon.png" rel="icon" type="image/png"/></head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>O0ZE34's Crib REBORN — Music</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <style>
+    .search{
+      width:100%;
+      max-width:420px;
+      padding:14px 18px;
+      border-radius:14px;
+      border:none;
+      font-size:18px;
+      background:rgba(255,255,255,0.12);
+      color:white;
+      outline:none;
+      margin:15px 0 30px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+      gap:22px;
+    }
+
+    .music-card{
+      background:rgba(255,255,255,0.08);
+      border-radius:18px;
+      padding:12px;
+      text-align:center;
+      cursor:pointer;
+      transition:.25s;
+    }
+
+    .music-card:hover{
+      transform:scale(1.08);
+      box-shadow:0 0 30px rgba(255,255,255,0.45);
+    }
+
+    .music-thumb{
+      width:100%;
+      aspect-ratio:1 / 1;
+      border-radius:14px;
+      background-size:cover;
+      background-position:center;
+      margin-bottom:10px;
+      background-color:#000;
+    }
+
+    .music-card span{
+      font-weight:700;
+      font-size:15px;
+      display:block;
+      margin-top:6px;
+    }
+  </style>
+</head>
+
 <body>
-<div id="clock"></div>
-<canvas id="stars"></canvas>
-<canvas id="stars2"></canvas>
-<div class="sidebar">
-<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
-<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
-<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
-<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
-<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
-<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
-<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
-<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
-</div>
-<div class="main">
-<h1>Music</h1>
-<div class="typewriter"></div>
-<input class="search" id="search" onkeyup="filterCards()" placeholder="Search..."/>
-<div class="grid"></div>
-</div>
-<script src="script.js"></script>
-<div style="margin-top:20px;text-align:center;"></div><div style='text-align:center;margin-top:20px;'><a class="btn" href="https://oozemadethislol2.global.ssl.fastly.net/" target="_blank">You need to search something up in this website to use all apps (click me)</a></div></body>
+
+  <div id="clock"></div>
+  <canvas id="stars"></canvas>
+  <canvas id="stars2"></canvas>
+
+  <!-- ⭐ SIDEBAR -->
+  <div class="sidebar">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+    <a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+    <a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+    <a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+    <a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+    <a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+    <a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+  </div>
+
+  <!-- ⭐ MAIN -->
+  <div class="main">
+    <h1>🎧 Music</h1>
+
+    <input
+      class="search"
+      id="search"
+      placeholder="Search music..."
+      onkeyup="filterCards()"
+    />
+
+    <div class="grid" id="musicGrid">
+
+      <!-- Not Like Us -->
+      <div class="music-card" data-title="not like us" onclick="openLink('https://drive.google.com/file/d/1ilyYeTsv55h9kGR-WXN1pqBZq-OBGkEp/view')">
+        <div class="music-thumb" style="background-image:url('PLACEHOLDER.jpg');"></div>
+        <span>Not Like Us</span>
+      </div>
+
+      <!-- GNX -->
+      <div class="music-card" data-title="gnx" onclick="openLink('https://drive.google.com/drive/u/1/folders/1kU6hD70gRBZ8m0jszv_ndjxaeXuy-XBg')">
+        <div class="music-thumb" style="background-image:url('PLACEHOLDER.jpg');"></div>
+        <span>GNX</span>
+      </div>
+
+      <!-- Utopia -->
+      <div class="music-card" data-title="utopia" onclick="openLink('https://drive.google.com/drive/u/1/folders/1-djYLjVLp0I9ALduBoGqO9ctRKH2Z_KW')">
+        <div class="music-thumb" style="background-image:url('PLACEHOLDER.jpg');"></div>
+        <span>Utopia</span>
+      </div>
+
+      <!-- DAMN -->
+      <div class="music-card" data-title="damn" onclick="openLink('https://drive.google.com/drive/u/1/folders/1FiH3N9jzGOPh84BMfHd2tyESw6qBRkSZ')">
+        <div class="music-thumb" style="background-image:url('PLACEHOLDER.jpg');"></div>
+        <span>DAMN.</span>
+      </div>
+
+      <!-- Mr Morale -->
+      <div class="music-card" data-title="mr morale" onclick="openLink('https://drive.google.com/drive/u/1/folders/1LCN5W-5ciAj6lgYeAT-_Voh2JA7a2TfH')">
+        <div class="music-thumb" style="background-image:url('PLACEHOLDER.jpg');"></div>
+        <span>Mr. Morale & The Big Steppers</span>
+      </div>
+
+      <!-- Grandson Vol 1 -->
+      <div class="music-card" data-title="grandson vol 1" onclick="openLink('https://drive.google.com/drive/u/1/folders/1GwVEgCwOkgQGus3HEYv-RfzK9U-7bShZ')">
+        <div class="music-thumb" style="background-image:url('PLACEHOLDER.jpg');"></div>
+        <span>Grandson Vol. 1</span>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:30px;">
+      <a class="btn" target="_blank" href="https://oozemadethislol2.global.ssl.fastly.net/">
+        You need to search something on this site to unlock all apps (click me)
+      </a>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+  <script>
+    function openLink(url){
+      window.open(url, "_blank");
+    }
+
+    function filterCards(){
+      const q = document.getElementById("search").value.toLowerCase();
+      document.querySelectorAll(".music-card").forEach(card=>{
+        card.style.display = card.dataset.title.includes(q) ? "block" : "none";
+      });
+    }
+  </script>
+
+</body>
 </html>
