@@ -3,16 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>O0ZE34's Crib REBORN — 2026</title>
-
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.png" type="image/png" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  />
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     /* 🎄 CHRISTMAS EXTRAS */
     .snowflake {
@@ -26,14 +20,12 @@
       opacity: 0.9;
       z-index: 999;
     }
-
     @keyframes fall {
       to {
         transform: translateY(110vh);
         opacity: 0;
       }
     }
-
     #giftToast {
       position: fixed;
       bottom: 25px;
@@ -46,58 +38,140 @@
       display: none;
       z-index: 9999;
     }
-  
-/* 🎟️ CODE REDEEMER (matches REBORN vibe) */
-#codeRedeemer{
-  position:relative;
-  overflow:hidden;
-}
-#codeRedeemer::before{
-  content:"";
-  position:absolute; inset:-2px;
-  background: radial-gradient(circle at 20% 20%, rgba(60,255,154,.18), transparent 55%),
-              radial-gradient(circle at 85% 35%, rgba(120,200,255,.16), transparent 55%),
-              radial-gradient(circle at 50% 110%, rgba(255,255,255,.10), transparent 60%);
-  filter: blur(0px);
-  pointer-events:none;
-}
-#codeRedeemer > *{ position:relative; z-index:2; }
+ 
+    /* 🎟️ CODE REDEEMER (matches REBORN vibe) */
+    #codeRedeemer{
+      position:relative;
+      overflow:hidden;
+    }
+    #codeRedeemer::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(circle at 20% 20%, rgba(60,255,154,.18), transparent 55%),
+                  radial-gradient(circle at 85% 35%, rgba(120,200,255,.16), transparent 55%),
+                  radial-gradient(circle at 50% 110%, rgba(255,255,255,.10), transparent 60%);
+      filter: blur(0px);
+      pointer-events:none;
+    }
+    #codeRedeemer > *{ position:relative; z-index:2; }
+    #codeInput{
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.10);
+      color:#fff;
+      outline:none;
+      font-size:16px;
+    }
+    #codeInput::placeholder{ color: rgba(255,255,255,.65); }
+    #codeMsg{ margin-top:10px; font-weight:800; opacity:.9; }
+    #editOverlay{
+      position:fixed;
+      inset:0;
+      background:#000;
+      opacity:0;
+      pointer-events:none;
+      z-index:99999;
+      transition: opacity 17s linear;
+    }
+    /* subtle beat pulse */
+    @keyframes oozeBeat {
+      0% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.02); filter: brightness(1.18) saturate(1.05); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+    .main.ooze-beat {
+      animation: oozeBeat .14s ease-in-out;
+    }
 
-#codeInput{
-  width:100%;
-  padding:12px 14px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.10);
-  color:#fff;
-  outline:none;
-  font-size:16px;
-}
-#codeInput::placeholder{ color: rgba(255,255,255,.65); }
-#codeMsg{ margin-top:10px; font-weight:800; opacity:.9; }
-
-#editOverlay{
-  position:fixed;
-  inset:0;
-  background:#000;
-  opacity:0;
-  pointer-events:none;
-  z-index:99999;
-  transition: opacity 17s linear;
-}
-
-/* subtle beat pulse */
-@keyframes oozeBeat {
-  0%   { transform: scale(1); filter: brightness(1); }
-  50%  { transform: scale(1.02); filter: brightness(1.18) saturate(1.05); }
-  100% { transform: scale(1); filter: brightness(1); }
-}
-.main.ooze-beat {
-  animation: oozeBeat .14s ease-in-out;
-}
-</style>
+    /* 🌴 BEACH MODE STYLES */
+    #beachBg {
+      position: fixed;
+      inset: 0;
+      background: url('https://thumbs.dreamstime.com/b/tropical-beach-sunset-palm-tree-vibrant-ocean-waves-356822313.jpg') center/cover no-repeat fixed;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      z-index: 9000;
+      pointer-events: none;
+    }
+    #beachBg.active {
+      opacity: 1;
+    }
+    #beachVignette {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.5) 100%);
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      z-index: 9001;
+      pointer-events: none;
+    }
+    #beachVignette.active {
+      opacity: 1;
+    }
+    #beachPlayer {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(0, 0, 0, 0.78);
+      border-radius: 24px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 0 12px rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      z-index: 9002;
+      font-size: 1.05rem;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: auto;
+    }
+    #beachPlayer.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .record-spin {
+      font-size: 2.6rem;
+      animation: spin 7s linear infinite;
+      filter: drop-shadow(0 0 12px rgba(255, 220, 100, 0.6));
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .player-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .player-title {
+      font-weight: 700;
+      text-shadow: 0 1px 5px rgba(0,0,0,0.9);
+    }
+    .player-details {
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+    .mute-btn {
+      font-size: 1.6rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, color 0.3s ease;
+      color: #fff;
+    }
+    .mute-btn:hover {
+      transform: scale(1.15);
+      color: #3cff9a;
+    }
+    .mute-btn.muted {
+      color: #ff6b6b;
+    }
+  </style>
 </head>
-
 <body>
 <!-- ⭐ STAR CANVAS (if your script.js uses it) -->
 <canvas id="stars"></canvas>
@@ -109,12 +183,23 @@
   <source src="edit.mp3" type="audio/mpeg">
 </audio>
 
+<!-- 🌴 BEACH MODE ELEMENTS -->
+<div id="beachBg"></div>
+<div id="beachVignette"></div>
+<div id="beachPlayer">
+  <div class="record-spin">💿</div>
+  <div class="player-info">
+    <div class="player-title">Now Playing: Put Your Records On</div>
+    <div class="player-details">Length: 2:42 • life is short... vibe out 🌴</div>
+  </div>
+  <div class="mute-btn" id="beachMuteBtn">🔊</div>
+</div>
+
   <!-- 🎁 GIFT TOAST -->
   <div id="giftToast">
     🎁 <b>You got a gift from O0ZE34!</b><br />
     +25 LEVELS 🎄
   </div>
-
   <!-- 📢 UPDATE MODAL -->
   <div id="updateModal" class="modal-bg" style="display:none;">
     <div class="modal">
@@ -122,29 +207,22 @@
         <span>Update Notice</span>
         <button class="close-btn" onclick="closeUpdate()">×</button>
       </div>
-
       <p id="updateText">
 i added more games, fnf mods, and music, also i fixed movies so have fun lol
       </p>
-
       <div id="updateBtns" style="display:flex; gap:12px;">
         <button class="save-btn" onclick="acceptUpdate()">Bet</button>
         <button class="save-btn" onclick="whyUpdate()">bro why</button>
       </div>
     </div>
   </div>
-
   <!-- ⭐ GREETING -->
   <div class="greeting-card">
     <div id="greet_box" class="greet-content" style="cursor:pointer;">
       <span id="greet_txt"></span>
     </div>
   </div>
-
   <div id="clock"></div>
-  <canvas id="stars"></canvas>
-  <canvas id="stars2"></canvas>
-
   <!-- ⭐ SIDEBAR -->
   <div class="sidebar">
     <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
@@ -158,17 +236,14 @@ i added more games, fnf mods, and music, also i fixed movies so have fun lol
     <a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
     <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
   </div>
-
   <!-- ⭐ MAIN -->
   <div class="main">
     <h1>🎄 Home</h1>
-
     <div class="home-sections">
       <div class="home-card">
         <h2>🎁 NEXT UPDATE:</h2>
         <div id="next-update-timer">Loading...</div>
       </div>
-
       <!-- ✏️ RENAME MODAL -->
       <div id="renameModal" class="modal-bg" style="display:none;">
         <div class="modal">
@@ -180,93 +255,56 @@ i added more games, fnf mods, and music, also i fixed movies so have fun lol
           <button class="save-btn" onclick="saveName()">Save</button>
         </div>
       </div>
-
       <!-- XP -->
       <div class="xp_card">
         <h2>Level <span id="lvl_num">1</span></h2>
         <div class="xp_bar">
           <div id="xp_fill"></div>
         </div>
-
-
-<!-- XP TEXT ABOVE -->
-<p id="xp_txt" style="
-  font-weight:700;
-  margin-bottom:8px;
-  opacity:0.9;
-">
-  XP: 0 / 100
-</p>
-
-<!-- 🎟️ CODE REDEEMER (SEPARATE BOX) -->
-<div class="home-card" id="codeRedeemer">
-  <h2>🎟️ Redeem Code</h2>
-
-  <input
-    id="codeInput"
-    class="modal-input"
-    placeholder="Enter code..."
-    autocomplete="off"
-  />
-
-  <button
-    class="save-btn"
-    style="margin-top:10px;"
-    onclick="redeemCode()"
-  >
-    Redeem
-  </button>
-
-  <p id="codeMsg"></p>
-</div>
-
-
-      
-      <!-- DAILY -->
-      <div class="daily_card" onclick="claimDaily()">
-        <h2>🎄 Daily Reward</h2>
-        <p id="daily_status">Tap to claim</p>
-      </div>
-
-      <!-- QUICK ACCESS -->
-      <div class="home-card">
-        <h2>⚡ Quick Access</h2>
-        <div class="home-grid">
-          <a class="quick-btn" href="games.html">Games</a>
-          <a class="quick-btn" target="_blank" href="https://shoppppp0.my.canva.site/">Sell Or Buy Snacks!</a>
-          <a class="quick-btn" target="_blank" href="https://oozehangoutsystem.global.ssl.fastly.net">Voice Chat BETA</a>
-          <a class="quick-btn" target="_blank" href="https://toolbaz.com/writer/chat-gpt-alternative">Ai Chatbot</a>
-          <a class="quick-btn" target="_blank" href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj">
-            Comments
-          </a>
+        <p id="xp_txt" style="font-weight:700; margin-bottom:8px; opacity:0.9;">
+          XP: 0 / 100
+        </p>
+        <!-- 🎟️ CODE REDEEMER -->
+        <div class="home-card" id="codeRedeemer">
+          <h2>🎟️ Redeem Code</h2>
+          <input id="codeInput" class="modal-input" placeholder="Enter code..." autocomplete="off" />
+          <button class="save-btn" style="margin-top:10px;" onclick="redeemCode()">Redeem</button>
+          <p id="codeMsg"></p>
+        </div>
+        <!-- DAILY -->
+        <div class="daily_card" onclick="claimDaily()">
+          <h2>🎄 Daily Reward</h2>
+          <p id="daily_status">Tap to claim</p>
+        </div>
+        <!-- QUICK ACCESS -->
+        <div class="home-card">
+          <h2>⚡ Quick Access</h2>
+          <div class="home-grid">
+            <a class="quick-btn" href="games.html">Games</a>
+            <a class="quick-btn" target="_blank" href="https://shoppppp0.my.canva.site/">Sell Or Buy Snacks!</a>
+            <a class="quick-btn" target="_blank" href="https://oozehangoutsystem.global.ssl.fastly.net">Voice Chat BETA</a>
+            <a class="quick-btn" target="_blank" href="https://toolbaz.com/writer/chat-gpt-alternative">Ai Chatbot</a>
+            <a class="quick-btn" target="_blank" href="https://padlet.com/O0ZE34/comments-hawf20t3430fydgj">Comments</a>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
   <script src="script.js"></script>
-
   <script>
-    /* GREETING */
+    // ──────────────────────────────────────────────
+    // Your existing functions (greeting, rename, XP, daily, timer, snow, update modal)
+    // ──────────────────────────────────────────────
     function updateGreeting() {
       const h = new Date().getHours();
-      const text =
-        h < 12 ? "Good Morning" :
-        h < 17 ? "Good Afternoon" :
-        h < 21 ? "Good Evening" : "Good Night";
-
+      const text = h < 12 ? "Good Morning" : h < 17 ? "Good Afternoon" : h < 21 ? "Good Evening" : "Good Night";
       const name = localStorage.getItem("username") || "Guest";
-      document.getElementById("greet_txt").innerText =
-        text + ", " + name + " 🎄";
+      document.getElementById("greet_txt").innerText = text + ", " + name + " 🎄";
     }
 
-    /* RENAME */
-    function openModal() {
-      document.getElementById("renameModal").style.display = "flex";
-    }
-    function closeModal() {
-      document.getElementById("renameModal").style.display = "none";
-    }
+    function openModal() { document.getElementById("renameModal").style.display = "flex"; }
+    function closeModal() { document.getElementById("renameModal").style.display = "none"; }
     function saveName() {
       const n = document.getElementById("nameInput").value.trim();
       if (n) {
@@ -276,25 +314,23 @@ i added more games, fnf mods, and music, also i fixed movies so have fun lol
       closeModal();
     }
 
-    /* XP */
     function loadXP() {
-      const xp = parseInt(localStorage.getItem("xp") || "0");
-      const lvl = Math.floor(xp / 100);
-      const cur = xp % 100;
-
+      const xp = BigInt(localStorage.getItem("xp") || "0");
+      const lvl = Number(xp / 100n);
+      const cur = Number(xp % 100n);
       document.getElementById("lvl_num").innerText = lvl;
       document.getElementById("xp_txt").innerText = `XP: ${cur} / 100`;
       document.getElementById("xp_fill").style.width = cur + "%";
     }
 
-    /* DAILY */
     function claimDaily() {
       const today = Math.floor(Date.now() / 86400000);
       const last = Number(localStorage.getItem("lastDaily") || 0);
-
       if (today > last) {
         localStorage.setItem("lastDaily", today);
-        localStorage.setItem("xp", (parseInt(localStorage.getItem("xp") || 0) + 50));
+        let xp = BigInt(localStorage.getItem("xp") || "0");
+        xp += 50n * 100n;
+        localStorage.setItem("xp", xp.toString());
         document.getElementById("daily_status").innerText = "Claimed! +50 XP";
         loadXP();
       } else {
@@ -302,43 +338,35 @@ i added more games, fnf mods, and music, also i fixed movies so have fun lol
       }
     }
 
-    /* NEXT UPDATE TIMER */
     function startNextUpdateTimer() {
       const el = document.getElementById("next-update-timer");
-
       function nextSaturday() {
         const d = new Date();
         const diff = (6 - d.getDay() + 7) % 7 || 7;
         return new Date(d.getFullYear(), d.getMonth(), d.getDate() + diff);
       }
-
       let target = nextSaturday();
-
       setInterval(() => {
         let diff = target - new Date();
         if (diff <= 0) target = nextSaturday();
-
         const s = Math.floor(diff / 1000);
         const d = Math.floor(s / 86400);
         const h = Math.floor((s % 86400) / 3600);
         const m = Math.floor((s % 3600) / 60);
         const sc = s % 60;
-
         el.textContent = `${d}d ${h}h ${m}m ${sc}s`;
       }, 1000);
     }
 
-    /* 🎁 ONE-TIME GIFT */
     if (!localStorage.getItem("xmas25")) {
       localStorage.setItem("xmas25", "1");
-      localStorage.setItem("xp", (parseInt(localStorage.getItem("xp") || 0) + 2500));
+      let xp = BigInt(localStorage.getItem("xp") || "0");
+      xp += 2500n * 100n;
+      localStorage.setItem("xp", xp.toString());
       document.getElementById("giftToast").style.display = "block";
-      setTimeout(() => {
-        document.getElementById("giftToast").style.display = "none";
-      }, 6000);
+      setTimeout(() => document.getElementById("giftToast").style.display = "none", 6000);
     }
 
-    /* ❄️ SNOW */
     setInterval(() => {
       const s = document.createElement("div");
       s.className = "snowflake";
@@ -348,25 +376,18 @@ i added more games, fnf mods, and music, also i fixed movies so have fun lol
       setTimeout(() => s.remove(), 4000);
     }, 120);
 
-    /* UPDATE MODAL */
     function showUpdate() {
-      if (!localStorage.getItem("updateSeen")) {
-        document.getElementById("updateModal").style.display = "flex";
-      }
+      if (!localStorage.getItem("updateSeen")) document.getElementById("updateModal").style.display = "flex";
     }
     function acceptUpdate() {
       localStorage.setItem("updateSeen", "1");
       document.getElementById("updateModal").style.display = "none";
     }
     function whyUpdate() {
-      document.getElementById("updateText").innerText =
-        "bro just have fun";
-      document.getElementById("updateBtns").innerHTML =
-        '<button class="save-btn" onclick="acceptUpdate()">Okay</button>';
+      document.getElementById("updateText").innerText = "bro just have fun";
+      document.getElementById("updateBtns").innerHTML = '<button class="save-btn" onclick="acceptUpdate()">Okay</button>';
     }
-    function closeUpdate() {
-      acceptUpdate();
-    }
+    function closeUpdate() { acceptUpdate(); }
 
     window.onload = () => {
       updateGreeting();
@@ -375,143 +396,207 @@ i added more games, fnf mods, and music, also i fixed movies so have fun lol
       document.getElementById("greet_box").onclick = openModal;
       showUpdate();
     };
-  </script>
 
-<script>
-/* =========================
-   🎟️ CODE REDEEMER SYSTEM
-   - Add/expire codes in CODES below
-   - Each code can give levels, run a cutscene, etc.
-   ========================= */
+    // ──────────────────────────────────────────────
+    // CODE REDEEMER + BEACH CUTSCENE
+    // ──────────────────────────────────────────────
+    (function () {
+      const inp = document.getElementById("codeInput");
+      if (inp) inp.addEventListener("keydown", (e) => { if (e.key === "Enter") redeemCode(); });
+    })();
 
-(function () {
-  const inp = document.getElementById("codeInput");
-  if (inp) inp.addEventListener("keydown", (e) => { if (e.key === "Enter") redeemCode(); });
-})();
-
-function setMsg(text, good = false) {
-  const m = document.getElementById("codeMsg");
-  if (!m) return;
-  m.textContent = text;
-  m.style.color = good ? "#3cff9a" : "rgba(255,255,255,.85)";
-}
-
-function addLevels(levels) {
-  const xpNow = parseInt(localStorage.getItem("xp") || "0", 10) || 0;
-  localStorage.setItem("xp", String(xpNow + (levels * 100)));
-  if (typeof loadXP === "function") loadXP();
-}
-
-/* ✅ EDIT THESE to add/remove codes */
-const CODES = {
-  // code: { expires: "YYYY-MM-DD" (optional), levels: number (optional), run: "edit" (optional) }
-  "oozedabest":      { levels: 100,  expires: "2099-01-01" },
-  "newyearnewlevel": { levels: 2026, expires: "2026-01-10" },
-  "edit":            { run: "edit",  expires: "2099-01-01" },
-  "1million":      { levels: 1000000,  expires: "2099-01-01" },
-  "pedroyouarethe":  { levels: 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,  expires: "2099-01-01" },
-};
-
-function isExpired(rule) {
-  if (!rule || !rule.expires) return false;
-  const exp = new Date(rule.expires + "T23:59:59");
-  return Date.now() > exp.getTime();
-}
-
-function redeemCode() {
-  const input = document.getElementById("codeInput");
-  if (!input) return;
-  const raw = (input.value || "").trim().toLowerCase();
-  input.value = "";
-
-  if (!raw) { setMsg("Type a code first."); return; }
-
-  const rule = CODES[raw];
-  if (!rule) { setMsg("Invalid code."); return; }
-  if (isExpired(rule)) { setMsg("That code expired."); return; }
-
-  if (typeof rule.levels === "number") {
-    addLevels(rule.levels);
-    setMsg(`+${rule.levels} LEVELS ✅`, true);
-  }
-
-  if (rule.run === "edit") {
-    startEditCutscene();
-  }
-}
-
-/* =========================
-   🌑 EDIT CUTSCENE
-   - Fade to black for 17s
-   - At 17s: screen returns to normal AND bumps to the song
-   - +50 levels after the cutscene starts bumping
-   ========================= */
-
-let editRunning = false;
-let beatTimer = null;
-
-function startEditCutscene() {
-  if (editRunning) return;
-  editRunning = true;
-
-  const overlay = document.getElementById("editOverlay");
-  const audio = document.getElementById("editAudio");
-  const main = document.querySelector(".main") || document.body;
-
-  // Ensure overlay starts transparent
-  overlay.style.transition = "none";
-  overlay.style.opacity = "0";
-
-  // Play audio (must be user gesture: redeem button is a gesture ✅)
-  const p = audio && audio.play ? audio.play() : null;
-  if (p && p.catch) p.catch(() => setMsg("Audio blocked—click Redeem again (or click page once)."));
-
-  // Fade to black over 17s
-  requestAnimationFrame(() => {
-    overlay.style.transition = "opacity 17s linear";
-    overlay.style.opacity = "1";
-  });
-
-  // Set your BPM here (you can change later)
-  const bpm = 132;
-  const beatMs = 60000 / bpm;
-
-  // At 17s: go back to normal (fade out overlay) + start bumping
-  setTimeout(() => {
-    // Force a proper transition back
-    overlay.style.transition = "opacity 0.9s ease-out";
-    overlay.style.opacity = "0";
-
-    // Start bumping
-    if (beatTimer) clearInterval(beatTimer);
-    beatTimer = setInterval(() => {
-      main.classList.remove("ooze-beat");
-      void main.offsetWidth; // restart animation
-      main.classList.add("ooze-beat");
-    }, beatMs);
-
-    // Reward once
-    addLevels(50);
-    setMsg("+50 LEVELS 🎵", true);
-
-    // Stop bumping when the song ends (fallback: stop after 60s)
-    const stop = () => {
-      if (beatTimer) clearInterval(beatTimer);
-      beatTimer = null;
-      main.classList.remove("ooze-beat");
-      editRunning = false;
-    };
-    if (audio) {
-      audio.onended = stop;
-      // In case audio is longer/shorter, also fallback
-      setTimeout(stop, 60000);
-    } else {
-      setTimeout(stop, 60000);
+    function setMsg(text, good = false) {
+      const m = document.getElementById("codeMsg");
+      if (!m) return;
+      m.textContent = text;
+      m.style.color = good ? "#3cff9a" : "rgba(255,255,255,.85)";
     }
-  }, 17000);
-}
-</script>
 
+    function addLevels(levels) {
+      let xp = BigInt(localStorage.getItem("xp") || "0");
+      xp += BigInt(levels) * 100n;
+      localStorage.setItem("xp", xp.toString());
+      loadXP();
+    }
 
+    const CODES = {
+      "oozedabest": { levels: 100, expires: "2099-01-01" },
+      "newyearnewlevel": { levels: 2026, expires: "2026-01-10" },
+      "edit": { run: "edit", expires: "2099-01-01" },
+      "1million": { levels: 1000000, expires: "2099-01-01" },
+      "pedroyouarethe": { levels: 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, expires: "2099-01-01" },
+      "lifeishort": { run: "beachvibes", expires: "2099-01-01" },
+    };
+
+    function isExpired(rule) {
+      if (!rule || !rule.expires) return false;
+      const exp = new Date(rule.expires + "T23:59:59");
+      return Date.now() > exp.getTime();
+    }
+
+    function redeemCode() {
+      const input = document.getElementById("codeInput");
+      if (!input) return;
+      const raw = (input.value || "").trim().toLowerCase();
+      input.value = "";
+      if (!raw) { setMsg("Type a code first."); return; }
+      const rule = CODES[raw];
+      if (!rule) { setMsg("Invalid code."); return; }
+      if (isExpired(rule)) { setMsg("That code expired."); return; }
+
+      if (typeof rule.levels === "number") {
+        addLevels(rule.levels);
+        setMsg(`+${rule.levels} LEVELS ✅`, true);
+      }
+      if (rule.run === "edit") {
+        startEditCutscene();
+      } else if (rule.run === "beachvibes") {
+        startBeachVibesCutscene();
+      }
+    }
+
+    // ──────────────────────────────────────────────
+    // EDIT CUTSCENE (your original)
+    // ──────────────────────────────────────────────
+    let editRunning = false;
+    let beatTimer = null;
+    function startEditCutscene() {
+      if (editRunning) return;
+      editRunning = true;
+      const overlay = document.getElementById("editOverlay");
+      const audio = document.getElementById("editAudio");
+      const main = document.querySelector(".main") || document.body;
+
+      overlay.style.transition = "none";
+      overlay.style.opacity = "0";
+      requestAnimationFrame(() => {
+        overlay.style.transition = "opacity 17s linear";
+        overlay.style.opacity = "1";
+      });
+
+      const p = audio?.play()?.catch(() => setMsg("Audio blocked—click Redeem again.", false));
+
+      const bpm = 132;
+      const beatMs = 60000 / bpm;
+
+      setTimeout(() => {
+        overlay.style.transition = "opacity 0.9s ease-out";
+        overlay.style.opacity = "0";
+
+        if (beatTimer) clearInterval(beatTimer);
+        beatTimer = setInterval(() => {
+          main.classList.remove("ooze-beat");
+          void main.offsetWidth;
+          main.classList.add("ooze-beat");
+        }, beatMs);
+
+        addLevels(50);
+        setMsg("+50 LEVELS 🎵", true);
+
+        const stop = () => {
+          if (beatTimer) clearInterval(beatTimer);
+          beatTimer = null;
+          main.classList.remove("ooze-beat");
+          editRunning = false;
+        };
+
+        if (audio) {
+          audio.onended = stop;
+          setTimeout(stop, 60000);
+        } else {
+          setTimeout(stop, 60000);
+        }
+      }, 17000);
+    }
+
+    // ──────────────────────────────────────────────
+    // NEW: BEACH VIBES CUTSCENE
+    // ──────────────────────────────────────────────
+    let beachRunning = false;
+    let beachAudio = null;
+    let isMuted = false;
+
+    function startBeachVibesCutscene() {
+      if (beachRunning || editRunning) return;
+      beachRunning = true;
+
+      const overlay = document.getElementById("editOverlay");
+      const main = document.querySelector(".main") || document.body;
+
+      // Create audio element dynamically
+      beachAudio = new Audio("puturrecordson.mp3");
+      beachAudio.loop = false;
+
+      // Fade to black briefly
+      overlay.style.transition = "none";
+      overlay.style.opacity = "0";
+      requestAnimationFrame(() => {
+        overlay.style.transition = "opacity 1.2s ease-in";
+        overlay.style.opacity = "1";
+      });
+
+      setTimeout(() => {
+        main.style.visibility = "hidden";
+        overlay.style.transition = "opacity 1.8s ease-out";
+        overlay.style.opacity = "0";
+
+        // Activate beach
+        document.getElementById("beachBg").classList.add("active");
+        document.getElementById("beachVignette").classList.add("active");
+        document.getElementById("beachPlayer").classList.add("active");
+
+        // Play song
+        beachAudio.play().catch(err => {
+          console.error("Play failed:", err);
+          setMsg("Click page then redeem again for sound", false);
+        });
+
+        // Mute button logic
+        const muteBtn = document.getElementById("beachMuteBtn");
+        muteBtn.onclick = () => {
+          isMuted = !isMuted;
+          beachAudio.muted = isMuted;
+          muteBtn.textContent = isMuted ? "🔇" : "🔊";
+          muteBtn.classList.toggle("muted", isMuted);
+
+          if (isMuted) {
+            // Hide beach elements
+            document.getElementById("beachBg").classList.remove("active");
+            document.getElementById("beachVignette").classList.remove("active");
+            document.getElementById("beachPlayer").classList.remove("active");
+          } else {
+            // Restore beach
+            document.getElementById("beachBg").classList.add("active");
+            document.getElementById("beachVignette").classList.add("active");
+            document.getElementById("beachPlayer").classList.add("active");
+          }
+        };
+      }, 1400);
+
+      // When song ends → reward & restore
+      beachAudio.onended = () => {
+        addLevels(100000000000000); // 100 trillion levels
+        setMsg("+100,000,000,000,000 LEVELS 🌴💿✨", true);
+
+        // Clean up
+        document.getElementById("beachBg").classList.remove("active");
+        document.getElementById("beachVignette").classList.remove("active");
+        document.getElementById("beachPlayer").classList.remove("active");
+        main.style.visibility = "visible";
+        beachRunning = false;
+        isMuted = false;
+        if (beachAudio) beachAudio.pause();
+        beachAudio = null;
+      };
+
+      // Safety timeout ~3 min
+      setTimeout(() => {
+        if (beachAudio && !beachAudio.ended) {
+          beachAudio.pause();
+          beachAudio.onended();
+        }
+      }, 180000);
+    }
+  </script>
 </body>
 </html>
