@@ -10,11 +10,11 @@
 
   <style>
     /* ──────────────────────────────────────────────
-       Your existing global styles (paste them here or keep in style.css)
-       snowflake, giftToast, codeRedeemer, editOverlay, oozeBeat, etc.
+       Paste your ORIGINAL style block here from index.html
+       (snowflake, giftToast, codeRedeemer, editOverlay, oozeBeat, etc.)
     ────────────────────────────────────────────── */
 
-    /* Shop-specific styles */
+    /* Shop layout */
     .shop-sections { display: grid; gap: 28px; margin-top: 20px; }
     .shop-grid {
       display: grid;
@@ -33,15 +33,8 @@
       transform: translateY(-6px);
       box-shadow: 0 12px 30px rgba(0,0,0,0.4);
     }
-    .shop-item h3 {
-      margin: 0 0 10px;
-      font-size: 1.2rem;
-    }
-    .shop-item .cost {
-      font-size: 0.95rem;
-      opacity: 0.85;
-      margin-bottom: 12px;
-    }
+    .shop-item h3 { margin: 0 0 10px; font-size: 1.2rem; }
+    .shop-item .cost { font-size: 0.95rem; opacity: 0.85; margin-bottom: 12px; }
     .shop-item button {
       padding: 10px 18px;
       border-radius: 12px;
@@ -75,18 +68,18 @@
 </head>
 <body>
 
-  <!-- 🎟️ OVERLAYS -->
+  <!-- OVERLAYS -->
   <div id="editOverlay" aria-hidden="true"></div>
 
-  <!-- 🎁 TOAST NOTIFICATION -->
+  <!-- TOAST -->
   <div id="giftToast" style="display:none;">
     <span id="toastMsg"></span>
   </div>
 
-  <!-- ⭐ SIDEBAR -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
-    <a href="shop.html"><i class="fa-solid fa-cart-shopping"></i><span>Shop</span></a>
+    <a href="shop.html" class="active"><i class="fa-solid fa-cart-shopping"></i><span>Shop</span></a>
     <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
     <a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
     <a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
@@ -98,7 +91,7 @@
     <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
   </div>
 
-  <!-- ⭐ MAIN CONTENT -->
+  <!-- MAIN -->
   <div class="main">
     <h1>🛒 Shop</h1>
 
@@ -186,22 +179,11 @@
         </div>
       </div>
 
-      <!-- Redeem Codes -->
+      <!-- Redeem -->
       <div class="home-card" id="codeRedeemer">
         <h2>Redeem Coin Code</h2>
-        <input
-          id="coinCodeInput"
-          class="modal-input"
-          placeholder="Enter code..."
-          autocomplete="off"
-        />
-        <button
-          class="save-btn"
-          style="margin-top:12px;"
-          onclick="redeemCoinCode()"
-        >
-          Redeem
-        </button>
+        <input id="coinCodeInput" class="modal-input" placeholder="Enter code..." autocomplete="off" />
+        <button class="save-btn" style="margin-top:12px;" onclick="redeemCoinCode()">Redeem</button>
         <p id="coinMsg" style="margin-top:12px;"></p>
       </div>
     </div>
@@ -209,9 +191,8 @@
 
   <script>
     // ──────────────────────────────────────────────
-    // Core functions (load data, toast, redeem, buy/equip)
+    // TOAST
     // ──────────────────────────────────────────────
-
     function showToast(text, good = true) {
       const toast = document.getElementById("giftToast");
       const msg = document.getElementById("toastMsg");
@@ -219,9 +200,12 @@
       toast.style.background = good ? "rgba(20,40,30,0.95)" : "rgba(40,20,20,0.95)";
       toast.style.borderColor = good ? "#3cff9a" : "#ff6b6b";
       toast.style.display = "block";
-      setTimeout(() => { toast.style.display = "none"; }, 5000);
+      setTimeout(() => toast.style.display = "none", 5000);
     }
 
+    // ──────────────────────────────────────────────
+    // LOAD DATA
+    // ──────────────────────────────────────────────
     function loadShopData() {
       const xp = BigInt(localStorage.getItem("xp") || "0");
       const level = Number(xp / 100n);
@@ -236,16 +220,13 @@
 
       document.querySelectorAll('.shop-item').forEach(el => {
         const t = el.dataset.trail || el.dataset.theme;
-        if (t === trail || t === theme) {
-          el.classList.add("equipped");
-        } else {
-          el.classList.remove("equipped");
-        }
+        if (t === trail || t === theme) el.classList.add("equipped");
+        else el.classList.remove("equipped");
       });
     }
 
     // ──────────────────────────────────────────────
-    // Coin Redeem Codes
+    // COIN CODES
     // ──────────────────────────────────────────────
     const COIN_CODES = {
       "welcomeooze": 250,
@@ -274,27 +255,25 @@
     }
 
     // ──────────────────────────────────────────────
-    // Trail & Theme logic
+    // BUY / EQUIP
     // ──────────────────────────────────────────────
     function buyOrEquipTrail(trail, cost, reqLevel) {
       const level = Number(BigInt(localStorage.getItem("xp") || "0") / 100n);
       if (level < reqLevel) {
-        showToast(`Unlocks at level ${reqLevel}+<br>Keep playing! 🚀`, false);
+        showToast(`Unlocks at level ${reqLevel}+`, false);
         return;
       }
-
       let coins = parseInt(localStorage.getItem("coins") || "0");
       if (coins < cost) {
-        showToast("Not enough coins! Claim dailies or redeem codes.", false);
+        showToast("Not enough coins!", false);
         return;
       }
-
       coins -= cost;
       localStorage.setItem("coins", coins);
       localStorage.setItem("equippedTrail", trail);
       loadCoins();
       loadShopData();
-      showToast(`Equipped <strong>${trail}</strong> trail!<br>Enjoy the vibes ✨`, true);
+      showToast(`Equipped <strong>${trail}</strong> trail!`, true);
     }
 
     function equipTrail(trail) {
@@ -309,19 +288,17 @@
         showToast(`Unlocks at level ${reqLevel}+`, false);
         return;
       }
-
       let coins = parseInt(localStorage.getItem("coins") || "0");
       if (coins < cost) {
         showToast("Not enough coins!", false);
         return;
       }
-
       coins -= cost;
       localStorage.setItem("coins", coins);
       localStorage.setItem("equippedTheme", theme);
       loadCoins();
       loadShopData();
-      showToast(`Equipped <strong>${theme}</strong> theme!<br>Refresh to apply 🌟`, true);
+      showToast(`Equipped <strong>${theme}</strong> theme! Refresh to see.`, true);
     }
 
     function equipTheme(theme) {
@@ -330,7 +307,7 @@
       showToast(`Switched to <strong>${theme}</strong> theme!`, true);
     }
 
-    // Basic coin / xp helpers (adjust to match your index.html)
+    // Helpers
     function addCoins(amount) {
       let coins = parseInt(localStorage.getItem("coins") || "0");
       coins += amount;
@@ -342,17 +319,96 @@
       document.getElementById("coins_display").innerText = parseInt(localStorage.getItem("coins") || "0");
     }
 
-    // Call load functions
     window.addEventListener("load", () => {
       loadShopData();
-      // If you have loadXP() / loadCoins() from index.html, call them here too
+      loadCoins();
+      // Add your loadXP() call here if you want level display to update
     });
   </script>
 
-  <!-- Paste your shared theme + mouse trail apply script here (from previous messages) -->
+  <!-- MOUSE TRAIL + THEME APPLY SCRIPT -->
   <script>
-    // applyEquippedStuff() function here...
-    // (the one that adds class to body and creates canvas trail)
+    function applyEquippedStuff() {
+      const theme = localStorage.getItem("equippedTheme") || "default";
+      const trail = localStorage.getItem("equippedTrail") || "none";
+
+      document.body.classList.remove(
+        "theme-default", "theme-neon", "theme-pastel",
+        "theme-retro", "theme-beach", "theme-glitch"
+      );
+      document.body.classList.add(`theme-${theme}`);
+
+      if (trail === "none") return;
+
+      let canvas = document.getElementById("trailCanvas");
+      if (!canvas) {
+        canvas = document.createElement("canvas");
+        canvas.id = "trailCanvas";
+        canvas.style.cssText = "position:fixed;inset:0;pointer-events:none;z-index:9999;";
+        document.body.appendChild(canvas);
+      }
+
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      let particles = [];
+      let hue = 0;
+
+      document.addEventListener("mousemove", e => {
+        particles.push({x: e.clientX, y: e.clientY, life: 45, hue: hue});
+        hue = (hue + 10) % 360;
+      });
+
+      function animateTrail() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles = particles.filter(p => p.life > 0);
+
+        particles.forEach(p => {
+          p.life--;
+          const alpha = p.life / 45;
+          const size = p.life / 6;
+
+          if (trail === "sparkle") {
+            ctx.fillStyle = `hsla(${p.hue}, 100%, 90%, ${alpha})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, size, 0, Math.PI*2);
+            ctx.fill();
+          } else if (trail === "hearts") {
+            ctx.font = `${size*3}px Arial`;
+            ctx.fillStyle = `rgba(255,105,180,${alpha})`;
+            ctx.fillText("💖", p.x - size*1.5, p.y + size);
+          } else if (trail === "rainbow") {
+            ctx.strokeStyle = `hsl(${p.hue}, 100%, 60%)`;
+            ctx.lineWidth = size*2;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.x + Math.sin(p.life)*25, p.y + Math.cos(p.life)*25);
+            ctx.stroke();
+          } else if (trail === "ghost") {
+            ctx.fillStyle = `rgba(200,200,255,${alpha})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, size*1.5, 0, Math.PI*2);
+            ctx.fill();
+          } else if (trail === "fire") {
+            ctx.fillStyle = `hsla(${Math.random()*60 + 10}, 100%, 60%, ${alpha})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, size*1.8, 0, Math.PI*2);
+            ctx.fill();
+          }
+        });
+
+        requestAnimationFrame(animateTrail);
+      }
+      animateTrail();
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+    }
+
+    window.addEventListener("load", applyEquippedStuff);
   </script>
 </body>
 </html>
