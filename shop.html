@@ -7,70 +7,144 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  
-  <!-- Paste your full <style> block from index.html here (snow, giftToast, codeRedeemer, editOverlay, oozeBeat, etc.) -->
-  <!-- Add shop-specific styles -->
+
   <style>
-    .shop-sections { display: grid; gap: 24px; }
-    .shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-    .shop-item {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
-      transition: transform 0.2s;
+    /* ──────────────────────────────────────────────
+       Your existing global styles (paste them here or keep in style.css)
+       snowflake, giftToast, codeRedeemer, editOverlay, oozeBeat, etc.
+    ────────────────────────────────────────────── */
+
+    /* Shop-specific styles */
+    .shop-sections { display: grid; gap: 28px; margin-top: 20px; }
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
     }
-    .shop-item:hover { transform: scale(1.04); }
-    .shop-item p { margin: 8px 0; font-weight: 600; }
-    .shop-item button { margin-top: 8px; padding: 8px 16px; border-radius: 12px; background: #3cff9a; color: #000; border: none; cursor: pointer; font-weight: bold; }
-    .shop-item button:disabled { background: #555; cursor: not-allowed; }
-    .equipped { border: 2px solid #3cff9a; box-shadow: 0 0 20px #3cff9a80; }
-    .current-equipped { margin-bottom: 24px; padding: 12px; background: rgba(60,255,154,0.15); border-radius: 12px; }
+    .shop-item {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+    .shop-item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+    .shop-item h3 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+    }
+    .shop-item .cost {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      margin-bottom: 12px;
+    }
+    .shop-item button {
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: #3cff9a;
+      color: #000;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .shop-item button:disabled {
+      background: #444;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .equipped {
+      border-color: #3cff9a;
+      background: rgba(60,255,154,0.12);
+      box-shadow: 0 0 25px rgba(60,255,154,0.4);
+    }
+    .current-equipped {
+      background: rgba(60,255,154,0.18);
+      border: 1px solid #3cff9a;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 24px;
+      text-align: center;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
-  <!-- Paste your existing elements: editOverlay, giftToast, updateModal, greeting-card, clock, sidebar (update Games → Shop link), main wrapper -->
 
+  <!-- 🎟️ OVERLAYS -->
+  <div id="editOverlay" aria-hidden="true"></div>
+
+  <!-- 🎁 TOAST NOTIFICATION -->
+  <div id="giftToast" style="display:none;">
+    <span id="toastMsg"></span>
+  </div>
+
+  <!-- ⭐ SIDEBAR -->
+  <div class="sidebar">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="shop.html"><i class="fa-solid fa-cart-shopping"></i><span>Shop</span></a>
+    <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+    <a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+    <a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+    <a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+    <a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+    <a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+    <a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
+  </div>
+
+  <!-- ⭐ MAIN CONTENT -->
   <div class="main">
-    <h1>🛒 Shop — Level Up Your Style</h1>
+    <h1>🛒 Shop</h1>
 
     <div class="current-equipped">
-      <strong>Equipped:</strong> Trail: <span id="currentTrail">None</span> | Theme: <span id="currentTheme">Default</span>
+      <strong>Currently Equipped:</strong><br>
+      Mouse Trail: <span id="currentTrail">None</span><br>
+      Theme: <span id="currentTheme">Default (Christmas)</span>
     </div>
 
-    <p>Your Level: <span id="lvl_num">1</span> | Coins: <span id="coins_display">0</span></p>
+    <p>Level: <span id="lvl_num">1</span> • Coins: <span id="coins_display">0</span></p>
 
     <div class="shop-sections">
 
       <!-- Mouse Trails -->
       <div class="home-card">
         <h2>Mouse Trails</h2>
-        <p>Unlock cooler trails at higher levels!</p>
         <div class="shop-grid">
           <div class="shop-item" data-trail="none">
-            <p>None</p>
-            <button onclick="equipTrail('none')">Equip (Free)</button>
+            <h3>None</h3>
+            <p class="cost">Free</p>
+            <button onclick="equipTrail('none')">Equip</button>
           </div>
           <div class="shop-item" data-trail="sparkle" data-unlock="1">
-            <p>Sparkle Stars</p>
-            <button onclick="buyOrEquipTrail('sparkle', 400, 1)">Buy/Equip (400 Coins)</button>
+            <h3>Sparkle Stars</h3>
+            <p class="cost">400 Coins</p>
+            <button onclick="buyOrEquipTrail('sparkle', 400, 1)">Buy / Equip</button>
           </div>
           <div class="shop-item" data-trail="hearts" data-unlock="5">
-            <p>Love Hearts</p>
-            <button onclick="buyOrEquipTrail('hearts', 900, 5)">Buy/Equip (900 Coins)</button>
+            <h3>Love Hearts 💖</h3>
+            <p class="cost">900 Coins</p>
+            <button onclick="buyOrEquipTrail('hearts', 900, 5)">Buy / Equip</button>
           </div>
           <div class="shop-item" data-trail="rainbow" data-unlock="10">
-            <p>Rainbow Comet</p>
-            <button onclick="buyOrEquipTrail('rainbow', 1800, 10)">Buy/Equip (1800 Coins)</button>
+            <h3>Rainbow Comet</h3>
+            <p class="cost">1800 Coins</p>
+            <button onclick="buyOrEquipTrail('rainbow', 1800, 10)">Buy / Equip</button>
           </div>
           <div class="shop-item" data-trail="ghost" data-unlock="15">
-            <p>Ghost Cursors</p>
-            <button onclick="buyOrEquipTrail('ghost', 2500, 15)">Buy/Equip (2500 Coins)</button>
+            <h3>Ghost Trail 👻</h3>
+            <p class="cost">2500 Coins</p>
+            <button onclick="buyOrEquipTrail('ghost', 2500, 15)">Buy / Equip</button>
           </div>
           <div class="shop-item" data-trail="fire" data-unlock="25">
-            <p>Fire Trail</p>
-            <button onclick="buyOrEquipTrail('fire', 4000, 25)">Buy/Equip (4000 Coins)</button>
+            <h3>Fire Blaze 🔥</h3>
+            <p class="cost">4200 Coins</p>
+            <button onclick="buyOrEquipTrail('fire', 4200, 25)">Buy / Equip</button>
           </div>
         </div>
       </div>
@@ -78,174 +152,185 @@
       <!-- Themes -->
       <div class="home-card">
         <h2>Themes</h2>
-        <p>Change the whole vibe of the site!</p>
         <div class="shop-grid">
           <div class="shop-item" data-theme="default">
-            <p>Default (Christmas)</p>
-            <button onclick="equipTheme('default')">Equip (Free)</button>
+            <h3>Default (Christmas 🎄)</h3>
+            <p class="cost">Free</p>
+            <button onclick="equipTheme('default')">Equip</button>
           </div>
           <div class="shop-item" data-theme="neon" data-unlock="5">
-            <p>Neon Cyberpunk</p>
-            <button onclick="buyOrEquipTheme('neon', 1200, 5)">Buy/Equip (1200 Coins)</button>
+            <h3>Neon Cyberpunk</h3>
+            <p class="cost">1200 Coins</p>
+            <button onclick="buyOrEquipTheme('neon', 1200, 5)">Buy / Equip</button>
           </div>
           <div class="shop-item" data-theme="pastel" data-unlock="10">
-            <p>Pastel Vaporwave</p>
-            <button onclick="buyOrEquipTheme('pastel', 2000, 10)">Buy/Equip (2000 Coins)</button>
+            <h3>Pastel Vaporwave</h3>
+            <p class="cost">2000 Coins</p>
+            <button onclick="buyOrEquipTheme('pastel', 2000, 10)">Buy / Equip</button>
           </div>
           <div class="shop-item" data-theme="retro" data-unlock="15">
-            <p>Retro Arcade</p>
-            <button onclick="buyOrEquipTheme('retro', 2800, 15)">Buy/Equip (2800 Coins)</button>
+            <h3>Retro Arcade</h3>
+            <p class="cost">2800 Coins</p>
+            <button onclick="buyOrEquipTheme('retro', 2800, 15)">Buy / Equip</button>
           </div>
           <div class="shop-item" data-theme="beach" data-unlock="20">
-            <p>Dark Beach Sunset</p>
-            <button onclick="buyOrEquipTheme('beach', 3500, 20)">Buy/Equip (3500 Coins)</button>
+            <h3>Dark Beach Sunset</h3>
+            <p class="cost">3500 Coins</p>
+            <button onclick="buyOrEquipTheme('beach', 3500, 20)">Buy / Equip</button>
           </div>
           <div class="shop-item" data-theme="glitch" data-unlock="30">
-            <p>Glitch Cyber</p>
-            <button onclick="buyOrEquipTheme('glitch', 5000, 30)">Buy/Equip (5000 Coins)</button>
+            <h3>Glitch Cyber Error</h3>
+            <p class="cost">5000 Coins</p>
+            <button onclick="buyOrEquipTheme('glitch', 5000, 30)">Buy / Equip</button>
           </div>
         </div>
       </div>
 
-      <!-- Coin Redeem -->
+      <!-- Redeem Codes -->
       <div class="home-card" id="codeRedeemer">
         <h2>Redeem Coin Code</h2>
-        <input id="coinCodeInput" class="modal-input" placeholder="Enter code..." autocomplete="off" />
-        <button class="save-btn" onclick="redeemCoinCode()">Redeem</button>
-        <p id="coinMsg"></p>
+        <input
+          id="coinCodeInput"
+          class="modal-input"
+          placeholder="Enter code..."
+          autocomplete="off"
+        />
+        <button
+          class="save-btn"
+          style="margin-top:12px;"
+          onclick="redeemCoinCode()"
+        >
+          Redeem
+        </button>
+        <p id="coinMsg" style="margin-top:12px;"></p>
       </div>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="script.js"></script> <!-- if you have external js -->
   <script>
     // ──────────────────────────────────────────────
-    // Load data & display
+    // Core functions (load data, toast, redeem, buy/equip)
     // ──────────────────────────────────────────────
+
+    function showToast(text, good = true) {
+      const toast = document.getElementById("giftToast");
+      const msg = document.getElementById("toastMsg");
+      msg.innerHTML = text;
+      toast.style.background = good ? "rgba(20,40,30,0.95)" : "rgba(40,20,20,0.95)";
+      toast.style.borderColor = good ? "#3cff9a" : "#ff6b6b";
+      toast.style.display = "block";
+      setTimeout(() => { toast.style.display = "none"; }, 5000);
+    }
+
     function loadShopData() {
       const xp = BigInt(localStorage.getItem("xp") || "0");
       const level = Number(xp / 100n);
       const coins = parseInt(localStorage.getItem("coins") || "0");
-      const equippedTrail = localStorage.getItem("equippedTrail") || "none";
-      const equippedTheme = localStorage.getItem("equippedTheme") || "default";
+      const trail = localStorage.getItem("equippedTrail") || "none";
+      const theme = localStorage.getItem("equippedTheme") || "default";
 
       document.getElementById("lvl_num").innerText = level;
       document.getElementById("coins_display").innerText = coins;
-      document.getElementById("currentTrail").innerText = equippedTrail.charAt(0).toUpperCase() + equippedTrail.slice(1);
-      document.getElementById("currentTheme").innerText = equippedTheme.charAt(0).toUpperCase() + equippedTheme.slice(1);
+      document.getElementById("currentTrail").innerText = trail === "none" ? "None" : trail.charAt(0).toUpperCase() + trail.slice(1);
+      document.getElementById("currentTheme").innerText = theme.charAt(0).toUpperCase() + theme.slice(1);
 
-      // Highlight equipped items
-      document.querySelectorAll('.shop-item').forEach(item => {
-        const trail = item.dataset.trail;
-        const theme = item.dataset.theme;
-        if ((trail && trail === equippedTrail) || (theme && theme === equippedTheme)) {
-          item.classList.add("equipped");
+      document.querySelectorAll('.shop-item').forEach(el => {
+        const t = el.dataset.trail || el.dataset.theme;
+        if (t === trail || t === theme) {
+          el.classList.add("equipped");
+        } else {
+          el.classList.remove("equipped");
         }
       });
     }
 
-    // Call on load
-    window.addEventListener("load", () => {
-      loadXP(); // your existing
-      loadCoins(); // your existing or define as parseInt(localStorage.getItem("coins") || "0")
-      loadShopData();
-    });
-
     // ──────────────────────────────────────────────
-    // Coin Redeem
+    // Coin Redeem Codes
     // ──────────────────────────────────────────────
     const COIN_CODES = {
-      "freecoins2026": 1000,
-      "oozegrind": 3000,
-      "valentinesday": 5000, // since it's Feb 14, 2026
-      "levelupking": 10000,
-      "secretstash": 25000
+      "welcomeooze": 250,
+      "dailygrind": 500,
+      "christmas2026": 1000,
+      "beachvibes": 1500,
+      "levelupking": 2500,
+      "oozedabest": 3000,
+      "valentinesgrind": 4000,
+      "secretstash": 7500,
+      "rebornlegend": 12000,
+      "millionaireooze": 25000
     };
 
     function redeemCoinCode() {
       const input = document.getElementById("coinCodeInput");
-      const msg = document.getElementById("coinMsg");
       const code = input.value.trim().toLowerCase();
       input.value = "";
 
       if (COIN_CODES[code]) {
         addCoins(COIN_CODES[code]);
-        msg.textContent = `Success! +${COIN_CODES[code]} Coins 🎉`;
-        msg.style.color = "#3cff9a";
+        showToast(`+${COIN_CODES[code]} Coins!<br>Code redeemed successfully 🎉`, true);
       } else {
-        msg.textContent = "Invalid or expired code 😕";
-        msg.style.color = "tomato";
+        showToast("Invalid code... try again 😕", false);
       }
     }
 
     // ──────────────────────────────────────────────
-    // Buy / Equip Trail
+    // Trail & Theme logic
     // ──────────────────────────────────────────────
-    function buyOrEquipTrail(trail, cost, requiredLevel) {
+    function buyOrEquipTrail(trail, cost, reqLevel) {
       const level = Number(BigInt(localStorage.getItem("xp") || "0") / 100n);
-      if (level < requiredLevel) {
-        alert(`Need level ${requiredLevel}+ to unlock this trail!`);
+      if (level < reqLevel) {
+        showToast(`Unlocks at level ${reqLevel}+<br>Keep playing! 🚀`, false);
         return;
       }
 
       let coins = parseInt(localStorage.getItem("coins") || "0");
-      const alreadyOwned = true; // for simplicity; in real, track purchased items if you want one-time buy
-
-      if (cost > 0 && coins < cost) {
-        alert("Not enough coins! Grind more dailies or codes.");
+      if (coins < cost) {
+        showToast("Not enough coins! Claim dailies or redeem codes.", false);
         return;
       }
 
-      if (cost > 0) {
-        coins -= cost;
-        localStorage.setItem("coins", coins);
-      }
-
+      coins -= cost;
+      localStorage.setItem("coins", coins);
       localStorage.setItem("equippedTrail", trail);
+      loadCoins();
       loadShopData();
-      alert(`Equipped ${trail} trail! Refresh other pages to see it.`);
+      showToast(`Equipped <strong>${trail}</strong> trail!<br>Enjoy the vibes ✨`, true);
     }
 
     function equipTrail(trail) {
       localStorage.setItem("equippedTrail", trail);
       loadShopData();
-      alert(`Equipped ${trail} trail!`);
+      showToast(`Switched to <strong>${trail}</strong> trail!`, true);
     }
 
-    // ──────────────────────────────────────────────
-    // Buy / Equip Theme (similar logic)
-    // ──────────────────────────────────────────────
-    function buyOrEquipTheme(theme, cost, requiredLevel) {
+    function buyOrEquipTheme(theme, cost, reqLevel) {
       const level = Number(BigInt(localStorage.getItem("xp") || "0") / 100n);
-      if (level < requiredLevel) {
-        alert(`Need level ${requiredLevel}+ to unlock this theme!`);
+      if (level < reqLevel) {
+        showToast(`Unlocks at level ${reqLevel}+`, false);
         return;
       }
 
       let coins = parseInt(localStorage.getItem("coins") || "0");
-      if (cost > 0 && coins < cost) {
-        alert("Not enough coins!");
+      if (coins < cost) {
+        showToast("Not enough coins!", false);
         return;
       }
 
-      if (cost > 0) {
-        coins -= cost;
-        localStorage.setItem("coins", coins);
-      }
-
+      coins -= cost;
+      localStorage.setItem("coins", coins);
       localStorage.setItem("equippedTheme", theme);
+      loadCoins();
       loadShopData();
-      alert(`Equipped ${theme} theme! Refresh to apply site-wide.`);
+      showToast(`Equipped <strong>${theme}</strong> theme!<br>Refresh to apply 🌟`, true);
     }
 
     function equipTheme(theme) {
       localStorage.setItem("equippedTheme", theme);
       loadShopData();
-      alert(`Equipped ${theme} theme!`);
+      showToast(`Switched to <strong>${theme}</strong> theme!`, true);
     }
 
-    // Your addCoins / loadCoins / loadXP functions here (from previous)
+    // Basic coin / xp helpers (adjust to match your index.html)
     function addCoins(amount) {
       let coins = parseInt(localStorage.getItem("coins") || "0");
       coins += amount;
@@ -257,79 +342,17 @@
       document.getElementById("coins_display").innerText = parseInt(localStorage.getItem("coins") || "0");
     }
 
-    // ... your loadXP, claimDaily with lucky day, etc. ...
+    // Call load functions
+    window.addEventListener("load", () => {
+      loadShopData();
+      // If you have loadXP() / loadCoins() from index.html, call them here too
+    });
   </script>
 
-  <!-- Shared apply script for theme + trail (paste in every page including this one) -->
+  <!-- Paste your shared theme + mouse trail apply script here (from previous messages) -->
   <script>
-    function applyEquippedStuff() {
-      const theme = localStorage.getItem("equippedTheme") || "default";
-      const trail = localStorage.getItem("equippedTrail") || "none";
-
-      // Remove old classes
-      document.body.classList.remove("theme-default", "theme-neon", "theme-pastel", "theme-retro", "theme-beach", "theme-glitch");
-      document.body.classList.add(`theme-${theme}`);
-
-      // Mouse trail canvas (enhanced)
-      if (trail !== "none") {
-        let canvas = document.getElementById("trailCanvas");
-        if (!canvas) {
-          canvas = document.createElement("canvas");
-          canvas.id = "trailCanvas";
-          canvas.style.cssText = "position:fixed;inset:0;pointer-events:none;z-index:9999;";
-          document.body.appendChild(canvas);
-        }
-        const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let particles = [];
-        let hue = 0;
-
-        document.addEventListener("mousemove", e => {
-          particles.push({x: e.clientX, y: e.clientY, life: 40, hue: hue});
-          hue = (hue + 5) % 360;
-        });
-
-        function animate() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          particles.forEach((p, i) => {
-            p.life--;
-            if (p.life <= 0) return particles.splice(i, 1);
-
-            const alpha = p.life / 40;
-            const size = p.life / 4;
-
-            if (trail === "sparkle") {
-              ctx.fillStyle = `hsla(${p.hue}, 100%, 80%, ${alpha})`;
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, size, 0, Math.PI*2);
-              ctx.fill();
-            } else if (trail === "hearts") {
-              ctx.font = `${size*3}px Arial`;
-              ctx.fillStyle = `rgba(255,105,180,${alpha})`;
-              ctx.fillText("💖", p.x - size*1.5, p.y + size);
-            } else if (trail === "rainbow") {
-              ctx.strokeStyle = `hsl(${p.hue}, 100%, 60%)`;
-              ctx.lineWidth = size*2;
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p.x + Math.sin(p.life)*20, p.y + Math.cos(p.life)*20);
-              ctx.stroke();
-            } // add cases for ghost, fire, etc. with different shapes/colors
-          });
-          requestAnimationFrame(animate);
-        }
-        animate();
-
-        window.addEventListener("resize", () => {
-          canvas.width = window.innerWidth;
-          canvas.height = window.innerHeight;
-        });
-      }
-    }
-
-    window.addEventListener("load", applyEquippedStuff);
+    // applyEquippedStuff() function here...
+    // (the one that adds class to body and creates canvas trail)
   </script>
 </body>
 </html>
