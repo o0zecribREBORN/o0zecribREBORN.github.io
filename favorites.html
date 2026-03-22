@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html><head><title>Favorites</title><link href="style.css" rel="stylesheet"/><link href="favicon.png" rel="icon" type="image/png"/></head>
+<body>
+<div id="clock"></div><div class="main"><h1>Favorites</h1><div class="typewriter"></div>
+<div class="grid" id="favGrid"></div>
+</div><script src="shared.js"></script>
+<script src="script.js"></script>
+<!-- CHAT PANEL -->
+<div id="chatPanel" style="display:none;position:fixed;bottom:20px;right:20px;width:360px;z-index:9990;">
+  <div style="background:rgba(5,5,20,.97);border:1px solid rgba(60,255,154,.3);border-radius:20px;overflow:hidden;box-shadow:0 0 40px rgba(60,255,154,.2);">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);">
+      <span style="font-weight:800;color:#3cff9a;text-shadow:0 0 8px #3cff9a">💬 Live Chat</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <input id="chatColorPicker" type="color" value="#3cff9a" title="Your color" style="width:28px;height:28px;border:none;background:transparent;cursor:pointer;border-radius:6px" onchange="localStorage.setItem('chatColor',this.value)">
+        <button onclick="document.getElementById('chatPanel').style.display='none'" style="background:transparent;border:none;color:#ff6b6b;font-size:1.3rem;cursor:pointer">✕</button>
+      </div>
+    </div>
+    <div class="chat-container" style="height:300px;border-radius:0;">
+      <div id="chatMessages"></div>
+    </div>
+    <div class="chat-inputrow" style="padding:10px 12px;">
+      <input id="chatInput" placeholder="Say something..." autocomplete="off"/>
+      <button id="chatSend">Send</button>
+    </div>
+  </div>
+</div>
+<!-- LEADERBOARD PANEL -->
+<div id="leaderboardPanel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(420px,94vw);z-index:9990;">
+  <div style="background:rgba(5,5,20,.97);border:2px solid rgba(255,220,0,.3);border-radius:24px;overflow:hidden;box-shadow:0 0 60px rgba(255,220,0,.2);max-height:80vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:rgba(5,5,20,.97);">
+      <span style="font-weight:900;font-size:1.2rem;color:#ffdc00;text-shadow:0 0 12px #ffdc00">🏆 Leaderboard</span>
+      <button onclick="document.getElementById('leaderboardPanel').style.display='none'" style="background:transparent;border:none;color:#ff6b6b;font-size:1.3rem;cursor:pointer">✕</button>
+    </div>
+    <div class="lb-container" style="border-radius:0;border:none;max-height:none;">
+      <div id="leaderboardList" style="padding:8px 0;"></div>
+    </div>
+  </div>
+</div>
+
+</body></html>

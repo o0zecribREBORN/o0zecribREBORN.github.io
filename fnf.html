@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>O0ZE34's Crib REBORN — FNF Mods</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
+</head>
+
+<body>
+
+<div id="clock"></div>
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('chatPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('leaderboardPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>
+</div>
+
+<div class="main">
+<h1>FNF Mods</h1>
+
+<input class="search" id="search" onkeyup="filterCards()" placeholder="Search..."/>
+
+<div class="grid">
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net//fnf-b-sides-remixes/game.html">
+  <img class="thumb" src="https://imgur.com/9MZKJQp.png">
+  <span>FNF B-Sides</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net//fnf-ben-drowned-2/">
+  <img class="thumb" src="https://imgur.com/WNqRj9N.png">
+  <span>FNF Ben Drowned</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net//fnf-but-bad/">
+  <img class="thumb" src="https://imgur.com/Vj9v2Gx.png">
+  <span>FNF But Bad</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-garcello/game.html">
+  <img class="thumb" src="https://imgur.com/7E2Q1zB.png">
+  <span>FNF Garcello</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-golf/">
+  <img class="thumb" src="https://imgur.com/8QeWb7T.png">
+  <span>FNF Golf</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-hd/game.html">
+  <img class="thumb" src="https://imgur.com/Zk6xg0D.png">
+  <span>FNF HD</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-henry/">
+  <img class="thumb" src="https://imgur.com/H0u4J4s.png">
+  <span>FNF Henry Stickman</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-holo/">
+  <img class="thumb" src="https://imgur.com/5c6fH8O.png">
+  <span>FNF Holofunk</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-kk/">
+  <img class="thumb" src="https://imgur.com/RR0YHqT.png">
+  <span>FNF KK-Slider</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-neo/game.html">
+  <img class="thumb" src="https://imgur.com/1T9eC9D.png">
+  <span>FNF Neo </span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-picos-school/">
+  <img class="thumb" src="https://imgur.com/6mJ8y6m.png">
+  <span>FNF Picos School</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-squid-game/">
+  <img class="thumb" src="https://imgur.com/Y6k3ZrK.png">
+  <span>FNF Squid Game</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-the-date-week/">
+  <img class="thumb" src="https://imgur.com/4QyX0yO.png">
+  <span>FNF The Date Week</span>
+</a>
+
+<a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-accelerant-hank/game.html">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Acclerate Hank</span>
+</a>
+
+  <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-annie/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Annie</span>
+</a>
+
+  <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-bob-and-bosip/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Bop and Bosip</span>
+</a>
+
+  <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-cassandra/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Cassandra</span>
+</a>
+
+  <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net//fnf-vs-chara/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Chara</span>
+</a>
+
+  <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-dave-and-bambi/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Dave and Bambi</span>
+</a>
+
+  <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-eteled/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Eteled</span>
+</a>
+
+  <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-flippy/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Flippy</span>
+</a>
+
+  <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-freddy-fazbear/game.html">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Fnaf 1</span>
+</a>
+
+  <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-hatsune-miku/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Hatsune Miku</span>
+</a>
+
+    <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-huggy-wuggy/game.html">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Huggy Wuggy</span>
+</a>
+
+    <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-monika/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Doki Doki Takeover</span>
+</a>
+
+    <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-sketchy-remastered/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Sketchy Remastered</span>
+</a>
+
+    <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-sonicexe/game.html">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF SONIC.EXE</span>
+</a>
+
+    <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-suicide-mouse/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Suicide Mouse</span>
+</a>
+
+    <a class="btn" href="https://leonardojimenez.global.ssl.fastly.net/fnf-vs-sunday-remastered/">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>Sunday Remastered</span>
+</a>
+
+    <a class="btn" href="https://tinyurl.com/FNFNFNFNNFNF">
+  <img class="thumb" src="https://imgur.com/2KX4n7M.png">
+  <span>FNF Salty's Sunday Night</span>
+</a>
+
+</div>
+</div>
+
+<script src="shared.js"></script>
+<script src="script.js"></script>
+
+<script>
+function filterCards() {
+  let input = document.getElementById("search").value.toLowerCase();
+  let cards = document.querySelectorAll(".btn");
+  cards.forEach(card => {
+    let text = card.innerText.toLowerCase();
+    card.style.display = text.includes(input) ? "flex" : "none";
+  });
+}
+</script>
+
+</body>
+</html>

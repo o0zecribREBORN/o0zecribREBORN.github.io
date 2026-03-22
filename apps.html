@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>O0ZE34's Crib REBORN — Apps</title>
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
+<style>
+/* --- Bell Schedule Modal --- */
+.modal-bg{
+  position:fixed;
+  left:0; top:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.modal-box{
+  background:#111;
+  padding:25px;
+  border-radius:20px;
+  width:350px;
+  color:white;
+  text-align:center;
+  animation: pop 0.2s ease-out;
+}
+@keyframes pop{
+  from{transform:scale(0.8); opacity:0;}
+  to{transform:scale(1); opacity:1;}
+}
+.grade-btn{
+  background:#1d1d1d;
+  padding:12px;
+  border-radius:12px;
+  margin:8px 0;
+  cursor:pointer;
+}
+.grade-btn:hover{
+  background:#262626;
+}
+.schedule-box{
+  margin-top:15px;
+  text-align:left;
+  line-height:1.6;
+  font-size:14px;
+}
+/* JSON apps loading */
+#jsonAppsGrid .btn { position:relative; }
+#jsonAppsStatus {
+  text-align:center;
+  padding:18px;
+  opacity:.5;
+  font-size:.9rem;
+}
+</style>
+</head>
+
+<body>
+<div id="clock"></div>
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('chatPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('leaderboardPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>
+</div>
+
+<div class="main">
+<h1>Apps</h1>
+
+<input class="search" id="search" onkeyup="filterCards()" placeholder="Search..."/>
+
+<div class="grid">
+
+<!-- 🔥 HOW TO USE APPS -->
+<a class="btn" onclick="showHowToUseApps()">
+  <img class="thumb" src="https://www.google.com/s2/favicons?domain=google.com&sz=128" style="filter:hue-rotate(180deg) saturate(2);"/>
+  <span>❓ How to Use Apps</span>
+</a>
+
+<!-- 🔥 BELL SCHEDULE BUTTON -->
+<a class="btn" onclick="openBell()">
+  <img class="thumb" src="https://www.google.com/s2/favicons?domain=cfisd.net&sz=128"/>
+  <span>Bell Schedules</span>
+</a>
+
+<!-- 🔥 REQUIRED PROXY BUTTON -->
+<a class="btn" onclick="openInBlank('https://hohohogreengiant.global.ssl.fastly.net/services')">
+  <img class="thumb" src="https://www.google.com/s2/favicons?domain=global.ssl.fastly.net&sz=128"/>
+  <span>Hacks (very good)</span>
+</a>
+
+<!-- 🔥 UPDATED LUNCH MENU (YOUR PDF) -->
+<a class="btn" href="https://ooze343.w3spaces.com/MSMarch2026Menu.pdf" target="_blank">
+  <img class="thumb" src="https://www.google.com/s2/favicons?domain=cfisd.net&sz=128"/>
+  <span>Lunch Menu (March 2026)</span>
+</a>
+
+<!-- Example app -->
+<a class="btn" onclick="openInBlank('https://blooketmod.global.ssl.fastly.net/')">
+  <img class="thumb" src="https://www.google.com/s2/favicons?domain=blooketmod.global.ssl.fastly.net&sz=128"/>
+  <span>Blooket Mods</span>
+</a>
+
+</div>
+
+<!-- JSON Apps hardcoded from provided data -->
+<h2 style="margin-top:32px;font-size:1.2rem;opacity:.8;">🌐 More Apps</h2>
+<div class="grid" id="jsonAppsGrid"></div>
+
+</div>
+
+<!-- 🔥 BELL SCHEDULE POPUP -->
+<div class="modal-bg" id="bellModal">
+  <div class="modal-box">
+    <h2>Bell Schedules</h2>
+
+    <div class="grade-btn" onclick="showSchedule('6th')">6th Grade</div>
+    <div class="grade-btn" onclick="showSchedule('7th')">7th Grade</div>
+    <div class="grade-btn" onclick="showSchedule('8th')">8th Grade</div>
+
+    <div class="schedule-box" id="scheduleBox"></div>
+
+    <br>
+    <button onclick="closeBell()" style="padding:10px 20px; border-radius:10px;">Close</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script src="script.js"></script>
+
+<script>
+const APPS_BASE_URL = "https://ixl-learning.thedaedals.com/";
+const APPS_JSON_URL = APPS_BASE_URL + "js/json/a.json";
+
+// Hardcoded apps from JSON data
+const HARDCODED_APPS = [
+  { name: "Youtube",     url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-ilvkdkows%2Cngrfvrn%2Cdg%2F",             thumbnail: "https://ixl-learning.thedaedals.com/png/apps/youtube.webp" },
+  { name: "Tiktok",      url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-wuw%2Ctkkvoi.aoo%2F",                   thumbnail: "https://ixl-learning.thedaedals.com/png/apps/tiktok.webp" },
+  { name: "Argon",       url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-jmbk.mng%2Fraeeq%2Fouqia%2Fcpr.jtol",   thumbnail: "https://ixl-learning.thedaedals.com/png/apps/argon.webp" },
+  { name: "Gauth",       url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-wuw%2Cgcuvhoavh%2Ccmm-",                thumbnail: "https://ixl-learning.thedaedals.com/png/apps/guath.webp" },
+  { name: "Pinterest",   url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-wuw%2Cpknvepeqt%2Ccmm-",                thumbnail: "https://ixl-learning.thedaedals.com/png/apps/pinterest.webp" },
+  { name: "DeepAI",      url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-dgerak.mre%2F",                         thumbnail: "https://ixl-learning.thedaedals.com/png/apps/deepai.webp" },
+  { name: "Discord",     url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-dksaopd%2Ccmm",                         thumbnail: "https://ixl-learning.thedaedals.com/png/apps/dsc.webp" },
+  { name: "Twitch",      url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-wuw%2Ctuivcj.vv-",                      thumbnail: "https://ixl-learning.thedaedals.com/png/apps/twitch.webp" },
+  { name: "Amazon",      url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-wuw%2Caoaxol.aoo%2F",                   thumbnail: "https://ixl-learning.thedaedals.com/png/apps/amazon.webp" },
+  { name: "SpenFlix",    url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-wctah%2Csrelcgrfets%2Cx%7Bz-",          thumbnail: "https://ixl-learning.thedaedals.com/png/apps/movies.webp" },
+  { name: "Apple Music", url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-mwskc%2Carpne%2Ccmm-uq%2Fleu",          thumbnail: "https://ixl-learning.thedaedals.com/png/apps/applemusic.webp" },
+  { name: "Snapchat",    url: "https://ixl-learning.thedaedals.com/active/go/hvtrs8%2F-wuw%2Cslarcjav.aoo%2F",                 thumbnail: "https://ixl-learning.thedaedals.com/png/apps/snap.webp" },
+];
+
+function loadJsonApps() {
+  const gridEl = document.getElementById("jsonAppsGrid");
+  if (!gridEl) return;
+  gridEl.innerHTML = "";
+  HARDCODED_APPS.forEach(app => {
+    const a = document.createElement("a");
+    a.className = "btn";
+    a.href = "#";
+    a.onclick = (e) => { e.preventDefault(); openInBlank(app.url); };
+    const safeName = typeof escHtml === "function" ? escHtml(app.name) : app.name;
+    a.innerHTML = `<img class="thumb" src="${app.thumbnail}" onerror="this.src='https://www.google.com/s2/favicons?domain=ixl-learning.thedaedals.com&sz=128'"/><span>${safeName}</span>`;
+    gridEl.appendChild(a);
+  });
+}
+
+// Render apps on page load
+loadJsonApps();
+</script>
+
+
+<!-- HOW TO USE APPS MODAL -->
+<div id="howToModal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);align-items:center;justify-content:center;">
+  <div style="background:linear-gradient(135deg,#0a0a1a,#0d0d2a);border:1.5px solid rgba(60,255,154,.35);border-radius:24px;padding:36px 32px;max-width:420px;width:92vw;text-align:center;box-shadow:0 0 80px rgba(60,255,154,.15);position:relative;">
+    <div style="font-size:3rem;margin-bottom:10px;">📱</div>
+    <h2 style="color:#3cff9a;margin:0 0 6px;font-size:1.5rem;font-weight:900;">How to Use Apps</h2>
+    <div style="width:48px;height:3px;background:linear-gradient(90deg,#3cff9a,#6b48ff);border-radius:99px;margin:0 auto 20px;"></div>
+    <p style="opacity:.85;font-size:1rem;line-height:1.65;margin:0 0 20px;">
+      You will have to search something up in<br>
+      <a href="https://ixl-learning.thedaedals.com/" target="_blank" style="color:#3cff9a;font-weight:800;word-break:break-all;">https://ixl-learning.thedaedals.com/</a><br>
+      for it to work, or else it'll say<br>
+      <span style="color:#ff6b6b;font-weight:800;">Page Not Found!</span>
+    </p>
+    <div style="background:rgba(60,255,154,.07);border:1px solid rgba(60,255,154,.2);border-radius:14px;padding:14px 18px;margin-bottom:22px;font-size:.88rem;opacity:.8;text-align:left;">
+      <b style="color:#3cff9a;">Steps:</b><br>
+      1. Open <a href="https://ixl-learning.thedaedals.com/" target="_blank" style="color:#3cff9a;">ixl-learning.thedaedals.com</a> in a new tab<br>
+      2. Search <em>anything</em> — like "math" or "reading"<br>
+      3. Come back and click an app — it will now load! ✅
+    </div>
+    <button onclick="document.getElementById('howToModal').style.display='none'" style="padding:12px 36px;border-radius:16px;background:linear-gradient(135deg,#3cff9a,#6b48ff);border:none;color:#000;font-weight:900;font-size:1rem;cursor:pointer;">Got it! 🚀</button>
+  </div>
+</div>
+
+<script>
+function showHowToUseApps() {
+  const m = document.getElementById('howToModal');
+  m.style.display = 'flex';
+  m.onclick = (e) => { if (e.target === m) m.style.display = 'none'; };
+}
+</script>
+
+</body>
+</html>

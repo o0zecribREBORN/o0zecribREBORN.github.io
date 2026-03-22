@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Settings — O0ZE34's Crib REBORN</title>
+
+<link href="style.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
+
+<style>
+.settings-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+
+.setting-card{
+  background:rgba(255,255,255,0.08);
+  border-radius:18px;
+  padding:18px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 25px rgba(0,0,0,.25);
+}
+
+.setting-card h3{
+  margin:0 0 8px;
+}
+
+.setting-card button,
+.setting-card select,
+.setting-card input{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  border-radius:12px;
+  border:none;
+  background:rgba(255,255,255,.15);
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.setting-card button:hover{
+  background:rgba(255,255,255,.25);
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+<a href="settings.html" style="background:rgba(255,255,255,0.15)">
+<i class="fa-solid fa-gear"></i><span>Settings</span></a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('chatPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('leaderboardPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>
+</div>
+
+<div class="main">
+<h1><i class="fa fa-gear"></i> Settings</h1>
+
+<div class="settings-container">
+
+<!-- CORE -->
+<div class="setting-card">
+<h3>Theme</h3>
+<button onclick="toggleTheme()">Toggle Light / Dark</button>
+</div>
+
+<div class="setting-card">
+<h3>Sidebar Position</h3>
+<button onclick="moveSidebar()">Move Sidebar</button>
+</div>
+
+<div class="setting-card">
+<h3>Performance Mode</h3>
+<button onclick="setPerf(true)">Enable</button>
+<button onclick="setPerf(false)">Disable</button>
+</div>
+
+<div class="setting-card">
+<h3>Visual Mode</h3>
+<button onclick="toggleExtra('glassUI')">Toggle Glass UI</button>
+</div>
+
+<!-- THEME MAKER -->
+<div class="setting-card">
+<h3>Theme Maker</h3>
+<label>Background Color</label>
+<input type="color" onchange="setBG(this.value)">
+<label>Accent Color</label>
+<input type="color" onchange="setAccent(this.value)">
+</div>
+
+<!-- WINDOWS XP MODE -->
+<div class="setting-card">
+<h3>Windows XP Mode 😂</h3>
+<button onclick="toggleXP()">Toggle XP Mode</button>
+</div>
+
+<!-- FONT CHANGER -->
+<div class="setting-card">
+<h3>Font Changer</h3>
+<select onchange="setFont(this.value)">
+<option value="">Default</option>
+<option value="Arial">Arial</option>
+<option value="Verdana">Verdana</option>
+<option value="Tahoma">Tahoma</option>
+<option value="Trebuchet MS">Trebuchet</option>
+<option value="Comic Sans MS">Comic Sans 💀</option>
+<option value="Courier New">Courier</option>
+<option value="Georgia">Georgia</option>
+<option value="Times New Roman">Times</option>
+<option value="Impact">Impact</option>
+<option value="Lucida Console">Lucida</option>
+</select>
+</div>
+
+<!-- EXTRA VISUALS -->
+<div class="setting-card"><h3>Blur Background</h3><button onclick="toggleExtra('blurBG')">Toggle</button></div>
+<div class="setting-card"><h3>Mega Glow</h3><button onclick="toggleExtra('megaGlow')">Toggle</button></div>
+<div class="setting-card"><h3>Thick Borders</h3><button onclick="toggleExtra('thickBorders')">Toggle</button></div>
+<div class="setting-card"><h3>Thin Borders</h3><button onclick="toggleExtra('thinBorders')">Toggle</button></div>
+<div class="setting-card"><h3>Compact Mode</h3><button onclick="toggleExtra('superCompact')">Toggle</button></div>
+<div class="setting-card"><h3>Wide Layout</h3><button onclick="toggleExtra('wideLayout')">Toggle</button></div>
+<div class="setting-card"><h3>Big Titles</h3><button onclick="toggleExtra('bigTitles')">Toggle</button></div>
+<div class="setting-card"><h3>Ultra Neon</h3><button onclick="toggleExtra('ultraNeon')">Toggle</button></div>
+
+
+<div class="setting-card">
+<h3>💬 Chat Color</h3>
+<input type="color" value="#3cff9a" onchange="lsSet('chatColor',this.value)" style="margin-top:10px;width:100%;height:40px;border:none;border-radius:12px;cursor:pointer">
+</div>
+
+<div class="setting-card" style="grid-column:1/-1">
+<h3>🌐 OozeNet Bookmarklets</h3>
+<p style="opacity:.6;font-size:.85rem;margin-top:0">Add these one-click tools to your OozeNet bookmark bar</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+  <button onclick="addBookmarklet('📋 Copy All Text', 'prompt('Page text:',document.body.innerText)')" class="admin-btn-blue" style="flex:1;min-width:140px;padding:8px;border-radius:8px;border:1px solid #7ab8ff44;background:rgba(100,160,255,.15);color:#7ab8ff;cursor:pointer">📋 Copy Page Text</button>
+  <button onclick="addBookmarklet('🎨 Invert Colors', 'document.body.style.filter=document.body.style.filter?\'\':\'invert(1) hue-rotate(180deg)\'')" style="flex:1;min-width:140px;padding:8px;border-radius:8px;border:1px solid #ff6bda44;background:rgba(255,107,218,.15);color:#ff6bda;cursor:pointer">🎨 Invert Colors</button>
+  <button onclick="addBookmarklet('🔗 Get URL', 'alert(location.href)')" style="flex:1;min-width:140px;padding:8px;border-radius:8px;border:1px solid #3cff9a44;background:rgba(60,255,154,.15);color:#3cff9a;cursor:pointer">🔗 Get URL</button>
+  <button onclick="addBookmarklet('📏 Ruler', 'document.body.style.outline=document.body.style.outline?\'\': \'2px solid red\'; document.querySelectorAll(\'*\').forEach(e=>e.style.outline=e.style.outline?\'\': \'1px solid blue\')')" style="flex:1;min-width:140px;padding:8px;border-radius:8px;border:1px solid #ffdc0044;background:rgba(255,220,0,.15);color:#ffdc00;cursor:pointer">📏 Outline All</button>
+  <button onclick="addBookmarklet('🌑 Dark Mode', 'document.body.style.filter=\'invert(0.9) hue-rotate(180deg)\'; document.body.style.background=\'#000\'')" style="flex:1;min-width:140px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:#fff;cursor:pointer">🌑 Force Dark Mode</button>
+  <button onclick="addBookmarklet('🖼️ See Images', 'document.querySelectorAll(\'img\').forEach(i=>{let p=document.createElement(\'p\');p.textContent=i.src;i.parentNode.insertBefore(p,i)})')" style="flex:1;min-width:140px;padding:8px;border-radius:8px;border:1px solid #a0e8ff44;background:rgba(160,232,255,.12);color:#a0e8ff;cursor:pointer">🖼️ Show Img URLs</button>
+</div>
+</div>
+
+<!-- RESET -->
+<div class="setting-card">
+<h3>Reset Everything</h3>
+<button onclick="resetSettings()">RESET SITE</button>
+</div>
+
+</div>
+</div>
+
+<script src="shared.js"></script>
+<script src="script.js"></script>
+
+<script>
+/* SETTINGS — all changes go to localStorage and apply via shared.js applyAllSettings() */
+function toggleTheme(){
+  const isLight = document.body.classList.toggle("light-theme");
+  lsSet("theme", isLight ? "light" : "dark");
+}
+function moveSidebar(){
+  const isRight = document.body.classList.toggle("sidebar-right");
+  lsSet("sidebarPos", isRight ? "right" : "left");
+}
+function setPerf(v){
+  lsSet("perf", v ? "on" : "off");
+  showSettingToast(v ? "⚡ Performance Mode ON" : "Performance Mode OFF");
+}
+function setBG(c){ document.body.style.background = c; lsSet("bgColor", c); }
+function setAccent(c){ document.documentElement.style.setProperty("--accent",c); lsSet("accent", c); }
+function setFont(f){ document.body.style.fontFamily = f||""; lsSet("font",f); }
+function toggleXP(){ toggleExtra("winXPMode"); }
+function resetSettings(){
+  if(confirm("RESET EVERYTHING including XP, levels, and all settings?")){ localStorage.clear(); location.reload(); }
+}
+function showSettingToast(msg){
+  let t = document.createElement("div");
+  t.style.cssText="position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(60,255,154,.2);border:1px solid #3cff9a;border-radius:12px;padding:10px 22px;color:#3cff9a;font-weight:700;z-index:99999;pointer-events:none;transition:opacity .5s";
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity="0";setTimeout(()=>t.remove(),600);}, 2000);
+}
+window.onload = () => { applyAllSettings(); };
+</script>
+
+</body>
+</html>

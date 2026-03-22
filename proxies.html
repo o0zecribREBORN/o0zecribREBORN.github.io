@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>O0ZE34's Crib REBORN — Proxies</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="favicon.png" rel="icon" type="image/png"/>
+<style>
+    :root { --bg: #0a0a12; --card: #1f1f2e; --accent: #ff00aa; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background: var(--bg);
+        color: #e0e0ff;
+        overflow: hidden;
+        height: 100vh;
+        display: flex;
+    }
+    canvas#stars, canvas#stars2 {
+        position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; opacity:0.7; pointer-events:none;
+    }
+    #clock {
+        position: fixed; top: 15px; right: 20px; color: #ff88cc; font-size: 1.1rem; font-weight: bold; z-index: 100;
+    }
+    .sidebar {
+        width: 240px; background: #111118; padding: 30px 0; display: flex; flex-direction: column; gap: 8px; border-right: 2px solid #1f1f2e;
+    }
+    .sidebar a {
+        padding: 14px 25px; color: #aaa; text-decoration: none; display: flex; align-items: center; gap: 14px; font-size: 1.05rem; transition: 0.3s;
+    }
+    .sidebar a:hover, .sidebar a.active { color: #fff; background: #1f1f2e; }
+    .sidebar i { width: 24px; }
+    .main {
+        flex: 1; padding: 30px; overflow-y: auto;
+    }
+    h1 {
+        font-size: 3.2rem; color: var(--accent); text-shadow: 0 0 30px #ff00aa; margin-bottom: 10px;
+    }
+    .typewriter {
+        font-size: 1.35rem; color: #ff88cc; margin-bottom: 25px; min-height: 50px; font-family: monospace;
+    }
+    .search {
+        width: 100%; max-width: 420px; padding: 14px 20px; background: #1f1f2e; border: none; border-radius: 999px; color: white; font-size: 1.1rem; margin-bottom: 25px;
+    }
+    .grid {
+        display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 20px;
+    }
+    .btn {
+        background: var(--card); border-radius: 18px; padding: 18px; text-decoration: none; color: white;
+        display: flex; flex-direction: column; align-items: center; gap: 12px; transition: all 0.3s;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .btn:hover {
+        transform: scale(1.08) translateY(-8px); box-shadow: 0 20px 50px rgba(255,0,170,0.5);
+    }
+    .thumb {
+        width: 96px; height: 96px; object-fit: contain; border-radius: 12px; background: #111;
+    }
+    .btn span { font-size: 1.15rem; text-align: center; font-weight: 600; }
+    footer {
+        position: fixed; bottom: 15px; left: 270px; color: #555; font-size: 0.95rem;
+    }
+    .cursor-trail {
+        position: absolute; width: 10px; height: 10px; background: #ff00aa; border-radius: 50%;
+        pointer-events: none; z-index: 99999; animation: trailFade 900ms forwards;
+    }
+    @keyframes trailFade { to { opacity: 0; transform: scale(0); } }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<canvas id="stars2"></canvas>
+<div id="clock"></div>
+
+<div class="sidebar">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+    <a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+    <a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+    <a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+    <a href="#" class="active"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+    <a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+    <a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+</div>
+
+<div class="main">
+    <h1>Proxies</h1>
+    <div class="typewriter"></div>
+    <input class="search" id="search" onkeyup="filterCards()" placeholder="Search proxies..."/>
+    
+    <div class="grid">
+        <!-- ALL YOUR NEW PROXIES HARD-CODED DIRECTLY -->
+        <a href="https://ixl-learning.thedaedals.com/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=ixl-learning.thedaedals.com&sz=128">
+            <span>Truffled</span>
+        </a>
+        <a href="https://300pump.thedaedals.com/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=300pump.thedaedals.com&sz=128">
+            <span>Space</span>
+        </a>
+        <a href="https://calculus.student.programming.technology.reading.thedaedals.com/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=calculus.student.programming.technology.reading.thedaedals.com&sz=128">
+            <span>Strongdog Xp</span>
+        </a>
+        <a href="https://shogunx.thedaedals.com/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=shogunx.thedaedals.com&sz=128">
+            <span>Vapor v4</span>
+        </a>
+        <a href="https://aside.segurosdepersonas.cl/onboarding/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=aside.segurosdepersonas.cl&sz=128">
+            <span>Galaxy V6</span>
+        </a>
+        <a href="https://cool.segurosdepersonas.cl/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=cool.segurosdepersonas.cl&sz=128">
+            <span>Cool</span>
+        </a>
+        <a href="https://realflock.segurosdepersonas.cl/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=realflock.segurosdepersonas.cl&sz=128">
+            <span>OverCloaked</span>
+        </a>
+        <a href="https://workitskit.segurosdepersonas.cl/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=workitskit.segurosdepersonas.cl&sz=128">
+            <span>Nebulo OS</span>
+        </a>
+        <a href="https://rammer.nana.willowwoodgames.co.nz/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=rammer.nana.willowwoodgames.co.nz&sz=128">
+            <span>RammerHead Proxy</span>
+        </a>
+        <a href="https://algebrapractice.suragu.net/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=algebrapractice.suragu.net&sz=128">
+            <span>Equinox (2nd best)</span>
+        </a>
+        <a href="https://ducksittingjob.suragu.net/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=ducksittingjob.suragu.net&sz=128">
+            <span>Quasar</span>
+        </a>
+        <a href="https://veloniumontop.yaculture.org/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=veloniumontop.yaculture.org&sz=128">
+            <span>Selenite</span>
+        </a>
+        <a href="https://bigmathcloud.wy.yaculture.org/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=bigmathcloud.wy.yaculture.org&sz=128">
+            <span>Jordan’s Math Work</span>
+        </a>
+        <a href="https://contact.yaculture.org/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=contact.yaculture.org&sz=128">
+            <span>gn-math (BROKEN)</span>
+        </a>
+        <a href="https://educationcaphat.ed.yaculture.org/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=educationcaphat.ed.yaculture.org&sz=128">
+            <span>Petezah Games</span>
+        </a>
+        <a href="https://mathiszoo.it-istho.ik.yaculture.org/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=mathiszoo.it-istho.ik.yaculture.org&sz=128">
+            <span>Void Network V5</span>
+        </a>
+        <a href="https://mathworkraw.lp.yaculture.org/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=mathworkraw.lp.yaculture.org&sz=128">
+            <span>uhh idk</span>
+        </a>
+        <a href="https://player-nation.yaculture.org/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=player-nation.yaculture.org&sz=128">
+            <span>Interstallar</span>
+        </a>
+        <a href="https://uma-chan.yaculture.org/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=uma-chan.yaculture.org&sz=128">
+            <span>???</span>
+        </a>
+        <a href="https://vcsa.yaculture.org/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=vcsa.yaculture.org&sz=128">
+            <span>Axiom</span>
+        </a>
+        <a href="https://welcometomathgames.gomath.yaculture.org/?_pass=1" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=welcometomathgames.gomath.yaculture.org&sz=128">
+            <span>Infamous 🔥 THE BEST ONE</span>
+        </a>
+        <a href="https://center.k12.mo.us.banglaraloprotidin.com/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=center.k12.mo.us.banglaraloprotidin.com&sz=128">
+            <span>Frogie’s Arcade</span>
+        </a>
+        <a href="https://freshstats.banglaraloprotidin.com/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=freshstats.banglaraloprotidin.com&sz=128">
+            <span>Shadow V4</span>
+        </a>
+        <a href="https://jobsearch.banglaraloprotidin.com/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=jobsearch.banglaraloprotidin.com&sz=128">
+            <span>Lunar</span>
+        </a>
+        <a href="https://k0math.wiki.banglaraloprotidin.com/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=k0math.wiki.banglaraloprotidin.com&sz=128">
+            <span>Utopia</span>
+        </a>
+        <a href="https://classes.callcentercuritiba.com.br/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=classes.callcentercuritiba.com.br&sz=128">
+            <span>Waves</span>
+        </a>
+        <a href="https://jeuse.callcentercuritiba.com.br/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=jeuse.callcentercuritiba.com.br&sz=128">
+            <span>SPLASH</span>
+        </a>
+        <a href="https://123hello.alexkrav.se/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=123hello.alexkrav.se&sz=128">
+            <span>KRONOS</span>
+        </a>
+        <a href="https://bull.alexkrav.se/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=bull.alexkrav.se&sz=128">
+            <span>dogeub</span>
+        </a>
+        <a href="https://math-help.alexkrav.se/" target="_blank" class="btn">
+            <img class="thumb" src="https://www.google.com/s2/favicons?domain=math-help.alexkrav.se&sz=128">
+            <span>Velara</span>
+        </a>
+    </div>
+</div>
+
+<footer>MADE by OOOZEEEEEEEEEEE XD • saved before ban • Ctrl+S to keep forever</footer>
+
+<script>
+/* Starfields */
+function sf(id,count,speed){
+  const c=document.getElementById(id),x=c.getContext('2d');
+  let w=c.width=innerWidth,h=c.height=innerHeight;
+  let s=[...Array(count)].map(()=>({x:Math.random()*w,y:Math.random()*h,z:Math.random()*speed+1}));
+  function draw(){
+    x.clearRect(0,0,w,h);
+    s.forEach(o=>{x.fillStyle="#fff";x.fillRect(o.x,o.y,2,2);o.y+=o.z;if(o.y>h)o.y=0;});
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+sf("stars",260,2);
+sf("stars2",200,4);
+
+/* Clock */
+setInterval(()=>{ document.getElementById("clock").innerText = new Date().toLocaleTimeString(); },1000);
+
+/* Typewriter random message */
+const angelSentences = ["litterly folow my tictac ples it is o0ze34","Thomas THE DANK ENGINE ahahah","9+10=21","brother noah hahah","shut yo pasty chicken bone","yo who put the mIchEal JaCkSon In Teh FrEzER","i typed this on christmas eve","ellllll primoooooooooooooo","ur welcomed to join the OOZE club!","fet's luck ;)","283","Share this website","You found the dev message","EZ","skibidii toiilett","GOBLIN MACHIIIINEEE","RRAHHHHH"];
+const msg = angelSentences[Math.floor(Math.random()*angelSentences.length)];
+document.querySelector(".typewriter").innerText = msg;
+
+/* Search filter */
+function filterCards(){
+  let q = document.getElementById("search").value.toLowerCase();
+  document.querySelectorAll(".btn").forEach(b=>{
+    b.style.display = b.textContent.toLowerCase().includes(q) ? "flex" : "none";
+  });
+}
+
+/* Cursor trail */
+document.addEventListener("mousemove",e=>{
+  let d=document.createElement("div");
+  d.className="cursor-trail";
+  d.style.left=e.pageX+"px";
+  d.style.top=e.pageY+"px";
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(),900);
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>O0ZE34's Crib — Shop</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="icon" href="favicon.png" type="image/png"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ── SHOP LAYOUT ── */
+    .shop-tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+    .shop-tab{padding:10px 20px;border-radius:20px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;cursor:pointer;font-size:.9rem;font-weight:600;transition:all .2s;}
+    .shop-tab.active,.shop-tab:hover{background:rgba(60,255,154,.15);border-color:rgba(60,255,154,.5);color:#3cff9a;}
+    .shop-section{display:none;}.shop-section.active{display:block;}
+    .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:16px;}
+    .shop-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px;text-align:center;transition:all .25s;position:relative;}
+    .shop-item:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.4);}
+    .shop-item.owned{border-color:rgba(60,255,154,.4);background:rgba(60,255,154,.07);}
+    .shop-item.equipped{border-color:#3cff9a;background:rgba(60,255,154,.12);box-shadow:0 0 20px rgba(60,255,154,.2);}
+    .shop-item.locked{opacity:.55;}
+    .si-icon{font-size:2.5rem;margin-bottom:8px;}
+    .si-name{font-size:1rem;font-weight:700;margin-bottom:4px;}
+    .si-desc{font-size:.8rem;opacity:.65;margin-bottom:12px;}
+    .si-price{font-size:.9rem;color:#ffe600;font-weight:700;margin-bottom:10px;}
+    .si-rarity{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;margin-bottom:8px;}
+    .r-free{background:rgba(150,150,150,.2);color:#aaa;}
+    .r-common{background:rgba(100,180,100,.15);color:#8ecf8e;}
+    .r-rare{background:rgba(68,136,255,.15);color:#6baeff;}
+    .r-epic{background:rgba(170,68,255,.2);color:#c97eff;}
+    .r-legendary{background:rgba(255,170,0,.2);color:#ffc93c;}
+    .r-mythic{background:rgba(255,68,153,.2);color:#ff79b0;}
+    .si-btn{width:100%;padding:9px;border-radius:12px;border:none;font-weight:700;cursor:pointer;font-size:.88rem;transition:all .2s;}
+    .si-btn:hover{transform:scale(1.03);}
+    .si-btn.buy{background:linear-gradient(135deg,#3cff9a,#6b48ff);color:#000;}
+    .si-btn.equip{background:rgba(60,255,154,.2);border:1px solid rgba(60,255,154,.5);color:#3cff9a;}
+    .si-btn.equipped-btn{background:#3cff9a;color:#000;}
+    .si-btn.locked-btn{background:#444;color:#888;cursor:not-allowed;}
+    .owned-badge{position:absolute;top:10px;right:10px;background:#3cff9a;color:#000;font-size:.68rem;font-weight:900;padding:3px 8px;border-radius:20px;}
+    /* ── INVENTORY ── */
+    .inv-section{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;margin-bottom:16px;}
+    .inv-section h3{margin:0 0 14px;color:#3cff9a;font-size:1rem;}
+    .drop-item{display:flex;align-items:center;gap:12px;padding:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;margin-bottom:8px;}
+    .drop-rarity-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .drop-info{flex:1;}
+    .drop-name{font-weight:700;font-size:.9rem;}
+    .drop-link{font-size:.78rem;color:#3cff9a;word-break:break-all;text-decoration:none;}
+    .drop-link:hover{text-decoration:underline;}
+    /* ── HEADER STATS ── */
+    .shop-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+    .stat-chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:10px 18px;display:flex;align-items:center;gap:8px;font-size:.9rem;}
+    .stat-chip span{font-weight:700;}
+    /* ── COIN CODES ── */
+    .code-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;font-size:.85rem;opacity:.7;}
+    /* ── WEATHER ── */
+    #weatherWidget{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+    /* TOAST */
+    #shopToast{position:fixed;bottom:25px;right:25px;background:rgba(10,20,15,.97);border:2px solid #3cff9a;padding:16px 22px;border-radius:18px;box-shadow:0 0 30px rgba(60,255,154,.3);display:none;z-index:9999;max-width:320px;font-size:.95rem;}
+    #shopToast.bad{border-color:#ff6b6b;box-shadow:0 0 30px rgba(255,107,107,.3);}
+    /* TRAIL PREVIEW */
+    .trail-preview{height:60px;position:relative;border-radius:10px;background:rgba(0,0,0,.3);overflow:hidden;margin-bottom:8px;cursor:pointer;}
+    .trail-preview-canvas{position:absolute;inset:0;width:100%;height:100%;}
+  </style>
+</head>
+<body>
+  <div id="editOverlay" aria-hidden="true"></div>
+  <div id="shopToast"><span id="shopToastMsg"></span></div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="shop.html" class="active"><i class="fa-solid fa-cart-shopping"></i><span>Shop</span></a>
+    <a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+    <a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF</span></a>
+    <a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+    <a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+    <a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+    <a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+    <a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+    <a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+    <a href="staff.html"><i class="fa-solid fa-users"></i><span>Staff</span></a>
+    <a href="#" onclick="event.preventDefault();document.getElementById('chatPanel').style.display=document.getElementById('chatPanel').style.display==='none'?'block':'none'"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+    <a href="#" onclick="event.preventDefault();document.getElementById('leaderboardPanel').style.display=document.getElementById('leaderboardPanel').style.display==='none'?'block':'none'"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>
+  </div>
+
+  <!-- CHAT PANEL -->
+  <div id="chatPanel" style="display:none;position:fixed;bottom:20px;right:20px;width:370px;z-index:9990;">
+    <div style="background:rgba(5,5,20,.97);border:1px solid rgba(60,255,154,.3);border-radius:20px;overflow:hidden;box-shadow:0 0 40px rgba(60,255,154,.2);display:flex;flex-direction:column;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);">
+        <span style="font-weight:800;color:#3cff9a;">💬 Live Chat</span>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="chatStatus" style="font-size:.75rem;opacity:.5;">connecting...</span>
+          <button onclick="document.getElementById('chatPanel').style.display='none'" style="background:transparent;border:none;color:#ff6b6b;font-size:1.3rem;cursor:pointer;">✕</button>
+        </div>
+      </div>
+      <div id="chatMessages" style="height:280px;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;"></div>
+      <div style="padding:10px 12px;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:8px;">
+        <input id="chatInput" placeholder="Say something..." autocomplete="off" style="flex:1;padding:9px 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:20px;color:#fff;font-size:.95rem;outline:none;"/>
+        <button id="chatSend" style="padding:0 18px;background:#3cff9a;color:#000;border:none;border-radius:20px;font-weight:800;cursor:pointer;">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEADERBOARD PANEL -->
+  <div id="leaderboardPanel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(420px,94vw);z-index:9990;">
+    <div style="background:rgba(5,5,20,.97);border:2px solid rgba(255,220,0,.3);border-radius:24px;overflow:hidden;box-shadow:0 0 60px rgba(255,220,0,.2);max-height:80vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:rgba(5,5,20,.97);">
+        <span style="font-weight:900;font-size:1.2rem;color:#ffdc00;">🏆 Leaderboard</span>
+        <button onclick="document.getElementById('leaderboardPanel').style.display='none'" style="background:transparent;border:none;color:#ff6b6b;font-size:1.3rem;cursor:pointer;">✕</button>
+      </div>
+      <div id="leaderboardList" style="padding:16px;"></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <h1>🛒 Shop</h1>
+
+    <!-- Stats bar -->
+    <div class="shop-stats">
+      <div class="stat-chip">Level <span id="lvl_num">?</span></div>
+      <div class="stat-chip">🪙 <span class="coins_display" id="coins_display">0</span> Coins</div>
+      <div class="stat-chip">🌐 <span id="onlineCount">?</span> Online</div>
+      <div class="stat-chip" id="weatherWidget" style="background:none;border:none;padding:0;gap:6px;" title="Weather">
+        <span id="weatherIcon">🌡️</span><span id="weatherText" style="font-size:.85rem;opacity:.7;">Loading weather...</span>
+      </div>
+    </div>
+
+    <!-- Currently Equipped -->
+    <div style="background:rgba(60,255,154,.08);border:1px solid rgba(60,255,154,.25);border-radius:16px;padding:14px 20px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <span style="font-weight:700;color:#3cff9a;">Currently Equipped:</span>
+      <span>Trail: <strong id="equippedTrailLabel">None</strong></span>
+      <span>Theme: <strong id="equippedThemeLabel">Default</strong></span>
+      <button onclick="shopEquipTrail('none')" style="padding:6px 14px;border-radius:12px;background:rgba(255,100,100,.1);border:1px solid rgba(255,100,100,.3);color:#ff9999;cursor:pointer;font-size:.8rem;">Clear Trail</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="shop-tabs">
+      <button class="shop-tab active" onclick="switchTab('trails')">🎨 Mouse Trails</button>
+      <button class="shop-tab" onclick="switchTab('drops')">🎁 Ooze Drops</button>
+      <button class="shop-tab" onclick="switchTab('themes')">🎨 Themes</button>
+      <button class="shop-tab" onclick="switchTab('inventory')">🎒 Inventory</button>
+      <button class="shop-tab" onclick="switchTab('codes')">🎟️ Redeem Codes</button>
+    </div>
+
+    <!-- TRAILS TAB -->
+    <div id="tab-trails" class="shop-section active">
+      <div id="trailsGrid" class="shop-grid"></div>
+    </div>
+
+    <!-- DROPS TAB -->
+    <div id="tab-drops" class="shop-section">
+      <div style="background:rgba(255,107,218,.08);border:1px solid rgba(255,107,218,.25);border-radius:16px;padding:16px 20px;margin-bottom:20px;">
+        <h3 style="color:#ff6bda;margin:0 0 8px;">🎀 Ooze Drops — 25 Coins</h3>
+        <p style="opacity:.75;font-size:.9rem;margin:0 0 12px;">Swipe open a present for random rewards! Rarities: Common → Rare → Epic → Legendary → Mythic. Higher rarities give more XP, coins, and links!</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button onclick="buyAndOpenDrop()" style="padding:12px 28px;background:linear-gradient(135deg,#ff6bda,#6b48ff);border:none;border-radius:16px;color:#fff;font-weight:900;cursor:pointer;font-size:1rem;">🎁 Open Drop (25 coins)</button>
+          <button onclick="switchTab('inventory')" style="padding:12px 20px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:16px;color:#fff;cursor:pointer;">📦 My Drops</button>
+        </div>
+      </div>
+      <!-- Rarity odds display -->
+      <div class="shop-grid" id="rarityGrid"></div>
+    </div>
+
+    <!-- THEMES TAB -->
+    <div id="tab-themes" class="shop-section">
+      <div id="themesGrid" class="shop-grid"></div>
+    </div>
+
+    <!-- INVENTORY TAB -->
+    <div id="tab-inventory" class="shop-section">
+      <div id="inventoryContent"></div>
+    </div>
+
+    <!-- CODES TAB -->
+    <div id="tab-codes" class="shop-section">
+      <div style="max-width:500px;">
+        <div class="home-card" style="margin-bottom:20px;">
+          <h2 style="margin-bottom:14px;">🎟️ Redeem Coin Code</h2>
+          <div style="display:flex;gap:8px;">
+            <input id="coinCodeInput" class="modal-input" placeholder="Enter code..." autocomplete="off" style="flex:1;padding:11px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:#fff;font-size:1rem;outline:none;"/>
+            <button onclick="redeemCoinCode()" style="padding:11px 20px;background:#3cff9a;color:#000;border:none;border-radius:14px;font-weight:700;cursor:pointer;">Redeem</button>
+          </div>
+          <p id="coinMsg" style="margin-top:10px;min-height:1.2em;font-size:.9rem;"></p>
+        </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <script src="shared.js"></script>
+  <script>
+    /* ── THEME DEFINITIONS ── */
+    const THEMES = {
+      default: {cost:0,    level:0,  label:"🎄 Default (Christmas)", rarity:"free"},
+      neon:    {cost:1200, level:5,  label:"🌃 Neon Cyberpunk",       rarity:"rare"},
+      pastel:  {cost:2000, level:10, label:"🌸 Pastel Vaporwave",     rarity:"rare"},
+      retro:   {cost:2800, level:15, label:"🕹️ Retro Arcade",         rarity:"epic"},
+      beach:   {cost:3500, level:20, label:"🏖️ Dark Beach Sunset",    rarity:"epic"},
+      glitch:  {cost:5000, level:30, label:"💾 Glitch Cyber Error",   rarity:"legendary"},
+    };
+
+    /* ── COIN CODES ── */
+    const COIN_CODES = {
+      "welcomeooze":      250,
+      "dailygrind":       500,
+      "christmas2026":    1000,
+      "beachvibes":       1500,
+      "levelupking":      2500,
+      "oozedabest":       3000,
+      "valentinesgrind":  4000,
+      "secretstash":      7500,
+      "rebornlegend":     12000,
+      "millionaireooze":  25000,
+      "oozedrops100":     100,
+      "coinboost":        200,
+    };
+
+    /* ── TOAST ── */
+    function showToast(text, good=true) {
+      const toast = document.getElementById("shopToast");
+      const msg = document.getElementById("shopToastMsg");
+      msg.innerHTML = text;
+      toast.className = good ? "" : "bad";
+      toast.style.display = "block";
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => toast.style.display = "none", 5000);
+    }
+
+    /* ── TABS ── */
+    function switchTab(id) {
+      document.querySelectorAll(".shop-section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".shop-tab").forEach(t => t.classList.remove("active"));
+      document.getElementById("tab-" + id)?.classList.add("active");
+      document.querySelectorAll(".shop-tab").forEach(t => { if(t.getAttribute("onclick")?.includes(id)) t.classList.add("active"); });
+      if (id === "inventory") renderInventory();
+    }
+
+    /* ── HELPERS ── */
+    function getLevel() { return Math.floor(Number(BigInt(localStorage.getItem("xp")||"0"))/100); }
+    function getCoinsLocal() { return parseInt(localStorage.getItem("coins")||"0"); }
+    function getOwnedTrails() { return JSON.parse(localStorage.getItem("inventory")||"{}").trails || {}; }
+    function getOwnedThemes() { return JSON.parse(localStorage.getItem("inventory")||"{}").themes || {}; }
+    function getEquippedTrail() { return localStorage.getItem("equippedTrail")||"none"; }
+    function getEquippedTheme() { return localStorage.getItem("equippedTheme")||"default"; }
+
+    /* ── BUILD TRAILS GRID ── */
+    function buildTrailsGrid() {
+      const grid = document.getElementById("trailsGrid"); if (!grid) return;
+      const level = getLevel(); const owned = getOwnedTrails(); const equipped = getEquippedTrail();
+      grid.innerHTML = "";
+      Object.entries(TRAIL_DEFS).forEach(([id, def]) => {
+        const isOwned = id === "none" || !!owned[id]; const isEquipped = equipped === id;
+        const isLocked = level < def.level; const div = document.createElement("div");
+        div.className = "shop-item" + (isEquipped?" equipped":isOwned?" owned":isLocked?" locked":"");
+        let btnHtml;
+        if (id === "none") btnHtml = `<button class="si-btn ${isEquipped?"equipped-btn":"equip"}" onclick="shopEquipTrail('none')">Equip</button>`;
+        else if (isEquipped) btnHtml = `<button class="si-btn equipped-btn" onclick="shopEquipTrail('none')">Equipped ✓</button>`;
+        else if (isOwned) btnHtml = `<button class="si-btn equip" onclick="shopEquipTrail('${id}')">Equip</button>`;
+        else if (isLocked) btnHtml = `<button class="si-btn locked-btn" disabled>Unlocks Lv.${def.level}</button>`;
+        else btnHtml = `<button class="si-btn buy" onclick="shopBuyTrail('${id}',${def.cost},${def.level})">Buy ${def.cost.toLocaleString()} 🪙</button>`;
+        div.innerHTML = `
+          ${isOwned && !isEquipped ? '<div class="owned-badge">OWNED</div>' : ""}
+          ${isEquipped ? '<div class="owned-badge" style="background:#ffe600;color:#000;">EQUIPPED</div>' : ""}
+          <div class="si-icon">🎨</div>
+          <div class="si-name">${def.label}</div>
+          <div class="si-rarity r-${def.rarity}">${def.rarity}</div>
+          <div class="si-desc">${def.level > 0 ? `Lv.${def.level}+ required` : "Available from the start"}</div>
+          <div class="si-price">${def.cost === 0 ? "Free" : def.cost.toLocaleString() + " 🪙"}</div>
+          ${btnHtml}`;
+        grid.appendChild(div);
+      });
+    }
+
+    /* ── BUILD THEMES GRID ── */
+    function buildThemesGrid() {
+      const grid = document.getElementById("themesGrid"); if (!grid) return;
+      const level = getLevel(); const owned = getOwnedThemes(); const equipped = getEquippedTheme();
+      grid.innerHTML = "";
+      Object.entries(THEMES).forEach(([id, def]) => {
+        const isOwned = id === "default" || !!owned[id]; const isEquipped = equipped === id;
+        const isLocked = level < def.level; const div = document.createElement("div");
+        div.className = "shop-item" + (isEquipped?" equipped":isOwned?" owned":isLocked?" locked":"");
+        let btnHtml;
+        if (id === "default") btnHtml = `<button class="si-btn ${isEquipped?"equipped-btn":"equip"}" onclick="shopEquipTheme('default')">Equip</button>`;
+        else if (isEquipped) btnHtml = `<button class="si-btn equipped-btn">Equipped ✓</button>`;
+        else if (isOwned) btnHtml = `<button class="si-btn equip" onclick="shopEquipTheme('${id}')">Equip</button>`;
+        else if (isLocked) btnHtml = `<button class="si-btn locked-btn" disabled>Unlocks Lv.${def.level}</button>`;
+        else btnHtml = `<button class="si-btn buy" onclick="shopBuyTheme('${id}',${def.cost},${def.level})">Buy ${def.cost.toLocaleString()} 🪙</button>`;
+        div.innerHTML = `
+          ${isEquipped ? '<div class="owned-badge" style="background:#ffe600;color:#000;">EQUIPPED</div>' : ""}
+          ${isOwned && !isEquipped ? '<div class="owned-badge">OWNED</div>' : ""}
+          <div class="si-icon">🎨</div>
+          <div class="si-name">${def.label}</div>
+          <div class="si-rarity r-${def.rarity}">${def.rarity}</div>
+          <div class="si-desc">${def.level > 0 ? `Lv.${def.level}+ required` : "Always available"}</div>
+          <div class="si-price">${def.cost === 0 ? "Free" : def.cost.toLocaleString() + " 🪙"}</div>
+          ${btnHtml}`;
+        grid.appendChild(div);
+      });
+    }
+
+    /* ── BUILD RARITY ODDS ── */
+    function buildRarityGrid() {
+      const grid = document.getElementById("rarityGrid"); if (!grid) return;
+      Object.entries(DROP_RARITIES).forEach(([id, rd]) => {
+        const total = Object.values(DROP_RARITIES).reduce((s,r)=>s+r.weight,0);
+        const pct = Math.round(rd.weight/total*100);
+        const div = document.createElement("div"); div.className = "shop-item";
+        div.style.borderColor = rd.color + "44";
+        div.innerHTML = `
+          <div style="font-size:2rem;margin-bottom:8px;">${id==="mythic"?"🌟":id==="legendary"?"⚡":id==="epic"?"💜":id==="rare"?"💙":"📦"}</div>
+          <div style="font-size:1.1rem;font-weight:900;color:${rd.color};text-shadow:0 0 12px ${rd.glow};margin-bottom:6px;">${rd.label}</div>
+          <div style="opacity:.7;font-size:.82rem;margin-bottom:8px;">~${pct}% chance</div>
+          <div style="font-size:.85rem;display:flex;flex-direction:column;gap:4px;text-align:left;">
+            <span>🔗 ${rd.links} link${rd.links!==1?"s":""}</span>
+            <span>⭐ +${rd.xp} XP</span>
+            <span>🪙 +${rd.coins} Coins</span>
+          </div>`;
+        grid.appendChild(div);
+      });
+    }
+
+    /* ── EQUIP TRAIL ── */
+    function shopEquipTrail(id) {
+      localStorage.setItem("equippedTrail", id);
+      if (typeof applyEquippedTrail === "function") applyEquippedTrail();
+      _updateEquippedLabels(); buildTrailsGrid();
+      showToast(`🎨 Trail: ${id === "none" ? "cleared" : TRAIL_DEFS[id]?.label || id}`, true);
+    }
+
+    /* ── BUY TRAIL ── */
+    async function shopBuyTrail(id, cost, reqLevel) {
+      const level = getLevel();
+      if (level < reqLevel) { showToast(`🔒 Unlocks at Level ${reqLevel}`, false); return; }
+      const coins = getCoinsLocal();
+      if (coins < cost) { showToast(`🪙 Not enough coins! Need ${cost.toLocaleString()}, have ${coins.toLocaleString()}`, false); return; }
+      const ok = await spendCoins(cost);
+      if (!ok) { showToast("Transaction failed.", false); return; }
+      await addInventoryItem("trails", id, { cost, acquiredAt: Date.now() });
+      unlockAchievement && unlockAchievement("first_shop");
+      shopEquipTrail(id);
+      showToast(`✅ Bought & equipped ${TRAIL_DEFS[id].label}!`, true);
+      buildTrailsGrid();
+    }
+
+    /* ── EQUIP THEME ── */
+    function shopEquipTheme(id) {
+      localStorage.setItem("equippedTheme", id);
+      document.body.className = document.body.className.replace(/theme-\w+/g,"").trim();
+      document.body.classList.add("theme-" + id);
+      _updateEquippedLabels(); buildThemesGrid();
+      showToast(`🎨 Theme: ${THEMES[id]?.label || id} equipped! Reload to fully apply.`, true);
+    }
+
+    /* ── BUY THEME ── */
+    async function shopBuyTheme(id, cost, reqLevel) {
+      const level = getLevel();
+      if (level < reqLevel) { showToast(`🔒 Unlocks at Level ${reqLevel}`, false); return; }
+      const coins = getCoinsLocal();
+      if (coins < cost) { showToast(`🪙 Need ${cost.toLocaleString()} coins, have ${coins.toLocaleString()}`, false); return; }
+      const ok = await spendCoins(cost);
+      if (!ok) { showToast("Transaction failed.", false); return; }
+      await addInventoryItem("themes", id, { cost, acquiredAt: Date.now() });
+      unlockAchievement && unlockAchievement("first_shop");
+      shopEquipTheme(id);
+      showToast(`✅ Bought & equipped ${THEMES[id].label}!`, true);
+      buildThemesGrid();
+    }
+
+    /* ── BUY & OPEN DROP ── */
+    async function buyAndOpenDrop() {
+      const coins = getCoinsLocal();
+      if (coins < 25) { showToast("🪙 Need 25 coins to open a drop!", false); return; }
+      const ok = await spendCoins(25);
+      if (!ok) { showToast("Transaction failed.", false); return; }
+      // Get admin drop links
+      let dropLinks = [];
+      if (typeof _fb !== "undefined" && _fb) {
+        try {
+          await _fbReady;
+          const snap = await _fb.get(_fb.ref(_fb.db, "drop_links"));
+          if (snap.exists()) dropLinks = snap.val() || [];
+        } catch(e) {}
+      }
+      showOozeDropEvent({ links: dropLinks, message: "Your Ooze Drop!", key: "shop_" + Date.now() });
+      unlockAchievement && unlockAchievement("first_drop");
+    }
+
+    /* ── INVENTORY ── */
+    function renderInventory() {
+      const el = document.getElementById("inventoryContent"); if (!el) return;
+      const inv = JSON.parse(localStorage.getItem("inventory") || "{}");
+      const drops = inv.opened_drops || [];
+      const trails = Object.keys(inv.trails || {});
+      const themes = Object.keys(inv.themes || {});
+      el.innerHTML = "";
+
+      // Trails inventory
+      const trailSec = document.createElement("div"); trailSec.className = "inv-section";
+      trailSec.innerHTML = `<h3>🎨 Owned Trails (${trails.length})</h3>`;
+      if (!trails.length) { trailSec.innerHTML += `<p style="opacity:.5;font-size:.9rem;">No trails yet. Visit the Trails tab!</p>`; }
+      else {
+        trails.forEach(tid => {
+          const def = TRAIL_DEFS[tid];
+          const equipped = getEquippedTrail() === tid;
+          const d = document.createElement("div");
+          d.className = "drop-item";
+          d.innerHTML = `<div style="font-size:1.4rem;">${def?.label?.split(" ")[0]||"🎨"}</div><div class="drop-info"><div class="drop-name">${def?.label||tid}</div><div style="font-size:.8rem;opacity:.6;">${def?.rarity||""}</div></div><button onclick="shopEquipTrail('${tid}')" style="padding:6px 14px;border-radius:10px;background:${equipped?"#3cff9a;color:#000":"rgba(60,255,154,.1);border:1px solid rgba(60,255,154,.3);color:#3cff9a"};border:none;cursor:pointer;font-weight:700;">${equipped?"Equipped":"Equip"}</button>`;
+          trailSec.appendChild(d);
+        });
+      }
+      el.appendChild(trailSec);
+
+      // Themes inventory
+      const themeSec = document.createElement("div"); themeSec.className = "inv-section";
+      themeSec.innerHTML = `<h3>🎨 Owned Themes (${themes.length})</h3>`;
+      if (!themes.length) { themeSec.innerHTML += `<p style="opacity:.5;font-size:.9rem;">No extra themes yet.</p>`; }
+      else {
+        themes.forEach(tid => {
+          const def = THEMES[tid]; const equipped = getEquippedTheme() === tid;
+          const d = document.createElement("div"); d.className = "drop-item";
+          d.innerHTML = `<div style="font-size:1.4rem;">🎨</div><div class="drop-info"><div class="drop-name">${def?.label||tid}</div></div><button onclick="shopEquipTheme('${tid}')" style="padding:6px 14px;border-radius:10px;background:${equipped?"#3cff9a;color:#000":"rgba(60,255,154,.1);color:#3cff9a"};border:none;cursor:pointer;font-weight:700;">${equipped?"Equipped":"Equip"}</button>`;
+          themeSec.appendChild(d);
+        });
+      }
+      el.appendChild(themeSec);
+
+      // Drops inventory
+      const dropSec = document.createElement("div"); dropSec.className = "inv-section";
+      dropSec.innerHTML = `<h3>🎁 Opened Drops (${drops.length})</h3>`;
+      if (!drops.length) { dropSec.innerHTML += `<p style="opacity:.5;font-size:.9rem;">No drops opened yet. Buy from the Drops tab!</p>`; }
+      else {
+        [...drops].reverse().slice(0,50).forEach(drop => {
+          const rd = DROP_RARITIES[drop.rarity] || DROP_RARITIES.common;
+          const d = document.createElement("div"); d.className = "drop-item";
+          const date = new Date(drop.ts||Date.now()).toLocaleDateString();
+          d.innerHTML = `<div class="drop-rarity-dot" style="background:${rd.color};box-shadow:0 0 6px ${rd.glow};"></div><div class="drop-info"><div class="drop-name">${rd.label} Drop — ${date}</div>${drop.link?`<a href="${escHtml(drop.link)}" target="_blank" rel="noopener" class="drop-link">${escHtml(drop.link)}</a>`:"<span style='opacity:.5;font-size:.8rem;'>No link</span>"}</div>`;
+          dropSec.appendChild(d);
+        });
+        if (drops.length > 50) dropSec.innerHTML += `<p style="opacity:.4;font-size:.8rem;text-align:center;">+ ${drops.length-50} more</p>`;
+      }
+      el.appendChild(dropSec);
+    }
+
+    /* ── COIN CODES ── */
+    function redeemCoinCode() {
+      const input = document.getElementById("coinCodeInput");
+      const msgEl = document.getElementById("coinMsg");
+      const code = input.value.trim().toLowerCase(); input.value = "";
+      const redeemed = JSON.parse(localStorage.getItem("redeemedCoinCodes")||"[]");
+      if (redeemed.includes(code)) { msgEl.innerHTML=`<span style="color:#ff6b6b;">Already redeemed!</span>`; return; }
+      const amount = COIN_CODES[code];
+      if (amount) {
+        redeemed.push(code); localStorage.setItem("redeemedCoinCodes", JSON.stringify(redeemed));
+        addCoins(amount);
+        msgEl.innerHTML=`<span style="color:#3cff9a;">+${amount.toLocaleString()} Coins! 🎉</span>`;
+        showToast(`🪙 +${amount.toLocaleString()} Coins from code!`, true);
+      } else {
+        msgEl.innerHTML=`<span style="color:#ff6b6b;">Invalid code!</span>`;
+        showToast("❌ Invalid code", false);
+      }
+    }
+
+    function escHtml(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+
+    /* ── UPDATE LABELS ── */
+    function _updateEquippedLabels() {
+      const t = localStorage.getItem("equippedTrail")||"none";
+      const th = localStorage.getItem("equippedTheme")||"default";
+      const el1 = document.getElementById("equippedTrailLabel");
+      const el2 = document.getElementById("equippedThemeLabel");
+      if (el1) el1.textContent = t==="none" ? "None" : (TRAIL_DEFS[t]?.label || t);
+      if (el2) el2.textContent = THEMES[th]?.label || th;
+    }
+
+    /* ── WEATHER ── */
+    async function loadWeather() {
+      try {
+        const res = await fetch("https://wttr.in/?format=j1");
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        const cur = data.current_condition[0];
+        const desc = cur.weatherDesc[0].value;
+        const temp = cur.temp_F + "°F / " + cur.temp_C + "°C";
+        const code = parseInt(cur.weatherCode);
+        const icon = code<=113?"☀️":code<=176?"🌤️":code<=266?"🌧️":code<=389?"⛈️":"❄️";
+        document.getElementById("weatherIcon").textContent = icon;
+        document.getElementById("weatherText").textContent = `${desc} ${temp}`;
+      } catch(e) {
+        document.getElementById("weatherText").textContent = "Weather unavailable";
+      }
+    }
+
+    /* ── FIREBASE CHAT (same as index.html) ── */
+    (async () => {
+      const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js");
+      const { getDatabase, ref, push, onValue, query, orderByChild, limitToLast } = await import("https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js");
+      const app = getApps().length ? getApps()[0] : initializeApp({
+        apiKey:"AIzaSyChqpSNRAXDCV9TfjNFxKun2DmPDA_1LTs",authDomain:"oozecrib.firebaseapp.com",databaseURL:"https://oozecrib-default-rtdb.firebaseio.com",projectId:"oozecrib",storageBucket:"oozecrib.firebasestorage.app",messagingSenderId:"234391927329",appId:"1:234391927329:web:87bfc502802643970d4160"
+      });
+      const db = getDatabase(app);
+      const chatRef = ref(db,"chat");
+      const seenKeys = new Set();
+      const chatMessages = document.getElementById("chatMessages");
+      const chatStatus = document.getElementById("chatStatus");
+      const sessionId = sessionStorage.getItem("chatSessionId") || (() => { const id="sess-"+Math.random().toString(36).slice(2,11); sessionStorage.setItem("chatSessionId",id); return id; })();
+
+      onValue(query(chatRef,orderByChild("ts"),limitToLast(40)), snap => {
+        const msgs = []; snap.forEach(c=>{ const v=c.val(); v.key=c.key; msgs.push(v); });
+        msgs.sort((a,b)=>(a.ts||0)-(b.ts||0));
+        msgs.forEach(msg => {
+          if (seenKeys.has(msg.key)) return; seenKeys.add(msg.key);
+          const isYou = msg.sessionId === sessionId;
+          const div = document.createElement("div");
+          div.style.cssText = `max-width:82%;padding:9px 13px;border-radius:16px;line-height:1.4;word-wrap:break-word;align-self:${isYou?"flex-end":"flex-start"};background:${isYou?"#6b48ff":"rgba(255,255,255,.08)"};color:#fff;`;
+          div.innerHTML = `<span style="font-weight:700;font-size:.85rem;display:block;margin-bottom:3px;color:${msg.color||"#3cff9a"}">${escHtml(msg.user||"Anon")}${isYou?" (you)":""}</span>${escHtml(msg.msg||"")}<span style="font-size:.7rem;opacity:.6;display:block;text-align:right;margin-top:4px;">${msg.ts?new Date(msg.ts).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):""}</span>`;
+          chatMessages.appendChild(div); chatMessages.scrollTop=chatMessages.scrollHeight;
+        });
+        chatStatus.textContent = "🟢 live";
+      }, () => chatStatus.textContent = "🔴 error");
+
+      function sendChat() {
+        const input = document.getElementById("chatInput"); const text=input.value.trim(); if(!text)return;
+        push(chatRef,{user:localStorage.getItem("username")||"Guest",msg:text,color:localStorage.getItem("chatColor")||"#3cff9a",ts:Date.now(),sessionId});
+        input.value=""; if(typeof trackChatMsg==="function")trackChatMsg();
+      }
+      document.getElementById("chatSend").onclick = sendChat;
+      document.getElementById("chatInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendChat();}});
+    })();
+
+    /* ── INIT ── */
+    window.addEventListener("load", async () => {
+      _updateEquippedLabels();
+      buildTrailsGrid();
+      buildThemesGrid();
+      buildRarityGrid();
+      loadWeather();
+      // Sync coins from firebase
+      if (typeof getCoins === "function") {
+        const c = await getCoins();
+        localStorage.setItem("coins", c);
+        document.getElementById("coins_display").textContent = c.toLocaleString();
+      }
+    });
+    window.addEventListener("keydown", e => { if(e.key==="Enter"&&document.activeElement?.id==="coinCodeInput") redeemCoinCode(); });
+  </script>
+</body>
+</html>

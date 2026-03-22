@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>O0ZE34's Crib REBORN — Watch</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.png">
+
+  <style>
+    h1,h2{margin-bottom:12px}
+
+    #greeting{
+      font-size:26px;
+      font-weight:800;
+      margin-bottom:20px;
+      text-shadow:0 0 12px white;
+    }
+
+    .movie-search{
+      width:100%;
+      max-width:420px;
+      padding:14px 18px;
+      border-radius:14px;
+      border:none;
+      font-size:18px;
+      background:rgba(255,255,255,0.12);
+      color:white;
+      outline:none;
+      margin:15px 0 30px;
+    }
+
+    .movie-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+      gap:22px;
+    }
+
+    .movie-card{
+      aspect-ratio:2 / 3;
+      border-radius:16px;
+      overflow:hidden;
+      background:#000;
+      cursor:pointer;
+      box-shadow:0 0 20px rgba(0,0,0,0.55);
+      transition:.25s;
+    }
+
+    .movie-card:hover{
+      transform:scale(1.08);
+      box-shadow:0 0 40px rgba(255,255,255,0.45);
+      z-index:5;
+    }
+
+    .movie-thumb{
+      width:100%;
+      height:100%;
+      background-size:contain;
+      background-position:center;
+      background-repeat:no-repeat;
+      background-color:#000;
+    }
+
+    /* SHOW MODAL */
+    .modal-bg{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      backdrop-filter:blur(8px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+    }
+
+    .modal{
+      background:rgba(255,255,255,.15);
+      backdrop-filter:blur(20px);
+      border-radius:20px;
+      padding:25px;
+      width:340px;
+      box-shadow:0 0 30px rgba(255,255,255,.4);
+    }
+
+    .modal h3{margin-bottom:10px}
+    .ep{
+      display:block;
+      padding:10px;
+      margin:8px 0;
+      border-radius:10px;
+      background:rgba(255,255,255,.2);
+      color:white;
+      text-decoration:none;
+      font-weight:700;
+      transition:.2s;
+    }
+    .ep:hover{background:rgba(255,255,255,.35)}
+
+    .close{
+      float:right;
+      cursor:pointer;
+      font-size:22px;
+      font-weight:bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<a href="index.html"><i class="fa-solid fa-house"></i><span>Home</span></a>
+<a href="games.html"><i class="fa-solid fa-gamepad"></i><span>Games</span></a>
+<a href="fnf.html"><i class="fa-solid fa-music"></i><span>FNF Mods</span></a>
+<a href="apps.html"><i class="fa-solid fa-mobile-screen-button"></i><span>Apps</span></a>
+<a href="music.html"><i class="fa-solid fa-headphones"></i><span>Music</span></a>
+<a href="proxies.html"><i class="fa-solid fa-shield-halved"></i><span>Proxies</span></a>
+<a href="movies.html"><i class="fa-solid fa-film"></i><span>Movies</span></a>
+<a href="achievements.html"><i class="fa-solid fa-star"></i><span>Achievements</span></a>
+<a href="settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('chatPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('leaderboardPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>
+</div>
+
+<div class="main">
+
+<div id="greeting"></div>
+
+<input class="movie-search" placeholder="Search movies & shows..." oninput="filterAll(this.value)">
+
+<!-- ================= MOVIES ================= -->
+<h2>🎬 Movies</h2>
+
+<div class="movie-grid">
+
+<!-- 🔽 YOUR MOVIES (UNCHANGED) 🔽 -->
+<!-- (PASTED EXACTLY AS YOU SENT) -->
+
+<!-- Fantastic 4 -->
+<div class="movie-card" data-title="fantastic 4" onclick="openMovie('https://drive.google.com/file/d/1uIF2nvMVZIHoo3YwOOqm3IiS1x4NL1P8/view')">
+  <div class="movie-thumb" style="background-image:url('https://lumiere-a.akamaihd.net/v1/images/p_studios_fantasticfourfirststeps_homeentannounce_poste_2eaafb1e.jpeg?region=0%2C0%2C540%2C810');"></div>
+</div>
+
+<!-- Minecraft Movie -->
+<div class="movie-card" data-title="minecraft movie" onclick="openMovie('https://drive.google.com/file/d/14oClAGiPk9r6-QFjQGETBj6cVotkLXds/view')">
+  <div class="movie-thumb" style="background-image:url('https://m.media-amazon.com/images/M/MV5BYzFjMzNjOTktNDBlNy00YWZhLWExYTctZDcxNDA4OWVhOTJjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg');"></div>
+</div>
+
+<!-- Toy Story -->
+<div class="movie-card" data-title="toy story" onclick="openMovie('https://drive.google.com/file/d/1oO5htds_SCGuuvrpBr0IEKJIWP4_5Ixl/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnosqSu2AqlIJMCm8JeWL00GcDFPKrXRvOLtoWJq0_ZyJtUqknstFgFdlKqK6ysN-XsLDnzg&s=10');"></div>
+</div>
+
+<!-- Toy Story 3 -->
+<div class="movie-card" data-title="toy story 3" onclick="openMovie('https://drive.google.com/file/d/1ow1Un4n_xJGlgrp7K18WrI1B9imHz8u7/view')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/F4qdcvTFMYoEmut3WmhBVmYeSVI=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzlhZDg3ZjU1LTk3ZTAtNDMzMC04MzliLTNiMzE5YmQ3ZDQ4OC53ZWJw');"></div>
+</div>
+
+<!-- Toy Story 4 -->
+<div class="movie-card" data-title="toy story 4" onclick="openMovie('https://drive.google.com/file/d/13MGaIocVRTGM8fl4Pgy1byGsTouD6BoJ/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDLHKfu7-Ajo1uKgPrnJl65uiCFKtLySsJYCwObZJ7HG4atJa3-84NczbTsLqHnsiYNBLO&s=10');"></div>
+</div>
+
+<!-- Toy Story: That Time Forgot -->
+<div class="movie-card" data-title="toy story that time forgot" onclick="openMovie('https://drive.google.com/file/d/1rHarA6zN6Oj_pUYORqaLMYIGhQwT-t_2/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHQtUQQvkEqVK8gSFUWxZIAQ_N2m35s123bV0Jo-AQhSe0Co26ccpvwSvr_KCpQjg2tyIO&s=10');"></div>
+</div>
+
+<!-- Inside Out -->
+<div class="movie-card" data-title="inside out" onclick="openMovie('https://drive.google.com/file/d/1WX8MKLf1vjfCjFE55nuNmDiNG7v1H7BF/view')">
+  <div class="movie-thumb" style="background-image:url('https://lumiere-a.akamaihd.net/v1/images/p_insideout_19751_af12286c.jpeg');"></div>
+</div>
+
+<!-- Inside Out 2 -->
+<div class="movie-card" data-title="inside out 2" onclick="openMovie('https://drive.google.com/file/d/1ZILcPxB3UYUHd7JtaxEusVoFqP-tduGb/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR-nhD4r2BN-8ajkk69yfFyh72SWxvs2CatBGUMQEFwyZbSppp8K57RbiKBcq430NWMxm2&s=10');"></div>
+</div>
+
+<!-- Terrifier 3 -->
+<div class="movie-card" data-title="terrifier 3" onclick="openMovie('https://drive.google.com/file/d/1RRwSLgXs5FluVpOzDWdU6V6R7wAxTPa3/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS16fhjJJhDgV2c5wCd6ST9PO8WQpyzUjxwGnYm13_7XXLX9E0NAGqthfRgIv8LePQWQ4Kw&s=10');"></div>
+</div>
+
+<!-- Smile 2 -->
+<div class="movie-card" data-title="smile 2" onclick="openMovie('https://drive.google.com/file/d/13JTPvvDpgtSsuwZBjS79eaUWLLnUzdkD/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-zwd67_uhHEa1Nll9zwFWsfuSk_rJYSgD8XFi0_mZBVySfPni8qpd9S12Vt-cMbxPK4FNFA&s=10');"></div>
+</div>
+
+<!-- Moana 2 -->
+<div class="movie-card" data-title="moana 2" onclick="openMovie('https://drive.google.com/file/d/11ucdZqlUHigswxIolTQV84SMyLLgFhCj/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy2LRW1pi29BFqnmuMnmAserguY8ZS_nP6EZpeWsL90i3rMjTHLVKeJ6YzIVZvjeiK9Yn-&s=10');"></div>
+</div>
+
+<!-- Lilo & Stitch -->
+<div class="movie-card" data-title="lilo and stitch" onclick="openMovie('https://drive.google.com/file/d/1c39wmia_3Mw1V2y0t9WTDbJ-xOAR59tX/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgHc8T47gD-K5hnyKL9k24JlVGGNQjLm0HKDpv5UWKqA5f5Lc5X2FmLdNDdomAKpTIEd7BSA&s=10');"></div>
+</div>
+
+<!-- The Bad Guys 2 -->
+<div class="movie-card" data-title="the bad guys 2" onclick="openMovie('https://drive.google.com/file/d/1gDqcs2wTf1tZ-3cGQePKSZL38ypQqshZ/view')">
+  <div class="movie-thumb" style="background-image:url('https://m.media-amazon.com/images/M/MV5BY2YwODhmODctMjE2OS00Y2EyLWEyZTEtOGU3ODk5MGIzYmU1XkEyXkFqcGc@._V1_.jpg');"></div>
+</div>
+
+<!-- Superman -->
+<div class="movie-card" data-title="superman" onclick="openMovie('https://drive.google.com/file/d/1wZnvdx2VQacVb2mCBnywLpg4sr-V98yq/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScF097fNii5MqhjcAKcES48ifmqc9NgZIWafW3od--h3auWrO6KN28R0Keu6nxY75VX27fCg&s=10');"></div>
+</div>
+
+<!-- Smurfs -->
+<div class="movie-card" data-title="smurfs" onclick="openMovie('https://drive.google.com/file/d/1GYNxJk32xJfVFwUfCmZ47ugW6wIBMTfl/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgACwus8Mk5ka670qG1HfYmkYGRLOtAelMD3Df-nOWFJ8ZDuemAueQwCS0KkRwaNjwFh1Agg&s=10');"></div>
+</div>
+
+<!-- Demon Slayer: Infinity Castle -->
+<div class="movie-card" data-title="demon slayer infinity castle" onclick="openMovie('https://drive.google.com/file/d/1YJU7li7PxW_jJpIbmWUwsyTpq-ewZUPW/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvVvpymkY7nGRYgMnMi2kIXnhCSaIHkfWLdbBO4Ic5F9jb2agcVt_lb-nkOHDj99Cttpeq&s=10');"></div>
+</div>
+
+<!-- Jurassic World Rebirth -->
+<div class="movie-card" data-title="jurassic world rebirth" onclick="openMovie('https://drive.google.com/file/d/1Z7nbr_l6qQCD-yqljhafDHCKHJqOqNhC/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxWaBBrMltfku16N59Td3CInf_AVaGsHQqdgE7pBiq1ubQ_2KXxvv6n9WoQRaT7kGNBFWk&s=10');"></div>
+</div>
+
+<!-- Elio -->
+<div class="movie-card" data-title="elio" onclick="openMovie('https://drive.google.com/file/d/15ajlecl414X2EvUgMQ4SR-AvZJveOnK8/view')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRusSG6wmx70TSTC000LmocvzAt2BQ85txs7J4tV8ZwtBQOpqbZ9QIs8nHzlnUVtq-VuajoEQ&s=10');"></div>
+</div>
+
+<!-- K-Pop Demon Hunters -->
+<div class="movie-card" data-title="k-pop demon hunters" onclick="openMovie('https://drive.google.com/file/d/1ac6sb42PNPRYfKTQOB7h5RUg9fidb8NV/view')">
+  <div class="movie-thumb" style="background-image:url('https://m.media-amazon.com/images/M/MV5BNTBiYWJlMjQtOTIyMy00NTY4LWFhOWItOWZhNzc3NGMyMjc2XkEyXkFqcGc@._V1_.jpg');"></div>
+</div>
+
+<!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1ch7gDcVujTNGMyHRBoS7Nbg_GpsS2cfq/view')">
+  <div class="movie-thumb" style="background-image:url('https://archive.nevadasagebrush.com/wp-content/uploads/2022/04/jjk-0.jpg');"></div>
+</div>
+
+  <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1gJRXiIPc5TeG242rMYJfGRN3Be88LV3L/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV-u5kP85-KSQKK6sGTax5Ch2pZEYyTnZHSaNEdJbbMYlFK4KYdHavQWlrU0YLTetuDBWm&s=10');"></div>
+</div>
+
+    <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1OEhUpDE-2l3VT3HIOdA-TaZcxXnRA7k-/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://m.media-amazon.com/images/M/MV5BZDYxY2I1OGMtN2Y4MS00ZmU1LTgyNDAtODA0MzAyYjI0N2Y2XkEyXkFqcGc@._V1_.jpg');"></div>
+</div>
+
+      <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1Fsf4Q46J-JeE8kCeBpz9USIkG1dy1v1i/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/NFhss816If2YlSBDd2154Z6-KHw=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2UyNTU5YzhjLTI4ODktNDg2Yy1hMmM0LWY0ZDM0Y2FkNjA3Yy5qcGc=');"></div>
+</div>
+
+        <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/14m1jgq2yKDRWmEEano4WV15-GlEmukOO/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://m.media-amazon.com/images/M/MV5BYjg1Mjc3MjQtMTZjNy00YWVlLWFhMWEtMWI3ZTgxYjJmNmRlXkEyXkFqcGc@._V1_QL75_UX190_CR0,0,190,281_.jpg');"></div>
+</div>
+
+          <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1BaFGWzrfkVph52ntHAd3zKecWQHNMp-q/view')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p35120_p_v12_ar.jpg');"></div>
+</div>
+
+            <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/130Z5RR08JuagZ54Oh_lamcdCScBo3FFN/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRj0Tqi42l421283YzKEGN4t1pE9tZepLDlHlIYbplt7_KsGCrhgQCgD5iSslU-D1SdnRVB0w&s=10');"></div>
+</div>
+
+              <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1P967dYGxAmkWyi9JrrQvZFdijNzKfNIJ/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/lMbZI-83EOzq1ER1BQYYkwzwUMk=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzk2MGUyZGQyLTA1YmUtNDM2Mi04YTc3LTUxMjM1NTAxYjdiMy5qcGc=');"></div>
+</div>
+
+                <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/18V2h3Oq382gOI8sCJt0OteM6cBv16PPF/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/yFQ1_2PES9kQgGXipTnpyiLho-c=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2FjOTc0MWU4LWM2NzItNGEzZC05M2Y1LTM2OTM1ZDAwYTczZC5qcGc=');"></div>
+</div>
+
+                  <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/139qt9XxVKd678-3VtfAG-Ea2NWSK4T54/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p12446645_p_v10_aa.jpg');"></div>
+</div>
+
+                    <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1MsIoJV8wtqMtvASqWG2UjtXby2vazgMT/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p8718307_p_v10_aa.jpg');"></div>
+</div>
+
+                      <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/11mxfv8ASPNiRfZsuyCgP81v6dVWaci0j/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p11823578_p_v10_ac.jpg');"></div>
+</div>
+
+                        <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1_xgSkFULm8rWZpd91KXmFYTtF7ktRBWq/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p3577269_p_v8_af.jpg');"></div>
+</div>
+
+                          <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/11Xt_-GGzFKXwYH6hM-_m-LIJ1gEsafxK/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/OQT-Iar3VPUPi_xSo6EWdx_RS38=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzQyNTBjMzY2LWJiMTItNDc3YS04ZDFiLWFiYTcxNzM4NThlZC53ZWJw');"></div>
+</div>
+
+                            <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1R84pkSq5dcnf7UynAa4mH_GPhO0mDvSS/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/fC7nU6iTRQk02tS0SDS1ylx-G34=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2QxZjE5ZDgzLTRiY2MtNDFkYS04NWQ4LTRkYzc1ZTAwNWE2NC53ZWJw');"></div>
+</div>
+
+                              <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1DTpQCzzTNqwGuwhfmyMmoCQILr5SOqdk/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/CXOXbOpLNL1NNkXTQu-4Rgvcszs=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzM0NGRkMDM2LWVjNDQtNGZlMC04NGM3LWZkMzQ2Njg1OTUyNi53ZWJw');"></div>
+</div>
+
+                                <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1hQSK66B-6W8mWNff7YWQSLG8tQFU156-/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/pVvhS2mjaqcVoTTe8mLXNnI7OeM=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzVjYWNkYjA2LTdjOTktNDgzMy05ODAyLThlYTliMjZlOTJlYS5qcGc=');"></div>
+</div>
+
+                                  <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1-4clmkSuTnkddXNVUNS1IPD4V0HsLTQQ/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/OfmbZ8Gy2cwsBeL5GQ2BOl0gJMg=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2Q3NmNhYjA2LWI2NDAtNGNjYS1hMzE1LTNiMDFmYmM0N2RiYi5qcGc=');"></div>
+</div>
+
+                                    <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1CCCs1FBp7FpSoPnClKjOM03c9ymmCCI1/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/t1aR8ZD-rdZ-1Avak82pr2DpXQo=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2M1YjMyNjBhLTAzZjYtNDRlNy1iNzU5LTZlYWU1ZmVkNDIzYy5qcGc=');"></div>
+</div>
+
+                                      <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1QJMBQQem9q4DSI0BM2SZrETCn2w9E7d_/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/hJC1uENhPVCmKhs7GpHwjcYXBG0=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2NiZWNhYWZhLTEzNzMtNGEyNS04ZWE2LWYxYWJlNjVlN2QyZS53ZWJw');"></div>
+</div>
+
+                                        <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1DtdXD9-Vzvj8sZlX56cfldTiR5wQmbiE/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p159400_p_v12_ai.jpg');"></div>
+</div>
+
+                                          <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1WlEs6SwIv_56ZQ_U-AyAmMV69bGnqCYx/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/koecrqDmdZI3NfX3ProzaluVSrc=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzU3MmM1YjNiLThlY2MtNDBjYy04Y2QzLTY1NjI1MDgyMjA0Zi5qcGc=');"></div>
+</div>
+
+                                            <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1gVsdm0374ImVQkr9zZH8hy2eVmbfCmYa/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/mPJp85eApHd8ih9XF5E9d3-2LbM=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzUxODlkZDE1LTQyYjUtNDg5ZS05NjZmLWMxZDk1YWZhN2E1ZC5qcGc=');"></div>
+</div>
+
+                                              <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1B4rk2b9Kopz4Gy2kDJUw9ojsrgA_J9TE/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/fMPxFfapy9bIhXUyUqJ1d7hrpNM=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2U0MTFhZjkyLTBkM2YtNGNlNC04NmFiLTBkZjBiOTFjNjRhNy5qcGc=');"></div>
+</div>
+
+                                                <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1zXDRwzGz6gQnqeLJoUhZxn21T3fRU2Ln/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p31890_p_v10_bb.jpg');"></div>
+</div>
+
+                                                  <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1j-SsaKf583j2X75nSZNO_hcrfMYglwWj/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/CYiiqRNGrTZ1O8qqdsUVx6lVsHw=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2U1NzRmM2YxLWJmZjctNDYzNS05Mjk4LTVmOGM4NGJiMTQwMS5qcGc=');"></div>
+</div>
+
+                                                    <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1LCRHOAks_1fPFqHhAoAM09ML41RQBS2k/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/K8eXkPQYOWUEtr0xLib1tk6RC2c=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzczZTRmYWZlLTIyZTMtNGIyZC04MzA3LTczNTQ2ZDQ5Zjg3NS5qcGc=');"></div>
+</div>
+
+                                                      <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/105nGTmyRZBFc4WeklyfPAsunOkJYMusX/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/idSqXXW1SHplGNnq6W67KnkK-_s=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzQyMWQ0OTJhLThkYjYtNDY0MS1hMDNhLTU4NDk3YWExMDllMy5qcGc=');"></div>
+</div>
+
+                                                        <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1imKr9wnu9UgJMlYIbqhdQYCgf_6w_93V/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p34586_p_v8_ba.jpg');"></div>
+</div>
+
+                                                          <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1JSl39n_X0NQTiysYuEGA25Rc_LW7s3i4/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/rPJASTXFjLpmiVTi3D6RGcq-skM=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzhjYjA0ODBiLTNlNmUtNDlhOS05ZWRlLThlOGQ2MmEyZjlmYS5qcGc=');"></div>
+</div>
+
+                                                            <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1lPKbwboHq7L8VJqd5f30RSDtujPShAuS/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/4FrPfIEf2MNhTOnst4zcSvA3XLk=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzc3ZjU4ODViLTBiNGYtNDc5NS04YTI5LWI4YjMwZDQwNWRhYi5qcGc=');"></div>
+</div>
+
+                                                              <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1d1Vz-Kc7mx9Q2v6jU_J4tTadB3H3HRDF/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/F_sBk5tMHgElDAE7FymhDvYNAOI=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzI3ZTJjMGE4LTQwZTYtNDllOC05OTdlLTBjYTg0MGIzMzIwNy53ZWJw');"></div>
+</div>
+
+                                                                <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1ZP3KwsFYGToT2N_0HATyH4uQfynWlKtn/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p10454445_p_v10_ay.jpg');"></div>
+</div>
+
+                                                                  <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1dWa2E0NF4PSdiVdd3UdAz1qO4DHKN_vZ/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/ROrVT6xAoFXB30atCiy1XNJyagM=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2ZhMjgwMjhjLTU4YWUtNDBlMi05MGIxLTIyYWUzNzdiMmViNy5qcGc=');"></div>
+</div>
+
+                                                                    <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1Z0Jb7EQtMR_HYS4zGKrt3eMYau5ToZ6w/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/1BfO5DK-8HcCTDtQKf_KY9XkErk=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzE1Njg2YmRmLTg2NDMtNDU3Ni05ZDQwLTU4YTZlZWE1NTAyNC53ZWJw');"></div>
+</div>
+
+                                                                      <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1qxD-AD_r-ki2o4iYd1KW6nAdcp8LV1rr/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p27575_p_v10_az.jpg');"></div>
+</div>
+
+                                                                        <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1GPvStGePCgSfhwZVUUNMHYtjUEAfmKHt/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p34447_p_v13_bc.jpg');"></div>
+</div>
+
+                                                                          <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/120bBVkMyAuYY9uiHPD3PUN5wbzh0HH6N/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p159731_p_v10_ag.jpg');"></div>
+</div>
+
+                                                                            <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1tZHXqAAFHbqs0Ly6ILIeYNBJeiwEUsF_/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p3546149_p_v8_aq.jpg');"></div>
+</div>
+
+                                                                              <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1hJanXYPWJ3uV0r8RxC3V4_HSpVIAFjq_/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/VR3Tfr9zpNllsU6RchvnbhGmPkc=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2VhOTdiZDNjLTlmODQtNGNlYi1iZWYwLWNkYjY2YmI5YzZjYS5qcGc=');"></div>
+</div>
+
+                                                                                <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1h3jBbBJLJaEMPHT_vqef0CCRiU6h3Hx-/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/efDy1R2rttSx6VEdL1zi8MLJ7vs=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2NiZTBhZWQ4LThmZWMtNGM4Yi05YTE2LThlNWU0MzUzNDQ5Ny5qcGc=');"></div>
+</div>
+
+                                                                                  <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/11EWhCL_5cmEegiA2ymW58K9TrrGiy8j6/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/abVYM20-_8hBgvl4VJTC_28L0Tw=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2YzNTQxM2E4LTUzYmYtNGI3MS1iM2FmLWJjYTFmOWZjMDYzNS5qcGc=');"></div>
+</div>
+
+                                                                                    <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/11ErwQrenBHMp8oE8TIVmdtnN998JD297/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p12798844_p_v8_ao.jpg');"></div>
+</div>
+
+                                                                                      <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1gUNaugOYvwWYPuO86ATBmNaqndaeeXXf/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/_l50Ahm00b-RO9Ao2s3AyMjUWiU=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2ExYTZmMWFkLWViZWItNDNhMS1iZTEwLTcxODk1YTk3NWFhMy53ZWJw');"></div>
+</div>
+
+                                                                                        <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/10o_Ap-1JtxPYJrqcDBYoGmFV-GfNkXmF/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/8PNiwC2bpe9OecfYZSOVkvYC5vk=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2U5NGM0Y2Q1LTAyYTItNGFjNC1hNWZhLWMzYjJjOTdjMTFhOS5qcGc=');"></div>
+</div>
+
+                                                                                          <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1YhZgc4JzwMaLNlW7l9cFAqxbXe5jar_H/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/r38PjcA-XGIiW3UR2pfUaGEYTNk=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzk4ZDA3Njk0LWE2YWUtNGZlYi1iNjQ2LTVkMmI2YTkyYmIyNy5qcGc=');"></div>
+</div>
+
+                                                                                            <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1zAB9EDSBj0mHS-y7dkFOmqifnAXX4wFJ/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p9379266_p_v8_ah.jpg');"></div>
+</div>
+
+                                                                                              <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1fjL6uU6v-KTKWimSR7wbhby-eM1EegB4/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/87XVd0kcLN931duRsc9uQEJAW8Q=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzRlNzI3MTU2LTkwMmEtNGZmOS1iMWE1LWI4OThlMmRjYzBkZS53ZWJw');"></div>
+</div>
+
+                                                                                                <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1xCgQgI_hAmSXDKWQ2VBW3K4Ct58O5Unn/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/bDG3nZ5107gOz5w7Mn8sMWl0T2s=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzAyZWRjMTFkLTM2NjUtNDA5YS1iY2Q1LTEyZjZiYTE3MTBmZi53ZWJw');"></div>
+</div>
+
+                                                                                                  <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/19o0b-iJOSu65gx5r0m5dKuyuBdZ7FwF1/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/2096IGqTl1MdFr5xOkiAdjyywos=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzVkN2RkZmFhLTEzYjktNGQ3Yy04NDY3LWI1MWQ1MjQyMzU4OC5qcGc=');"></div>
+</div>
+
+                                                                                                    <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1rEC789OkzjuZAF-KwuGsbp_GZW7KVGnk/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p15854_p_v13_al.jpg');"></div>
+</div>
+
+                                                                                                      <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1IgE-k2EqN4_ezmYFQw4krPY1xYmfIdrH/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/D4XOTaLafpvnMFIDBQuZsWa9dZ0=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzljZWFmMTRlLWM5MDUtNDJjMC1hYWM5LTQzMDhiNjE2NzAyNC5qcGc=');"></div>
+</div>
+
+                                                                                                        <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1DCVNgh-6510-l-8KTULve4FZFqdJ9Wpd/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/nQN8KYVFA4fD23Li3TCLwKYz8GA=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzL2JlYWVjZDdiLTMyYjMtNDgzNy1iN2M0LTgzYWZkODIzMmZmOS5qcGc=');"></div>
+</div>
+
+                                                                                                          <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1MbYge7ZYFgUC6oWziRMSHwWH-RPZSlLw/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/c7fcjCvkHP4wiDlEdVRusMXCOws=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzAzOWI1YzkwLTNiODAtNDNmYy05MTA1LTViZjg4ZTgyYTc1MC5qcGc=');"></div>
+</div>
+
+                                                                                                            <!-- Jujutsu Kaisen 0 -->
+<div class="movie-card" data-title="jujutsu kaisen 0" onclick="openMovie('https://drive.google.com/file/d/1K2M4p9b1xZsobfEjk2_WOC-lqr19K_lA/view?usp=sharing')">
+  <div class="movie-thumb" style="background-image:url('https://resizing.flixster.com/D6aLbOtCJdj4ItAJL_UgDI_lzzA=/206x305/v2/https://resizing.flixster.com/73vo2mteKuX4jKAnDsTUBankCtQ=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzgwNTY3YjgzLTUyYjctNGM0NS1hNjhjLWMxM2NlYzZlNzQ1MC5qcGc=');"></div>
+</div>
+
+
+<!-- Suggestions -->
+<div class="movie-card"
+     data-title="suggestions"
+     onclick="openMovie('https://docs.google.com/forms/d/e/1FAIpQLSf0KQ8GiHACmxEP5Um1NR7kYKY-OYOyVqfZ0gFnTq8dqxYa-A/viewform?usp=dialog')"
+     style="
+       display:flex;
+       align-items:center;
+       justify-content:center;
+       border:2px solid #4da3ff;
+       box-shadow:0 0 25px rgba(77,163,255,0.4), inset 0 0 20px rgba(77,163,255,0.15);
+       background:#050912;
+     ">
+  <div
+    style="
+      font-family:'Lexend', system-ui, sans-serif;
+      font-size:22px;
+      font-weight:700;
+      letter-spacing:0.6px;
+      color:#4da3ff;
+      text-align:center;
+      text-shadow:0 0 12px rgba(77,163,255,0.6);
+    ">
+    Suggestions
+  </div>
+</div>
+
+
+
+
+<!-- (ALL other movie cards continue here exactly as you pasted — no changes) -->
+
+</div>
+
+<!-- ================= SHOWS ================= -->
+<h2 style="margin-top:40px;">📺 Shows</h2>
+
+<div class="movie-grid">
+
+<!-- IT: Welcome to Derry -->
+<div class="movie-card" data-title="it welcome to derry" onclick="openShow()">
+  <div class="movie-thumb" style="background-image:url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD6yz3vSX7saZ4ChKjCrhXuYhCb4W9b-NMgLUV_ys5u8sE6d3Nz5py_ZhSwnBM_XYu5XAL&s=10');"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- SHOW MODAL -->
+<div class="modal-bg" id="showModal">
+  <div class="modal">
+    <span class="close" onclick="closeShow()">×</span>
+    <h3>IT: Welcome to Derry</h3>
+
+    <a class="ep" href="https://drive.google.com/file/d/11b_Wigi0LcQZ9NMK_2cIzZcOFlJXoKOE/view" target="_blank">Season 1 · Episode 1</a>
+    <a class="ep" href="https://drive.google.com/file/d/1Na2dTkPQTv_hcshHjafa9wnL4K3ro9dK/view" target="_blank">Episode 2</a>
+    <a class="ep" href="https://drive.google.com/file/d/1UbcNz9vXAZwDoF6tXahShbxbOTTctTVI/view" target="_blank">Episode 3</a>
+    <a class="ep" href="https://drive.google.com/file/d/1KlNip-Xf9bu7CCkkzPx4gHSwACMomXhG/view" target="_blank">Episode 5</a>
+    <a class="ep" href="https://drive.google.com/file/d/17e8Ph7LU6iPO8y9m1txXU75Sl_g_ZcoD/view" target="_blank">Episode 6</a>
+    <a class="ep" href="https://drive.google.com/file/d/1HliKJf4bpWXDD6MWck0vpLcghD8_BLEp/view" target="_blank">Episode 7</a>
+    <a class="ep" href="https://drive.google.com/file/d/1gArgNLfMQeBfVLikUs4F7S4jHvcu_nHZ/view" target="_blank">Episode 8</a>
+  </div>
+</div>
+
+<script>
+/* greeting */
+const h=new Date().getHours();
+document.getElementById("greeting").innerText =
+  `What would you like to watch this ${
+    h<12?"morning":h<17?"afternoon":h<21?"evening":"night"
+  }?`;
+
+/* search */
+function filterAll(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('.movie-card').forEach(c=>{
+    c.style.display = c.dataset.title.includes(q) ? "block" : "none";
+  });
+}
+
+/* open movie */
+function openMovie(url){
+  window.open(url,"_blank");
+}
+
+/* show modal */
+function openShow(){
+  document.getElementById("showModal").style.display="flex";
+}
+function closeShow(){
+  document.getElementById("showModal").style.display="none";
+}
+</script>
+
+</body>
+</html>

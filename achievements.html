@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>O0ZE34's Crib REBORN — Achievements</title>
+<link href="style.css" rel="stylesheet"/>
+<style>
+.ach-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:20px;
+}
+.ach-card{
+  background:rgba(255,255,255,0.12);
+  padding:15px;
+  border-radius:15px;
+  transition:.2s;
+  text-align:center;
+}
+.ach-card.locked{
+  opacity:0.4;
+  filter:grayscale(1);
+}
+.ach-card.unlocked{
+  border:2px solid #00ff88;
+  box-shadow:0 0 15px #00ff88;
+}
+.ach-title{font-size:18px;font-weight:bold;}
+.ach-desc{font-size:14px;opacity:0.8;margin-top:6px;}
+.ach-xp{color:gold;margin-top:6px;}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<a href="index.html">Home</a>
+<a href="games.html">Games</a>
+<a href="apps.html">Apps</a>
+<a href="music.html">Music</a>
+<a href="proxies.html">Proxies</a>
+<a href="movies.html">Movies</a>
+<a href="achievements.html" style="background:rgba(255,255,255,0.15)">Achievements</a>
+<a href="settings.html">Settings</a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('chatPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-comments"></i><span>Chat</span></a>
+  <a href="#" onclick="event.preventDefault();var p=document.getElementById('leaderboardPanel');if(p)p.style.display=p.style.display==='none'?'block':'none'"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>
+</div>
+
+<div class="main">
+<h1>Achievements</h1>
+<div class="ach-grid" id="achGrid"></div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+// shared.js handles everything — loadAchievementsPage() called on DOMContentLoaded
+</script>
+
+</body>
+</html>
